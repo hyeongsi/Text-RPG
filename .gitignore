@@ -1,32 +1,41 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
+*.idb
+*.ilk
+*.pdb
 *.obj
+*.ipch
+*.suo
+*.db
+*.log
+*.tlog
+# 전제 조건
+* .d
 
-# Precompiled Headers
-*.gch
-*.pch
+# 컴파일 된 객체 파일
+* .slo
+* .lo
+* .o
+* .obj
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# 미리 컴파일 된 헤더
+* .gch
+* .pch
 
-# Fortran module files
-*.mod
-*.smod
+# 컴파일 된 동적 라이브러리
+* .so
+* .dylib
+* .dll
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Fortran 모듈 파일
+* .mod
+* .smod
 
-# Executables
-*.exe
-*.out
-*.app
+# 컴파일 된 정적 라이브러리
+* .lai
+* .la
+* .a
+* .lib
+
+# 실행 파일
+* .exe
+* .out
+* .app
