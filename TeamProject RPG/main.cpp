@@ -7,11 +7,11 @@
 #include <iostream>
 int main()
 {
-	GameManager gameManager;
-	MapManager mapManager;
-	Player* player = new Player();
-
-	mapManager.PrintCharacter(player);
-
 	system(" mode  con lines=30   cols=120 ");
+	GameManager gameManager;
+
+	gameManager.Play(-1);
+	gameManager.StartDungeon(1);
+
+	while (1);
 }

@@ -2,18 +2,14 @@
 #include "Pos.h"
 #include <iostream>
 
-constexpr auto COL = 3;
-constexpr auto ROW = 3;
-
 using namespace std;
 
 class Character
 {
-private:
+protected:
 	int Hp;
 	int power;
 	Pos pos;
-	string shape[COL][ROW] = {" "}; 
 
 public:
 	Character();
@@ -22,6 +18,7 @@ public:
 	void Hit(const int power);	//피격 함수
 
 	Pos GetPos();
-	const string (*GetShape())[ROW];
+	void SetPos(int x, int y);
+
 };
 

@@ -2,8 +2,8 @@
 
 Pos::Pos()
 {
-	x = 0;
-	y = 0;
+	x = 10;
+	y = 10;
 }
 
 Pos::Pos(int x, int y)

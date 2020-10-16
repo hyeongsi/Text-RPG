@@ -4,6 +4,9 @@ Character::Character()
 {
 	Hp = 0;
 	power = 0;
+
+	pos.SetX(10);
+	pos.SetY(10);
 	//HP, power  shape ini 파일로 로드
 }
 
@@ -27,7 +30,10 @@ Pos Character::GetPos()
 	return pos;
 }
 
-const string(*Character::GetShape())[ROW]
+
+void Character::SetPos(int x, int y)
 {
-	return shape;
+	pos.SetX(x);
+	pos.SetY(y);
 }
+
