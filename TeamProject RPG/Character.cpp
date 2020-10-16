@@ -1,10 +1,10 @@
-#include "Character.h"
+ï»¿#include "Character.h"
 
 Character::Character()
 {
 	Hp = 0;
 	power = 0;
-	//HP, power  shape ini ÆÄÀÏ·Î ·Îµå
+	//HP, power  shape ini íŒŒì¼ë¡œ ë¡œë“œ
 }
 
 void Character::Move()

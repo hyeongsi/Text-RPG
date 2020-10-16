@@ -1,4 +1,4 @@
-#include "MapManager.h"
+ï»¿#include "MapManager.h"
 
 void MapManager::GoToXY(const int x, const int y)
 {
@@ -8,12 +8,17 @@ void MapManager::GoToXY(const int x, const int y)
 
 void MapManager::PrintCharacter(Character* character)
 {
+	Player* player = dynamic_cast<Player*>(character);
+
+	if (player != NULL)	//Player í˜•ìœ¼ë¡œ ìž˜ ìºìŠ¤íŒ… ëœ ê²½ìš°
+	{
+		player->GetShape();
+	}
+
+	//ê¸°ì¤€ì  ì¢Œí‘œë¡œ ë¶€í„° ì™¼ìª½ ìƒë‹¨ìœ¼ë¡œ ì´ë™í•´ ì´ë¯¸ì§€ë¥¼[3][3] ì¶œë ¥í•œë‹¤.
 	GoToXY(character->GetPos().GetX() - 1, character->GetPos().GetY() + 3);
 
-	if (1)		//¿©±â¼­ Ä³¸¯ÅÍ°¡ °¡¸£Å°´Â°ªÀÌ ¹ºÁö ÆÇº°ÇÏ´Â°Å Ã£¾Æ¼­ ³Ö°í
-	{
-		//¿©±â¼­ .. Ä³¸¯ÅÍ Ãâ·Â..
-	}
+	
 
 
 }

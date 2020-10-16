@@ -1,4 +1,4 @@
-#include "Pos.h"
+ï»¿#include "Pos.h"
 
 Pos::Pos()
 {
@@ -19,7 +19,7 @@ const int& Pos::GetX()
 
 void Pos::SetX(const int x)
 {
-	//x¹üÀ§ Á¦ÇÑ
+	//xë²”ìœ„ ì œí•œ
 	this->x = x;
 }
 
@@ -30,6 +30,6 @@ const int& Pos::GetY()
 
 void Pos::SetY(const int y)
 {
-	//y¹üÀ§ Á¦ÇÑ
+	//yë²”ìœ„ ì œí•œ
 	this->y = y;
 }

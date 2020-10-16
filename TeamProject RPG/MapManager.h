@@ -1,35 +1,29 @@
-#pragma once
+ï»¿#pragma once
 
 #include <Windows.h>
 #include "Player.h"
 #include "GameInfo.h"
-//¿©±â¿¡ ¸ó½ºÅÍ¸¦ ·Îµå
+//ì—¬ê¸°ì— ëª¬ìŠ¤í„°ë¥¼ ë¡œë“œ
 
 class MapManager
 {
 private:
 	string map[30][30] = {""};
-	Pos playerPos;	//¿¹½Ã¿ë player pos
-
-	//1¹ø¸Ê, 2¹ø¸Ê... 1¹ø¸Ê¼±ÅÃÇÏ¸é gameinfo¿¡¼­ 1¹ø¸Ê¿¡ ´ëÇÑ Á¤º¸¸¦ iniÆÄÀÏ¿¡¼­ ºÒ·¯¿Í¼­
-	//±× ¸Ê ÆÄÀÏ¿¡ ¸Â´Â ¸ó½ºÅÍ¸¦ new·Î »ı¼ºÇØ¼­ ÇØ´ç À§Ä¡¿¡ ¹èÄ¡.
-	//±×·²·Á¸é
+	GameInfo gameInfo;
+	Player player;
+	//1ë²ˆë§µ, 2ë²ˆë§µ... 1ë²ˆë§µì„ íƒí•˜ë©´ gameinfoì—ì„œ 1ë²ˆë§µì— ëŒ€í•œ ì •ë³´ë¥¼ iniíŒŒì¼ì—ì„œ ë¶ˆëŸ¬ì™€ì„œ
+	//ê·¸ ë§µ íŒŒì¼ì— ë§ëŠ” ëª¬ìŠ¤í„°ë¥¼ newë¡œ ìƒì„±í•´ì„œ í•´ë‹¹ ìœ„ì¹˜ì— ë°°ì¹˜.
+	//ê·¸ëŸ´ë ¤ë©´
 	//gameinfo include, monster include...
-	//player...·Îµå 
-	//Ãâ·Â
-	//Mapmanager¿¡¼­ player.getPos ÇÑ ÈÄ¿¡ ±× Á¤º¸¸¦ map¿¡ ³Ö°í ¸ÊÀ» Ãâ·ÂÇÑ ÈÄ¿¡
-	//ÇÑ¹ø´õ playerPos¸¦ ÂüÁ¶ÇØ¼­ 9Ä­ ±×¸²À» ±×¸°´Ù.
+	//player...ë¡œë“œ 
+	//ì¶œë ¥
+	//Mapmanagerì—ì„œ player.getPos í•œ í›„ì— ê·¸ ì •ë³´ë¥¼ mapì— ë„£ê³  ë§µì„ ì¶œë ¥í•œ í›„ì—
+	//í•œë²ˆë” playerPosë¥¼ ì°¸ì¡°í•´ì„œ 9ì¹¸ ê·¸ë¦¼ì„ ê·¸ë¦°ë‹¤.
 public:
 	void GoToXY(const int x,const int y);
 	void PrintCharacter(Character* character);
-	//void PrintCharacter(Monster monster);
 
-	void CheckOutOfMap(); //ÀÌ°É È£Ãâ ÇÏ±â Àü¿¡ player.move¸¦ ¸ÕÀú ½ÇÇàÇÑ ÈÄ¿¡
-	//Ã¼Å©ÇØ¼­ ¸¸¾à = ºí·ÏÀ» ¿À¹ÙÇß´Ù. ±×·¯¸é À§Ä¡°ª ¼öÁ¤ ÈÄ ¸Ê Ãâ·Â..?
+	void CheckOutOfMap(); //ì´ê±¸ í˜¸ì¶œ í•˜ê¸° ì „ì— player.moveë¥¼ ë¨¼ì € ì‹¤í–‰í•œ í›„ì—
+	//ì²´í¬í•´ì„œ ë§Œì•½ = ë¸”ë¡ì„ ì˜¤ë°”í–ˆë‹¤. ê·¸ëŸ¬ë©´ ìœ„ì¹˜ê°’ ìˆ˜ì • í›„ ë§µ ì¶œë ¥..?
 };
 
-enum MyEnum
-{
-	Player
-
-};

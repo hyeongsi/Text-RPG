@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 class GameManager
 {
 private:
 
 public:
-	void Play(); //°ÔÀÓ ½ÃÀÛ¹öÆ° ´­·¶À» ¶§
+	void Play(); //ê²Œì„ ì‹œì‘ë²„íŠ¼ ëˆŒë €ì„ ë•Œ
 	void CheckContact();
 };
 

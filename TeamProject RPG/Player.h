@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Character.h"
 
 class Player : public Character
@@ -6,7 +6,7 @@ class Player : public Character
 private:
 
 public:
-	void Move();	//ÀÌµ¿ ÇÔ¼ö
-	void Die();		//Á×´Â ÇÔ¼ö
+	void Move();	//ì´ë™ í•¨ìˆ˜
+	void Die();		//ì£½ëŠ” í•¨ìˆ˜
 };
 

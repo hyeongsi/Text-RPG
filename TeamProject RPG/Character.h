@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Pos.h"
 #include <iostream>
 
@@ -17,9 +17,9 @@ private:
 
 public:
 	Character();
-	virtual void Move();	//ÀÌµ¿ ÇÔ¼ö
-	virtual void Die();		//Á×´Â ÇÔ¼ö
-	void Hit(const int power);	//ÇÇ°İ ÇÔ¼ö
+	virtual void Move();	//ì´ë™ í•¨ìˆ˜
+	virtual void Die();		//ì£½ëŠ” í•¨ìˆ˜
+	void Hit(const int power);	//í”¼ê²© í•¨ìˆ˜
 
 	Pos GetPos();
 	const string (*GetShape())[ROW];
