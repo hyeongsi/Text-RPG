@@ -16,6 +16,6 @@ public:
 
 	void SetStartTime();
 
-	const bool CkEndDelay();
+	const bool CheckEndDelay();
 };
 

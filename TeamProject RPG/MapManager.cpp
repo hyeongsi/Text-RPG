@@ -1,10 +1,5 @@
 ﻿#include "MapManager.h"
 
-MapManager::MapManager(Player* player)
-{
-	this->player = player;
-}
-
 void MapManager::GoToXY(const int x, const int y)
 {
 	COORD pos = { (SHORT)x,(SHORT)y };
@@ -58,8 +53,12 @@ void MapManager::LoadMap(int num)
 				fcin.get(c);
 				if (fcin.eof())
 					break;
-				//if (c == 'p')
-					//player->SetPos(x, y);
+				if (c == 'p') 
+				{
+					player->SetPos(x, y);
+					c = ' ';
+				}
+					
 				map[y][x] = c;
 				
 			}

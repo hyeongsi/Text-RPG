@@ -2,31 +2,25 @@
 
 void GameManager::Play(int saveFileNumber)
 {
-	switch (saveFileNumber)
-	{
-	case 1:
-		gameInfo->LoadSaveData(1); // 세이브파일 번호
-		break;
-	case 2:
-		gameInfo->LoadSaveData(2); // 세이브파일 번호
-		break;
-	default:
-		gameInfo->LoadSaveData(-1); // 세이브파일 번호
-		break; //새게임
-	}
+	gameInfo->LoadSaveData(saveFileNumber); // 세이브파일 번호
+	gameInfo->LoadPlayerShape(saveFileNumber);
 }
 
 void GameManager::StartDungeon(int dungeonNumber)
 {
 	bool loop = true;
 
-	map = new MapManager(player);
+	map = new MapManager();
 	map->LoadMap(dungeonNumber);
 
 	while (loop)
 	{
-		map->PrintMap();
-		player->Move();
+		if (delayManager.CheckEndDelay())
+		{
+			map->PrintMap();
+			player->Move();
+		}
+		
 	}
 
 }

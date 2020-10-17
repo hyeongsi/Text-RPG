@@ -3,7 +3,7 @@
 DelayManager::DelayManager()
 {
 	startTime = clock();
-	delayTime = 1000;
+	delayTime = 33;
 }
 
 void DelayManager::SetDelayTime(const int& time)
@@ -21,7 +21,7 @@ void DelayManager::SetStartTime()
 	startTime = clock();
 }
 
-const bool DelayManager::CkEndDelay()
+const bool DelayManager::CheckEndDelay()
 {	
 	if (((clock() - startTime) > delayTime)) 
 	{

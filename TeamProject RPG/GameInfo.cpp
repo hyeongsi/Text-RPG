@@ -4,7 +4,7 @@ GameInfo* GameInfo::gameInfoInstance = nullptr;
 
 GameInfo* GameInfo::GetInstance()
 {
-	if (gameInfoInstance != nullptr)
+	if (gameInfoInstance == nullptr)
 		gameInfoInstance = new GameInfo();
 	
 	return gameInfoInstance;
@@ -31,6 +31,11 @@ const int GameInfo::ReadFileInt(const char* section, const char* key, const char
 {
 	return GetPrivateProfileIntA(section, key, 0, path);
  }
+
+void GameInfo::ReadFileString(const char* section, const char* key, const char* path)
+{
+	GetPrivateProfileString(section, key,"", loadData, sizeof(loadData), path);
+}
 
 void GameInfo::LoadSaveData(int dataNumber)
 {
@@ -67,5 +72,28 @@ void GameInfo::LoadPlayerStats(int dataNumber)
 		hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");
 		power = ReadFileInt("player", "power", "GameInfo\\player.ini");
 		break;
+	}
+	player->SetStats(hp, power);
+}
+
+void GameInfo::LoadPlayerShape(int dataNumber)
+{
+	for (int col = 0; col < SHAPE_COL; col++)
+	{
+		switch (col)
+		{
+		case 0:ReadFileString("player", "head", "GameInfo\\player.ini");
+			for (int row = 0; row < SHAPE_ROW; row++)
+				playerShape[col][row] = loadData[row];
+			break;
+		case 1:ReadFileString("player", "body", "GameInfo\\player.ini");
+			for (int row = 0; row < SHAPE_ROW; row++)
+				playerShape[col][row] = loadData[row];
+			break;
+		case 2:ReadFileString("player", "legs", "GameInfo\\player.ini");
+			for (int row = 0; row < SHAPE_ROW; row++)
+				playerShape[col][row] = loadData[row];
+			break;
+		}
 	}
 }
