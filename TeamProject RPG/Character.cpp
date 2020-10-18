@@ -10,14 +10,6 @@ Character::Character()
 	//HP, power  shape ini 파일로 로드
 }
 
-void Character::Move()
-{
-}
-
-void Character::Die()
-{
-}
-
 void Character::Hit(const int power)
 {
 	Hp -= power;

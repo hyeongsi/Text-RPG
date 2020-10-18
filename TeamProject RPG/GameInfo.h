@@ -2,14 +2,14 @@
 #include <Windows.h>
 #include "Player.h"
 
-constexpr auto SHAPE_COL = 3;
+constexpr auto SHAPE_COL = 7;
 constexpr auto SHAPE_ROW = 3;
 
 class GameInfo
 {
 private:
-	char playerShape[3][3] = {' '};
-	char oakShape[3][3] = { {'b', 'b', 'b'}, {'b', 'b', 'b'}, {'b', 'b', 'b'} };
+	char playerShape[SHAPE_COL][SHAPE_ROW] = {' '};
+	char oakShape[SHAPE_COL][SHAPE_ROW] = {' '};
 
 	Player* player = Player::GetInstance();
 	static GameInfo* gameInfoInstance;

@@ -6,34 +6,6 @@ void MapManager::GoToXY(const int x, const int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-void MapManager::PrintCharacter(Character* character)
-{
-	int option;
-
-	Player* player = dynamic_cast<Player*>(character);
-	if (player != NULL)
-		option = 1;
-	else
-		option = 2;
-
-	auto tempPlayerShape = gameInfo->GetShape(option);
-
-	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][3] 출력한다.
-	GoToXY(character->GetPos().GetX() - 1, character->GetPos().GetY() - 2);
-	for (int index = 0; index < 3; index++)
-		cout << tempPlayerShape[0][index];
-
-	//기준점 좌표 y+1 지점으로 이동해 이미지[1][3] 출력한다.
-	GoToXY(character->GetPos().GetX() - 1, character->GetPos().GetY() - 1);
-	for (int index = 0; index < 3; index++)
-		cout << tempPlayerShape[1][index];
-
-	//기준점 좌표 y+1 지점으로 이동해 이미지[2][3] 출력한다.
-	GoToXY(character->GetPos().GetX() - 1, character->GetPos().GetY());
-	for (int index = 0; index < 3; index++)
-		cout << tempPlayerShape[2][index];
-}
-
 void MapManager::LoadMap(int num)
 {
 	string currentDungeon;
@@ -60,37 +32,149 @@ void MapManager::LoadMap(int num)
 				}
 					
 				map[y][x] = c;
-				
 			}
 		}
 		break;
-
 	case 2:
 		fcin.open("MapInfo\\dungeon2.txt");
 		getline(fcin, currentDungeon);
 		break;
-
 	default:
 		cout << "맵 로드 오류!!";
 		break;
 	}
-}
 
+	//플레이어가 움직일 수 없는 범위 왼쪽 상단 측정
+	for (int col = 0; col < MAP_COL; col++)
+	{
+		for (int row = 0; row < MAP_ROW; row++)
+		{
+			if (map[col][row] == '*')
+			{
+				DontMoveleftUpPos.SetX(row);
+				DontMoveleftUpPos.SetY(col);
+				col = MAP_COL;
+				break;
+			}
+		}
+	}
+	//플레이어가 움직일 수 없는 범위 오른쪽 하단 측정
+	for (int col = MAP_COL-1; col > 0; col--)
+	{
+		for (int row = MAP_ROW-1; row > 0; row--)
+		{
+			if (map[col][row] == '*')
+			{
+				DontMoveRightDownPos.SetX(row);
+				DontMoveRightDownPos.SetY(col);
+				col = 0;
+				break;
+			}
+		}
+	}
+}
 
 void MapManager::PrintMap()
 {
+	//원본맵을 출력할 맵에 복사 후
+	for (int col = 0; col < MAP_COL; col++)
+	{
+		for (int row = 0; row < MAP_ROW; row++)
+			tempMap[col][row] = map[col][row];
+	}
+
+	//캐릭터 정보 가져와서 맵에 동기화
+	PrintCharacter(player);
+
+	//출력할 맵 출력
 	GoToXY(0, 0);
 	for (int y = 0; y < MAP_COL; y++)
 	{
 		for (int x = 0; x < MAP_ROW; x++)
-			cout << map[y][x];
+			cout << tempMap[y][x];
 	}
-
-
-	PrintCharacter(player);
 }
 
-void MapManager::CheckOutOfMap()
+void MapManager::PrintCharacter(Character* character)
 {
+	int option;
 
+	Player* player = dynamic_cast<Player*>(character);
+	if (player != NULL)
+		option = -1;
+	else
+		option = 1;
+
+	auto tempPlayerShape = gameInfo->GetShape(option);
+
+	int playerPosX = player->GetPos().GetX();
+	int playerPosY = player->GetPos().GetY();
+
+
+	
+	if (CheckOutOfMap())
+		return;
+
+	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
+	//머리 출력
+	for (int index = 0; index < SHAPE_ROW; index++)
+		tempMap[playerPosY - 2][playerPosX - 1+ index] = tempPlayerShape[0][index];
+
+
+	//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
+	//몸 출력
+	for (int index = 0; index < SHAPE_ROW; index++)
+		tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[1][index];
+
+	//기준점 좌표 x-1 지점으로 이동해 이미지[2][0~3] 출력한다.
+	//다리 출력
+	if (!player->GetIsWalking())
+	{
+		for (int index = 0; index < SHAPE_ROW; index++)
+			tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[2][index];
+	}
+	else
+	{
+		switch (player->GetWalkCount())
+		{
+		case 0:
+			if (player->GetDir())	//왼쪽이면
+			{	//왼쪽1번다리 출력
+				for (int index = 0; index < SHAPE_ROW; index++)
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[5][index];
+			}
+			else                    //오른쪽이면
+			{	//오른쪽1번다리 출력
+				for (int index = 0; index < SHAPE_ROW; index++)
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[3][index];
+			}
+			break;
+		case 1:
+			if (player->GetDir())	//왼쪽이면
+			{	//왼쪽2번다리 출력
+				for (int index = 0; index < SHAPE_ROW; index++)
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[6][index];
+			}
+			else                    //오른쪽이면
+			{	//오른쪽2번다리 출력
+				for (int index = 0; index < SHAPE_ROW; index++)
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[4][index];
+			}
+			break;
+		}
+	}
+
+}
+bool MapManager::CheckOutOfMap()
+{
+	if (player->GetPos().GetX() < DontMoveleftUpPos.GetX())
+		return true;
+	else if (player->GetPos().GetX() > DontMoveRightDownPos.GetX())
+		return true;
+	else if (player->GetPos().GetY() < DontMoveleftUpPos.GetY())
+		return true;
+	else if (player->GetPos().GetY() > DontMoveRightDownPos.GetY())
+		return true;
+	else
+		return false;
 }
