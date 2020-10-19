@@ -11,11 +11,15 @@ private:
 	int walkCount = 0;
 	bool isWalking = false;
 	bool dir = false; //false : 오른쪽,   true : 왼쪽
+	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
+
 public:
 	static Player* GetInstance();
 	static void ReleaseInstance();
 
-	void SetStats(int hpNum, int powerNum);
+	void SetStats(const int hpNum, const int powerNum);
+
+	void CheckDontMoveDir(Pos leftUp, Pos rightDown);
 
 	void Move();	//이동 함수
 	void Die();		//죽는 함수

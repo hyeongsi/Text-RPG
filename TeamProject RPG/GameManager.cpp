@@ -9,9 +9,12 @@ void GameManager::Play(int saveFileNumber)
 void GameManager::StartDungeon(int dungeonNumber)
 {
 	bool loop = true;
+	Pos *dontMovePos;
 
 	map = new MapManager();
 	map->LoadMap(dungeonNumber);
+	dontMovePos = map->GetDontMovePos();	//이동불가 영역 받아서 사용
+
 
 	slime = Slime::GetInstance();
 
@@ -26,6 +29,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 		if (delayManager.CheckEndDelay())
 		{
 			map->PrintMap();
+			player->CheckDontMoveDir(dontMovePos[0], dontMovePos[1]);
 			player->Move();
 			for (int i = 0; i < slime->size(); i++)
 				(*slime)[i]->Move();

@@ -19,18 +19,49 @@ void Player::ReleaseInstance()
 	}
 }
 
-void Player::SetStats(int hpNum, int powerNum)
+void Player::SetStats(const int hpNum, const int powerNum)
 {
 	Hp = hpNum;
 	power = powerNum;
 	int walkCount = 0;
 }
 
+void Player::CheckDontMoveDir(Pos leftUp, Pos rightDown)
+{
+	//상 체크
+	if (pos.GetY()-1 <= leftUp.GetY())
+		dontMoveDir[0] = true;
+	else
+		dontMoveDir[0] = false;
+
+	//하 체크
+	if (pos.GetY()+1 >= rightDown.GetY())
+		dontMoveDir[1] = true;
+	else
+		dontMoveDir[1] = false;
+
+	//좌 체크
+	if (pos.GetX()-2 <= leftUp.GetX())
+		dontMoveDir[2] = true;
+	else
+		dontMoveDir[2] = false;
+
+	//우 체크
+	if (pos.GetX()+2 >= rightDown.GetX())
+		dontMoveDir[3] = true;
+	else
+		dontMoveDir[3] = false;
+}
+
 void Player::Move()
 {
+
 	if (GetAsyncKeyState(VK_UP) && 0x8000)			//위
 	{
+		if (dontMoveDir[0] == true)
+			return;
 		pos.SetY(pos.GetY() - 1);
+
 		isWalking = true;
 		walkCount++;
 		if (walkCount > 2)
@@ -38,6 +69,8 @@ void Player::Move()
 	}
 	else if (GetAsyncKeyState(VK_DOWN) && 0x8000)	//아래
 	{
+		if (dontMoveDir[1] == true)
+			return;
 		pos.SetY(pos.GetY() + 1);
 		isWalking = true;
 		walkCount++;
@@ -46,6 +79,8 @@ void Player::Move()
 	}
 	else if (GetAsyncKeyState(VK_LEFT) && 0x8000)	//왼쪽
 	{
+		if (dontMoveDir[2] == true)
+			return;
 		pos.SetX(pos.GetX() - 2);
 		isWalking = true;
 		dir = true;
@@ -55,6 +90,8 @@ void Player::Move()
 	}
 	else if (GetAsyncKeyState(VK_RIGHT) && 0x8000)	//오른쪽
 	{
+		if (dontMoveDir[3] == true)
+			return;
 		pos.SetX(pos.GetX() + 2);
 		isWalking = true;
 		dir = false;

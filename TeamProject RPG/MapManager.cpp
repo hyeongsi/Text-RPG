@@ -10,7 +10,7 @@ void MapManager::LoadMap(int num)
 {
 	string currentDungeon;
 	int y = 0;
-	char c;
+	char mapPiece;
 	int slimeNumber = 0;
 
 	switch (num)
@@ -23,22 +23,22 @@ void MapManager::LoadMap(int num)
 		{
 			for (int x = 0; x < MAP_ROW; x++)
 			{
-				fcin.get(c);
+				fcin.get(mapPiece);
 				if (fcin.eof())
 					break;
-				if (c == 'p') 
+				if (mapPiece == 'p') 
 				{
 					player->SetPos(x, y);
-					c = ' ';
+					mapPiece = ' ';
 				}
-				else if (c == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+				else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
 				{
 					Slime::AddInstance();
 					slime = Slime::GetInstance();
 					(*slime)[slimeNumber++]->SetPos(x, y);
-					c = ' ';
+					mapPiece = ' ';
 				}	
-				map[y][x] = c;
+				map[y][x] = mapPiece;
 			}
 		}
 		break;
@@ -51,34 +51,8 @@ void MapManager::LoadMap(int num)
 		break;
 	}
 
-	//플레이어가 움직일 수 없는 범위 왼쪽 상단 측정
-	for (int col = 0; col < MAP_COL; col++)
-	{
-		for (int row = 0; row < MAP_ROW; row++)
-		{
-			if (map[col][row] == '*')
-			{
-				DontMoveleftUpPos.SetX(row);
-				DontMoveleftUpPos.SetY(col);
-				col = MAP_COL;
-				break;
-			}
-		}
-	}
-	//플레이어가 움직일 수 없는 범위 오른쪽 하단 측정
-	for (int col = MAP_COL-1; col > 0; col--)
-	{
-		for (int row = MAP_ROW-1; row > 0; row--)
-		{
-			if (map[col][row] == '*')
-			{
-				DontMoveRightDownPos.SetX(row);
-				DontMoveRightDownPos.SetY(col);
-				col = 0;
-				break;
-			}
-		}
-	}
+	//플레이어가 움직일 수 있는 범위 측정
+	LoadCanMovePos();
 }
 
 void MapManager::PrintMap()
@@ -117,9 +91,6 @@ void MapManager::PrintCharacter(Character* character)
 
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
-
-	if (CheckOutOfMap())
-		return;
 
 	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
 	//머리 출력
@@ -169,7 +140,6 @@ void MapManager::PrintCharacter(Character* character)
 			break;
 		}
 	}
-
 }
 
 void MapManager::PrintSlime(vector<Slime*>* slime)
@@ -201,16 +171,39 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 	}
 }
 
-bool MapManager::CheckOutOfMap()
+void MapManager::LoadCanMovePos()
 {
-	if (player->GetPos().GetX() < DontMoveleftUpPos.GetX())
-		return true;
-	else if (player->GetPos().GetX() > DontMoveRightDownPos.GetX())
-		return true;
-	else if (player->GetPos().GetY() < DontMoveleftUpPos.GetY())
-		return true;
-	else if (player->GetPos().GetY() > DontMoveRightDownPos.GetY())
-		return true;
-	else
-		return false;
+	//플레이어가 움직일 수 없는 범위 왼쪽 상단 측정
+	for (int col = 0; col < MAP_COL; col++)
+	{
+		for (int row = 0; row < MAP_ROW; row++)
+		{
+			if (map[col][row] == '*')
+			{
+				dontMovePos[0].SetX(row);
+				dontMovePos[0].SetY(col);
+				col = MAP_COL;
+				break;
+			}
+		}
+	}
+	//플레이어가 움직일 수 없는 범위 오른쪽 하단 측정
+	for (int col = MAP_COL - 1; col > 0; col--)
+	{
+		for (int row = MAP_ROW - 1; row > 0; row--)
+		{
+			if (map[col][row] == '*')
+			{
+				dontMovePos[1].SetX(row);
+				dontMovePos[1].SetY(col);
+				col = 0;
+				break;
+			}
+		}
+	}
+}
+
+Pos* MapManager::GetDontMovePos()
+{
+	return dontMovePos;
 }
