@@ -11,6 +11,7 @@ void MapManager::LoadMap(int num)
 	string currentDungeon;
 	int y = 0;
 	char c;
+	int slimeNumber = 0;
 
 	switch (num)
 	{
@@ -30,7 +31,13 @@ void MapManager::LoadMap(int num)
 					player->SetPos(x, y);
 					c = ' ';
 				}
-					
+				else if (c == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+				{
+					Slime::AddInstance();
+					slime = Slime::GetInstance();
+					(*slime)[slimeNumber++]->SetPos(x, y);
+					c = ' ';
+				}	
 				map[y][x] = c;
 			}
 		}
@@ -85,6 +92,7 @@ void MapManager::PrintMap()
 
 	//캐릭터 정보 가져와서 맵에 동기화
 	PrintCharacter(player);
+	PrintSlime(slime);
 
 	//출력할 맵 출력
 	GoToXY(0, 0);
@@ -110,8 +118,6 @@ void MapManager::PrintCharacter(Character* character)
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
 
-
-	
 	if (CheckOutOfMap())
 		return;
 
@@ -165,6 +171,36 @@ void MapManager::PrintCharacter(Character* character)
 	}
 
 }
+
+void MapManager::PrintSlime(vector<Slime*>* slime)
+{
+	auto slimeShape = gameInfo->GetShape(1);		//1은 슬라임을 의미 수정하기!
+	int slimePosX;
+	int slimePosY;
+
+	//슬라임객체수만큼 반복
+	for (int i = 0; i < slime->size(); i++)
+	{
+		slimePosX = (*slime)[i]->GetPos().GetX();
+		slimePosY = (*slime)[i]->GetPos().GetY();
+		//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
+		//머리 출력
+		for (int index = 0; index < SHAPE_ROW; index++)
+			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
+
+
+		//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
+		//몸 출력
+		for (int index = 0; index < SHAPE_ROW; index++)
+			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
+
+		//기준점 좌표 x-1 지점으로 이동해 이미지[2][0~3] 출력한다.
+		//다리 출력
+		for (int index = 0; index < SHAPE_ROW; index++)
+			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];
+	}
+}
+
 bool MapManager::CheckOutOfMap()
 {
 	if (player->GetPos().GetX() < DontMoveleftUpPos.GetX())

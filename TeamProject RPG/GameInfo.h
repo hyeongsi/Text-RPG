@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Windows.h>
 #include "Player.h"
+#include "Slime.h"
 
 constexpr auto SHAPE_COL = 7;
 constexpr auto SHAPE_ROW = 3;
@@ -9,9 +10,10 @@ class GameInfo
 {
 private:
 	char playerShape[SHAPE_COL][SHAPE_ROW] = {' '};
-	char oakShape[SHAPE_COL][SHAPE_ROW] = {' '};
+	char slimeShape[SHAPE_COL][SHAPE_ROW] = {' '};
 
 	Player* player = Player::GetInstance();
+	vector<Slime*>* slime;
 	static GameInfo* gameInfoInstance;
 
 	TCHAR loadData[256];
@@ -28,6 +30,9 @@ public:
 	void LoadSaveData(int dataNumber);
 	void LoadPlayerStats(int dataNumber);
 	void LoadPlayerShape(int dataNumber);
+
+	void LoadSlimeStats(int dongeonNumber);
+	void LoadSlimeShape();
 	/*플레이어 hp, ...... ini 파일에서 여기에 다받아
 		그런다음에 게임매니저에서 여기 저장된 파일 불러와서
 		초기화를 하는거지

@@ -22,7 +22,7 @@ void GameInfo::ReleaseInstance()
 const char(*GameInfo::GetShape(const int character))[SHAPE_ROW]
 {
 	if (character == 1)
-		return oakShape;
+		return slimeShape;
 	else
 		return playerShape;
 }
@@ -112,4 +112,58 @@ void GameInfo::LoadPlayerShape(int dataNumber)
 			break;
 		}
 	}
+}
+
+void GameInfo::LoadSlimeStats(int dongeonNumber)
+{
+	int hp, power;
+
+	switch (dongeonNumber)
+	{
+	case 1:
+		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+		break;
+	case 2:
+		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+		break;
+	case 3:
+		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+		break;
+
+	default:
+		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+		break;
+	}
+
+	slime = Slime::GetInstance();
+	//슬라임객체에 체력과 공격력넣기
+	for(int i=0; i<slime->size(); i++)
+		(*slime)[i]->SetStats(hp, power);
+}
+
+void GameInfo::LoadSlimeShape()
+{
+	for (int col = 0; col < SHAPE_COL; col++)	//플레이어 기본 모습 로드
+	{
+		switch (col)
+		{
+		case 0:ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
+			for (int row = 0; row < SHAPE_ROW; row++)
+				slimeShape[col][row] = loadData[row];
+			break;
+		case 1:ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
+			for (int row = 0; row < SHAPE_ROW; row++)
+				slimeShape[col][row] = loadData[row];
+			break;
+		case 2:ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//기본다리
+			for (int row = 0; row < SHAPE_ROW; row++)
+				slimeShape[col][row] = loadData[row];
+			break;
+		}
+	}
+
 }

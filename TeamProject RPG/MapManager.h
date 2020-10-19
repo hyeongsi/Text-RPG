@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "Player.h"
+#include "Slime.h"
 #include "GameInfo.h"
 
 constexpr auto MAP_COL = 30;
@@ -19,6 +20,7 @@ private:
 	ifstream fcin;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player = Player::GetInstance();
+	vector<Slime*>* slime;
 
 	//플레이어가 움직일 수 있는 범위의 좌표 저장
 	Pos DontMoveleftUpPos;		//왼쪽 상단 x,y 좌표 저장
@@ -38,6 +40,7 @@ public:
 
 	void PrintMap();
 	void PrintCharacter(Character* character);
+	void PrintSlime(vector<Slime*>* slime);
 	bool CheckOutOfMap(); //이걸 호출 하기 전에 player.move를 먼저 실행한 후에
 	//체크해서 만약 = 블록을 오바했다. 그러면 위치값 수정 후 맵 출력..?
 };
