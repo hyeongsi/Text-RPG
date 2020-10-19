@@ -1,55 +1,71 @@
-#include "Slime.h"
+ï»¿#include "Slime.h"
 
 vector<Slime*>* Slime::slime = nullptr;
 
+//ê°ì²´ì¶”ê°€
 void Slime::AddInstance()
 {
 	if (slime == nullptr)
 		slime = new vector<Slime*>();
-	slime->push_back(new Slime());		//slime°´Ã¼ Ãß°¡
+	slime->push_back(new Slime());		//slimeê°ì²´ ì¶”ê°€
 }
 
+//ê°ì²´ë²¡í„°ë°˜í™˜
 vector<Slime*>* Slime::GetInstance()
 {
 	return slime;
 }
 
+//ë™ì í• ë‹¹í•´ì œí•˜ê¸°
 void Slime::ReleaseInstance()
 {
-	//µ¿ÀûÇÒ´çÇØÁ¦ÇÏ±â
+	//ë™ì í• ë‹¹í•´ì œí•˜ê¸°
 }
 
-void Slime::SetStats(int hp, int power)
+//ê° ìŠ¬ë¼ì„ë§ˆë‹¤ ì²´ë ¥ê³¼ ê³µê²©ë ¥ê³¼ ìŠ¤í”¼ë“œ ì„¤ì •í•˜ê¸°
+void Slime::SetStats(int hp, int power, int speed)
 {
 	this->Hp = hp;
 	this->power = power;
+	this->speed = speed;
 }
 
-void Slime::Move()
+//ì†ë„ì— ë”°ë¼ ì›€ì§ì´ê¸°,,, í”Œë ˆì´ì–´ ìœ„ì¹˜ë°©í–¥ìœ¼ë¡œ ì›€ì§ì„
+void Slime::Move(int index)
 {
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
 
-	if (isMove)
+	if ((*slime)[index]->isMove)
 	{
 		delaymanager.SetStartTime();
-		delaymanager.SetDelayTime(1000);
+		delaymanager.SetDelayTime((*slime)[index]->speed);
 	}
-	isMove = false;
+	(*slime)[index]->isMove = false;
 
 	if (!delaymanager.CheckEndDelay())
 		return;
 
-	//°£´ÜÈ÷ ¼³¸íÇÏÀÚ¸é Ä³¸¯ÅÍ°¡ÀÖ´Â À§Ä¡¿Í ½½¶óÀÓÀ§Ä¡¸¦ ±âÁØÀ¸·Î ½½¶óÀÓÀÌµ¿¹æÇâÀ» °áÁ¤
-	//¹®Á¦1 ½½¶óÀÓÀÌ ¾Õ¸¸º¸°íÀÖÀ½
-	//¹®Á¦2 ½½¶óÀÓÀÌ °ãÄ¡´Â°æ¿ì°¡ »ı±è
-	for (int i = 0; i < slime->size(); i++)
-	{
-		(*slime)[i]->SetPos(((*slime)[i]->GetPos().GetX()-playerPosX>0) ? (*slime)[i]->GetPos().GetX() - 1 : (*slime)[i]->GetPos().GetX() + 1, ((*slime)[i]->GetPos().GetY()- playerPosY > 0) ? (*slime)[i]->GetPos().GetY() - 1 : (*slime)[i]->GetPos().GetY() + 1);
-		isMove = true;
-	}
+	//ê°„ë‹¨íˆ ì„¤ëª…í•˜ìë©´ ìºë¦­í„°ê°€ìˆëŠ” ìœ„ì¹˜ì™€ ìŠ¬ë¼ì„ìœ„ì¹˜ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ìŠ¬ë¼ì„ì´ë™ë°©í–¥ì„ ê²°ì •
+	(*slime)[index]->SetPos(((*slime)[index]->GetPos().GetX()-playerPosX>0) ? (*slime)[index]->GetPos().GetX() - 1 : (*slime)[index]->GetPos().GetX() + 1, ((*slime)[index]->GetPos().GetY()- playerPosY > 0) ? (*slime)[index]->GetPos().GetY() - 1 : (*slime)[index]->GetPos().GetY() + 1);
+	(*slime)[index]->isMove = true;
 }
 
+void Slime::Move()
+{
+}
+
+//ì´ë¦„ isDieë³€ê²½ìƒê°
 void Slime::Die()
 {
+	//ìŠ¬ë¼ì„ì²´ë ¥ì—†ìœ¼ë©´ ì‚­ì œ
+	for (int i = 0; i < slime->size(); i++)
+	{
+		for (auto slimeHP = slime[i].begin(); slimeHP != slime[i].end(); i++)
+		{
+			if ((*slimeHP)->Hp <= 0)
+				slime[i].erase(slimeHP);
+		}
+	}
+
 }

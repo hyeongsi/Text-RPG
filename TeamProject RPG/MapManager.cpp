@@ -1,8 +1,8 @@
 ﻿#include "MapManager.h"
 
-void MapManager::GoToXY(const int x, const int y)
+void MapManager::GoToXY(SHORT x, SHORT y)
 {
-	COORD pos = { (SHORT)x,(SHORT)y };
+	COORD pos = { x, y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
@@ -174,7 +174,7 @@ void MapManager::PrintCharacter(Character* character)
 
 void MapManager::PrintSlime(vector<Slime*>* slime)
 {
-	auto slimeShape = gameInfo->GetShape(1);		//1은 슬라임을 의미 수정하기!
+	auto slimeShape = gameInfo->GetShape(SLIME);
 	int slimePosX;
 	int slimePosY;
 
@@ -183,18 +183,15 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 	{
 		slimePosX = (*slime)[i]->GetPos().GetX();
 		slimePosY = (*slime)[i]->GetPos().GetY();
-		//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
+
 		//머리 출력
 		for (int index = 0; index < SHAPE_ROW; index++)
 			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
 
-
-		//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
 		//몸 출력
 		for (int index = 0; index < SHAPE_ROW; index++)
 			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
 
-		//기준점 좌표 x-1 지점으로 이동해 이미지[2][0~3] 출력한다.
 		//다리 출력
 		for (int index = 0; index < SHAPE_ROW; index++)
 			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];

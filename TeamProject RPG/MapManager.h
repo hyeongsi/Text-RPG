@@ -35,7 +35,7 @@ private:
 	//Mapmanager에서 player.getPos 한 후에 그 정보를 map에 넣고 맵을 출력한 후에
 	//한번더 playerPos를 참조해서 9칸 그림을 그린다.
 public:
-	void GoToXY(const int x,const int y);
+	void GoToXY(SHORT x, SHORT y);
 	void LoadMap(int num);
 
 	void PrintMap();

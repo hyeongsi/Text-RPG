@@ -21,10 +21,17 @@ void GameInfo::ReleaseInstance()
 
 const char(*GameInfo::GetShape(const int character))[SHAPE_ROW]
 {
-	if (character == 1)
+	switch (character)
+	{
+	case SLIME:
 		return slimeShape;
-	else
+		//적추가하면넣기
+
+
+	default:
 		return playerShape;
+	}
+		
 }
 
 const int GameInfo::ReadFileInt(const char* section, const char* key, const char* path)
@@ -114,56 +121,41 @@ void GameInfo::LoadPlayerShape(int dataNumber)
 	}
 }
 
-void GameInfo::LoadSlimeStats(int dongeonNumber)
+void GameInfo::LoadSlimeStats()
 {
-	int hp, power;
+	slime = Slime::GetInstance();
 
-	switch (dongeonNumber)
+	if (slime != nullptr)
 	{
-	case 1:
-		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
-		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
-		break;
-	case 2:
-		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
-		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
-		break;
-	case 3:
-		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
-		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
-		break;
-
-	default:
-		hp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
-		power = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
-		break;
+		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
+			(*slime)[i]->SetStats(ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i*200);
 	}
 
-	slime = Slime::GetInstance();
-	//슬라임객체에 체력과 공격력넣기
-	for(int i=0; i<slime->size(); i++)
-		(*slime)[i]->SetStats(hp, power);
+
 }
 
 void GameInfo::LoadSlimeShape()
 {
-	for (int col = 0; col < SHAPE_COL; col++)	//플레이어 기본 모습 로드
+	for (int col = 0; col < SHAPE_COL; col++)
 	{
 		switch (col)
 		{
-		case 0:ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
+		case 0:
+			ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
 			for (int row = 0; row < SHAPE_ROW; row++)
 				slimeShape[col][row] = loadData[row];
 			break;
-		case 1:ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
+		case 1:
+			ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
 			for (int row = 0; row < SHAPE_ROW; row++)
 				slimeShape[col][row] = loadData[row];
 			break;
-		case 2:ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//기본다리
+		case 2:
+			ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//다리
 			for (int row = 0; row < SHAPE_ROW; row++)
 				slimeShape[col][row] = loadData[row];
 			break;
 		}
 	}
-
+	
 }
