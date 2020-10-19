@@ -12,6 +12,7 @@ private:
 	char playerShape[SHAPE_COL][SHAPE_ROW] = {' '};
 	char slimeShape[SHAPE_COL][SHAPE_ROW] = {' '};
 
+
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
 	static GameInfo* gameInfoInstance;
@@ -31,7 +32,7 @@ public:
 	void LoadPlayerStats(int dataNumber);
 	void LoadPlayerShape(int dataNumber);
 
-	void LoadSlimeStats(int dongeonNumber);
+	void LoadSlimeStats();
 	void LoadSlimeShape();
 	/*플레이어 hp, ...... ini 파일에서 여기에 다받아
 		그런다음에 게임매니저에서 여기 저장된 파일 불러와서
@@ -44,5 +45,10 @@ public:
 	맵관련정보들..?*/
 
 
+};
+
+enum {
+	SLIME = 1
+	//그외에 적들 추가후 GetShape()에 넣기
 };
 

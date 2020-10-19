@@ -26,7 +26,7 @@ private:
 	Pos dontMovePos[2];  //0:leftUpPos,   1:RightDownPos
 
 public:
-	void GoToXY(const int x,const int y);
+	void GoToXY(SHORT x, SHORT y);
 	void LoadMap(int num);
 
 	void PrintMap();
