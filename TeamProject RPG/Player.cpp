@@ -55,7 +55,6 @@ void Player::CheckDontMoveDir(Pos leftUp, Pos rightDown)
 
 void Player::Move()
 {
-
 	if (GetAsyncKeyState(VK_UP) && 0x8000)			//위
 	{
 		if (dontMoveDir[0] == true)
@@ -106,9 +105,33 @@ void Player::Move()
 	}
 }
 
+void Player::Attack()
+{
+	if (GetAsyncKeyState(VK_SPACE) && 0x8000)			//space 공격
+	{
+		isAttack = true;
+	}else
+		isAttack = false;
+}
+
+void Player::PickItem()
+{
+	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)			//ctrl 줍기
+	{
+		isPickup = true;
+	}
+	else
+		isPickup = false;
+}
+
 void Player::Die()
 {
 
+}
+
+const string Player::GetHoldWeapon()
+{
+	return holdWeapon;
 }
 
 const int Player::GetIsWalking()

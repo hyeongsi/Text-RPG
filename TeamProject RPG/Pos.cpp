@@ -2,6 +2,8 @@
 
 Pos::Pos()
 {
+	this->x = 0;
+	this->y = 0;
 }
 
 Pos::Pos(int x, int y)

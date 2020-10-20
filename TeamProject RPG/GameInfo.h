@@ -1,32 +1,38 @@
 ﻿#pragma once
 #include <Windows.h>
+#include <map>
+#include <iostream>
 #include "Player.h"
 #include "Slime.h"
 
-constexpr auto SHAPE_COL = 7;
-constexpr auto SHAPE_ROW = 3;
+constexpr auto SHAPE_ROW = 7;
+constexpr auto SHAPE_COL = 3;
 
 class GameInfo
 {
 private:
-	char playerShape[SHAPE_COL][SHAPE_ROW] = {' '};
-	char slimeShape[SHAPE_COL][SHAPE_ROW] = {' '};
+	char playerShape[SHAPE_ROW][SHAPE_COL] = {' '};
+	char slimeShape[SHAPE_ROW][SHAPE_COL] = {' '};
 
-
+	map<string, string> weapon;
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
 	static GameInfo* gameInfoInstance;
 
 	TCHAR loadData[256];
+	char tempChar[2];
 	GameInfo() {};
 public:
 	static GameInfo* GetInstance();
 	static void ReleaseInstance();
 
-	const char(*GetShape(const int character))[SHAPE_ROW];
-
+	const char(*GetShape(const int character))[SHAPE_COL];
+	string GetItemShape(string itemName, int option);	//0 : 무기, 1 : 아이템
+	
 	const int ReadFileInt(const char* section, const char* key, const char* path);
 	void ReadFileString(const char* section, const char* key, const char* path);
+
+	void LoadWeapon();
 
 	void LoadSaveData(int dataNumber);
 	void LoadPlayerStats(int dataNumber);
@@ -48,7 +54,8 @@ public:
 };
 
 enum {
-	SLIME = 1
+	MYPLAYER,
+	SLIME
 	//그외에 적들 추가후 GetShape()에 넣기
 };
 

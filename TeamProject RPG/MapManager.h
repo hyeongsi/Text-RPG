@@ -2,20 +2,21 @@
 
 #include <fstream>
 #include <string>
+#include <iostream>
 #include "Player.h"
 #include "Slime.h"
 #include "GameInfo.h"
 
-constexpr auto MAP_COL = 30;
-constexpr auto MAP_ROW = 120;
+constexpr auto MAP_ROW = 30;
+constexpr auto MAP_COL = 120;
 
 using namespace std;
 
 class MapManager
 {
 private:
-	char map[MAP_COL][MAP_ROW] = {' '};			//진짜 맵 정보
-	char tempMap[MAP_COL][MAP_ROW] = {' '};		//출력할 맵 정보
+	char map[MAP_ROW][MAP_COL] = {' '};			//진짜 맵 정보
+	char tempMap[MAP_ROW][MAP_COL] = {' '};		//출력할 맵 정보
 
 	ifstream fcin;
 	GameInfo* gameInfo = GameInfo::GetInstance();
@@ -31,6 +32,7 @@ public:
 
 	void PrintMap();
 	void PrintCharacter(Character* character);
+	void PrintWeapon(string weapon);
 	void PrintSlime(vector<Slime*>* slime);
 
 	void LoadCanMovePos();

@@ -19,9 +19,9 @@ void MapManager::LoadMap(int num)
 		fcin.open("MapInfo\\dungeon1.txt");
 		getline(fcin, currentDungeon);
 
-		for (int y = 0; y < MAP_COL; y++)
+		for (int y = 0; y < MAP_ROW; y++)
 		{
-			for (int x = 0; x < MAP_ROW; x++)
+			for (int x = 0; x < MAP_COL; x++)
 			{
 				fcin.get(mapPiece);
 				if (fcin.eof())
@@ -58,56 +58,49 @@ void MapManager::LoadMap(int num)
 void MapManager::PrintMap()
 {
 	//원본맵을 출력할 맵에 복사 후
-	for (int col = 0; col < MAP_COL; col++)
+	for (int col = 0; col < MAP_ROW; col++)
 	{
-		for (int row = 0; row < MAP_ROW; row++)
+		for (int row = 0; row < MAP_COL; row++)
 			tempMap[col][row] = map[col][row];
 	}
 
 	//캐릭터 정보 가져와서 맵에 동기화
 	PrintCharacter(player);
+	PrintWeapon(player->GetHoldWeapon());
 	PrintSlime(slime);
 
 	//출력할 맵 출력
 	GoToXY(0, 0);
-	for (int y = 0; y < MAP_COL; y++)
+	for (int y = 0; y < MAP_ROW; y++)
 	{
-		for (int x = 0; x < MAP_ROW; x++)
+		for (int x = 0; x < MAP_COL; x++)
 			cout << tempMap[y][x];
 	}
 }
 
 void MapManager::PrintCharacter(Character* character)
 {
-	int option;
-
-	Player* player = dynamic_cast<Player*>(character);
-	if (player != NULL)
-		option = -1;
-	else
-		option = 1;
-
-	auto tempPlayerShape = gameInfo->GetShape(option);
+	auto tempPlayerShape = gameInfo->GetShape(MYPLAYER);
 
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
 
 	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
 	//머리 출력
-	for (int index = 0; index < SHAPE_ROW; index++)
+	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[playerPosY - 2][playerPosX - 1+ index] = tempPlayerShape[0][index];
 
 
 	//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
 	//몸 출력
-	for (int index = 0; index < SHAPE_ROW; index++)
+	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[1][index];
 
 	//기준점 좌표 x-1 지점으로 이동해 이미지[2][0~3] 출력한다.
 	//다리 출력
 	if (!player->GetIsWalking())
 	{
-		for (int index = 0; index < SHAPE_ROW; index++)
+		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[2][index];
 	}
 	else
@@ -117,29 +110,55 @@ void MapManager::PrintCharacter(Character* character)
 		case 0:
 			if (player->GetDir())	//왼쪽이면
 			{	//왼쪽1번다리 출력
-				for (int index = 0; index < SHAPE_ROW; index++)
+				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[5][index];
 			}
 			else                    //오른쪽이면
 			{	//오른쪽1번다리 출력
-				for (int index = 0; index < SHAPE_ROW; index++)
+				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[3][index];
 			}
 			break;
 		case 1:
 			if (player->GetDir())	//왼쪽이면
 			{	//왼쪽2번다리 출력
-				for (int index = 0; index < SHAPE_ROW; index++)
+				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[6][index];
 			}
 			else                    //오른쪽이면
 			{	//오른쪽2번다리 출력
-				for (int index = 0; index < SHAPE_ROW; index++)
+				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[4][index];
 			}
 			break;
 		}
 	}
+}
+
+void MapManager::PrintWeapon(string weapon)
+{
+	string tempWeaponShape;
+	tempWeaponShape = gameInfo->GetItemShape(weapon,0);
+
+	if (tempWeaponShape.size() == 0)
+		return;
+
+	int playerPosX = player->GetPos().GetX();
+	int playerPosY = player->GetPos().GetY();
+
+	
+	if (!player->GetDir())	//무기를 플레이어의 오른쪽 출력
+	{
+		for (int index = 0; index < tempWeaponShape.size(); index++)
+			tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
+	}
+	else                    //무기를 플레이어의 왼쪽에 출력
+	{
+		for (int index = 0; index < tempWeaponShape.size(); index++)
+			tempMap[playerPosY - 2 + index][playerPosX - 2] = tempWeaponShape[index];
+	}
+
+	
 }
 
 void MapManager::PrintSlime(vector<Slime*>* slime)
@@ -155,15 +174,15 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 		slimePosY = (*slime)[i]->GetPos().GetY();
 
 		//머리 출력
-		for (int index = 0; index < SHAPE_ROW; index++)
+		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
 
 		//몸 출력
-		for (int index = 0; index < SHAPE_ROW; index++)
+		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
 
 		//다리 출력
-		for (int index = 0; index < SHAPE_ROW; index++)
+		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];
 	}
 }
@@ -171,29 +190,29 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 void MapManager::LoadCanMovePos()
 {
 	//플레이어가 움직일 수 없는 범위 왼쪽 상단 측정
-	for (int col = 0; col < MAP_COL; col++)
+	for (int row = 0; row < MAP_ROW; row++)
 	{
-		for (int row = 0; row < MAP_ROW; row++)
+		for (int col = 0; col < MAP_COL; col++)
 		{
-			if (map[col][row] == '*')
+			if (map[row][col] == '*')
 			{
-				dontMovePos[0].SetX(row);
-				dontMovePos[0].SetY(col);
-				col = MAP_COL;
+				dontMovePos[0].SetX(col);
+				dontMovePos[0].SetY(row);
+				row = MAP_ROW;
 				break;
 			}
 		}
 	}
 	//플레이어가 움직일 수 없는 범위 오른쪽 하단 측정
-	for (int col = MAP_COL - 1; col > 0; col--)
+	for (int row = MAP_ROW - 1; row > 0; row--)
 	{
-		for (int row = MAP_ROW - 1; row > 0; row--)
+		for (int col = MAP_COL - 1; col > 0; col--)
 		{
-			if (map[col][row] == '*')
+			if (map[row][col] == '*')
 			{
-				dontMovePos[1].SetX(row);
-				dontMovePos[1].SetY(col);
-				col = 0;
+				dontMovePos[1].SetX(col);
+				dontMovePos[1].SetY(row);
+				row = 0;
 				break;
 			}
 		}
