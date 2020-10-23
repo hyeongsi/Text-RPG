@@ -4,7 +4,7 @@ void GameManager::Play(int saveFileNumber)
 {
 	gameInfo->LoadSaveData(saveFileNumber); // 세이브파일 번호
 	gameInfo->LoadPlayerShape(saveFileNumber);
-	gameInfo->LoadWeapon();
+	gameInfo->LoadWeaponData();
 }
 
 void GameManager::StartDungeon(int dungeonNumber)
@@ -30,7 +30,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 		if (delayManager.CheckEndDelay())
 		{
 			player->CheckDontMoveDir(dontMovePos[0], dontMovePos[1]);
-			player->Move();
+			player->InputBehavior();
 
 			//if문안에 넣은이유 : 슬라임말고 다른몬스터도 있기때문에 뒤쪽까지 검사해야해서 return;하면안됨
 			if (slime != nullptr)
@@ -38,7 +38,6 @@ void GameManager::StartDungeon(int dungeonNumber)
 				for (int i = 0; i < slime->size(); i++)
 					(*slime)[i]->Move(i);
 			}
-
 
 			map->PrintMap();
 		}

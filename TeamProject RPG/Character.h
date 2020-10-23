@@ -12,7 +12,6 @@ protected:
 	Pos pos;
 public:
 	Character();
-	virtual void Move() = 0;	//이동 함수
 	virtual void Die() = 0;		//죽는 함수
 	void Hit(const int power);	//피격 함수
 

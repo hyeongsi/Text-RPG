@@ -53,9 +53,44 @@ void Player::CheckDontMoveDir(Pos leftUp, Pos rightDown)
 		dontMoveDir[3] = false;
 }
 
-void Player::Move()
+void Player::InputBehavior()
 {
 	if (GetAsyncKeyState(VK_UP) && 0x8000)			//위
+	{
+		Move(UP);
+	}
+	else if (GetAsyncKeyState(VK_DOWN) && 0x8000)	//아래
+	{
+		Move(DOWN);
+	}
+	else if (GetAsyncKeyState(VK_LEFT) && 0x8000)	//왼쪽
+	{
+		Move(LEFT);
+	}
+	else if (GetAsyncKeyState(VK_RIGHT) && 0x8000)	//오른쪽
+	{
+		Move(RIGHT);
+	}
+	else if (GetAsyncKeyState(VK_SPACE) && 0x8000)	//space 공격
+	{
+		Attack();
+	}
+	else if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
+	{
+		PickItem();
+	}
+	else
+	{	
+		isWalking = false;
+		walkCount = 0;
+		isAttack = false;
+		isPickup = false;
+	}
+}
+
+void Player::Move(const int direct4)
+{
+	if (UP == direct4)			//위
 	{
 		if (dontMoveDir[0] == true)
 			return;
@@ -66,7 +101,7 @@ void Player::Move()
 		if (walkCount > 2)
 			walkCount = 0;
 	}
-	else if (GetAsyncKeyState(VK_DOWN) && 0x8000)	//아래
+	else if (DOWN == direct4)	//아래
 	{
 		if (dontMoveDir[1] == true)
 			return;
@@ -76,24 +111,24 @@ void Player::Move()
 		if (walkCount > 2)
 			walkCount = 0;
 	}
-	else if (GetAsyncKeyState(VK_LEFT) && 0x8000)	//왼쪽
+	else if (LEFT == direct4)	//왼쪽
 	{
 		if (dontMoveDir[2] == true)
 			return;
 		pos.SetX(pos.GetX() - 2);
 		isWalking = true;
-		dir = true;
+		dir = LEFT;
 		walkCount++;
 		if (walkCount > 2)
 			walkCount = 0;
 	}
-	else if (GetAsyncKeyState(VK_RIGHT) && 0x8000)	//오른쪽
+	else if (RIGHT == direct4)	//오른쪽
 	{
 		if (dontMoveDir[3] == true)
 			return;
 		pos.SetX(pos.GetX() + 2);
 		isWalking = true;
-		dir = false;
+		dir = RIGHT;
 		walkCount++;
 		if (walkCount > 2)
 			walkCount = 0;
@@ -107,21 +142,12 @@ void Player::Move()
 
 void Player::Attack()
 {
-	if (GetAsyncKeyState(VK_SPACE) && 0x8000)			//space 공격
-	{
-		isAttack = true;
-	}else
-		isAttack = false;
+	isAttack = true;
 }
 
 void Player::PickItem()
 {
-	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)			//ctrl 줍기
-	{
-		isPickup = true;
-	}
-	else
-		isPickup = false;
+	isPickup = true;
 }
 
 void Player::Die()
@@ -139,12 +165,17 @@ const int Player::GetIsWalking()
 	return isWalking;
 }
 
+const int Player::GetIsAttacking()
+{
+	return isAttack;
+}
+
 const bool Player::GetWalkCount()
 {
 	return walkCount;
 }
 
-const bool Player::GetDir()
+const int Player::GetDir()
 {
 	return dir;
 }

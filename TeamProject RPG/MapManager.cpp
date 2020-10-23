@@ -108,24 +108,24 @@ void MapManager::PrintCharacter(Character* character)
 		switch (player->GetWalkCount())
 		{
 		case 0:
-			if (player->GetDir())	//왼쪽이면
+			if (LEFT == player->GetDir())
 			{	//왼쪽1번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[5][index];
 			}
-			else                    //오른쪽이면
+			else if (RIGHT == player->GetDir())
 			{	//오른쪽1번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[3][index];
 			}
 			break;
 		case 1:
-			if (player->GetDir())	//왼쪽이면
+			if (LEFT == player->GetDir())
 			{	//왼쪽2번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[6][index];
 			}
-			else                    //오른쪽이면
+			else if(RIGHT == player->GetDir())
 			{	//오른쪽2번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
 					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[4][index];
@@ -137,8 +137,9 @@ void MapManager::PrintCharacter(Character* character)
 
 void MapManager::PrintWeapon(string weapon)
 {
-	string tempWeaponShape;
-	tempWeaponShape = gameInfo->GetItemShape(weapon,0);
+	string tempWeaponShape, tempWeaponSwingShape;
+	tempWeaponShape = gameInfo->GetItemShape(weapon,WEAPON);
+	tempWeaponSwingShape = gameInfo->GetItemShape(weapon, WEAPON_SWING_SHAPE);
 
 	if (tempWeaponShape.size() == 0)
 		return;
@@ -146,19 +147,26 @@ void MapManager::PrintWeapon(string weapon)
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
 
-	
-	if (!player->GetDir())	//무기를 플레이어의 오른쪽 출력
+	if (player->GetIsAttacking() && RIGHT == player->GetDir())	//공격모션 출력
+	{
+		for (int index = 0; index < tempWeaponSwingShape.size(); index++)
+			tempMap[playerPosY - 1][playerPosX + 3 + index] = tempWeaponSwingShape[index];
+	}
+	else if (player->GetIsAttacking() && LEFT == player->GetDir())
+	{
+		for (int index = 0; index < tempWeaponSwingShape.size(); index++)
+			tempMap[playerPosY - 1][playerPosX - 3 + index] = tempWeaponSwingShape[(tempWeaponSwingShape.size()-1)-index];
+	}
+	else if (!player->GetIsAttacking() && RIGHT == player->GetDir())	//스탠드모션 출력
 	{
 		for (int index = 0; index < tempWeaponShape.size(); index++)
 			tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
 	}
-	else                    //무기를 플레이어의 왼쪽에 출력
+	else if (!player->GetIsAttacking() && LEFT == player->GetDir())
 	{
 		for (int index = 0; index < tempWeaponShape.size(); index++)
 			tempMap[playerPosY - 2 + index][playerPosX - 2] = tempWeaponShape[index];
 	}
-
-	
 }
 
 void MapManager::PrintSlime(vector<Slime*>* slime)

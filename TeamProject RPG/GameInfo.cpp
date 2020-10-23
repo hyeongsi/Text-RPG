@@ -42,10 +42,12 @@ string GameInfo::GetItemShape(string itemName, int option)
 	{
 		switch (option)
 		{
-		case 0:
+		case WEAPON:
 			return weapon[itemName];
-		case 1:
+		case ITEM:
 			break;
+		case WEAPON_SWING_SHAPE:
+			return weaponShape[itemName];
 		default:
 			break;
 		}
@@ -66,7 +68,7 @@ void GameInfo::ReadFileString(const char* section, const char* key, const char* 
 	GetPrivateProfileString(section, key,"", loadData, sizeof(loadData), path);
 }
 
-void GameInfo::LoadWeapon()
+void GameInfo::LoadWeaponData()
 {
 	ReadFileString("weapon", "sword", "GameInfo\\weapon.ini");	//칼
 	for (int index = 0; index < 2; index++)
@@ -79,6 +81,20 @@ void GameInfo::LoadWeapon()
 		tempChar[index] = loadData[index];
 
 	weapon.insert(pair<string, char*>("axe", tempChar));
+
+	//=================================================================
+
+	ReadFileString("weaponSwing", "sword", "GameInfo\\weaponSwing.ini");	//칼 공격 모션
+	for (int index = 0; index < 2; index++)
+		tempChar[index] = loadData[index];
+
+	weaponShape.insert(pair<string, char*>("sword", tempChar));
+
+	ReadFileString("weaponSwing", "axe", "GameInfo\\weaponSwing.ini");	//도끼 공격 모션
+	for (int index = 0; index < 2; index++)
+		tempChar[index] = loadData[index];
+
+	weaponShape.insert(pair<string, char*>("axe", tempChar));
 }
 
 void GameInfo::LoadSaveData(int dataNumber)

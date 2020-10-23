@@ -15,6 +15,7 @@ private:
 	char slimeShape[SHAPE_ROW][SHAPE_COL] = {' '};
 
 	map<string, string> weapon;
+	map<string, string> weaponShape;
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
 	static GameInfo* gameInfoInstance;
@@ -32,7 +33,7 @@ public:
 	const int ReadFileInt(const char* section, const char* key, const char* path);
 	void ReadFileString(const char* section, const char* key, const char* path);
 
-	void LoadWeapon();
+	void LoadWeaponData();
 
 	void LoadSaveData(int dataNumber);
 	void LoadPlayerStats(int dataNumber);
@@ -40,20 +41,14 @@ public:
 
 	void LoadSlimeStats();
 	void LoadSlimeShape();
-	/*플레이어 hp, ...... ini 파일에서 여기에 다받아
-		그런다음에 게임매니저에서 여기 저장된 파일 불러와서
-		초기화를 하는거지
-
-		플레이어 hit gameinfo통해 monster damage를 알수있는거지
-		1, player, 2 pig, 3 cat 
-		hp -=gameinfo. pig.damage
-
-	맵관련정보들..?*/
-
 
 };
-
-enum {
+const enum items{
+	WEAPON,
+	ITEM,
+	WEAPON_SWING_SHAPE
+};
+const enum characters{
 	MYPLAYER,
 	SLIME
 	//그외에 적들 추가후 GetShape()에 넣기
