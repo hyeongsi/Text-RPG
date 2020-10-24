@@ -22,6 +22,7 @@ private:
 	bool isWalking = false;
 	bool isAttack = false;
 	bool isPickup = false;
+	bool isSurvival = true;
 	int dir = RIGHT;
 	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
 
@@ -29,14 +30,15 @@ public:
 	static Player* GetInstance();
 	static void ReleaseInstance();
 
+	void Init();
 	void SetStats(const int hpNum, const int powerNum);
 
 	void CheckDontMoveDir(Pos leftUp, Pos rightDown);
 
-	void InputBehavior();	//행동 입력받는 함수
-	void Move(const int direct4);	//이동 함수
-	void Attack();	//공격 함수
-	void PickItem();//아이템 습득
+	const int InputBehavior();	//행동 입력받는 함수
+	const int Move(const int direct4);	//이동 함수
+	const int Attack();	//공격 함수
+	const int PickItem();//아이템 습득
 	void Die();		//죽는 함수
 
 	const string GetHoldWeapon();	//가지고 있는 무기 이름 리턴
@@ -47,5 +49,12 @@ public:
 	const int GetDir();			//보고있는 방향 리턴
 };
 
+enum Behavior
+{
+	NONE,
+	MOVE,
+	ATTACK,
+	PICKUP
+};
 
 

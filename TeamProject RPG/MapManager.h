@@ -20,7 +20,7 @@ private:
 
 	ifstream fcin;
 	GameInfo* gameInfo = GameInfo::GetInstance();
-	Player* player = Player::GetInstance();
+	Player* player;
 	vector<Slime*>* slime;
 
 	//플레이어가 움직일 수 있는 범위의 좌표 저장

@@ -11,6 +11,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 {
 	bool loop = true;
 	Pos *dontMovePos;
+	int tempPlayerState;
 
 	map = new MapManager();
 	map->LoadMap(dungeonNumber);
@@ -30,13 +31,27 @@ void GameManager::StartDungeon(int dungeonNumber)
 		if (delayManager.CheckEndDelay())
 		{
 			player->CheckDontMoveDir(dontMovePos[0], dontMovePos[1]);
-			player->InputBehavior();
+			tempPlayerState = player->InputBehavior();
 
 			//if문안에 넣은이유 : 슬라임말고 다른몬스터도 있기때문에 뒤쪽까지 검사해야해서 return;하면안됨
 			if (slime != nullptr)
 			{
 				for (int i = 0; i < slime->size(); i++)
 					(*slime)[i]->Move(i);
+			}
+
+			CheckContact();		//플레이어와 몬스터 피격 유무 확인
+
+			//플레이어 상태를 기준으로 행동 실행
+			switch (tempPlayerState)
+			{
+			case ATTACK:
+				//slime->Ishit(player->GetPos().GetX(), player->GetPos().GetY())
+				//player pos를 기준으로  y+-1 범위에 슬라임 있으면 hit() 실행
+				break;
+			case PICKUP:
+
+				break;
 			}
 
 			map->PrintMap();
@@ -48,6 +63,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 
 void GameManager::CheckContact()
 {
-
+	//피격 시
+	//player->Hit(slime->Getpower());
 }
 

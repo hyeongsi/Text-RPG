@@ -2,6 +2,7 @@
 
 Character::Character()
 {
+	MaxHp = 0;
 	Hp = 0;
 	power = 0;
 

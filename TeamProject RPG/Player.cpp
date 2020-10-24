@@ -19,6 +19,21 @@ void Player::ReleaseInstance()
 	}
 }
 
+void Player::Init()
+{
+	Hp = MaxHp;
+
+	walkCount = 0;
+	isWalking = false;
+	isAttack = false;
+	isPickup = false;
+	isSurvival = true;
+	dir = RIGHT;
+
+	for (auto setInitDontMoveDir : dontMoveDir)
+		setInitDontMoveDir = false;
+}
+
 void Player::SetStats(const int hpNum, const int powerNum)
 {
 	Hp = hpNum;
@@ -53,47 +68,48 @@ void Player::CheckDontMoveDir(Pos leftUp, Pos rightDown)
 		dontMoveDir[3] = false;
 }
 
-void Player::InputBehavior()
+const int Player::InputBehavior()
 {
-	if (GetAsyncKeyState(VK_UP) && 0x8000)			//위
+	isAttack = false;
+	isPickup = false;
+
+	if (GetAsyncKeyState(VK_UP) && 0x8000)		//위
 	{
-		Move(UP);
+		return Move(UP);
 	}
-	else if (GetAsyncKeyState(VK_DOWN) && 0x8000)	//아래
+	if (GetAsyncKeyState(VK_DOWN) && 0x8000)	//아래
 	{
-		Move(DOWN);
+		return Move(DOWN);
 	}
-	else if (GetAsyncKeyState(VK_LEFT) && 0x8000)	//왼쪽
+	if (GetAsyncKeyState(VK_LEFT) && 0x8000)	//왼쪽
 	{
-		Move(LEFT);
+		return Move(LEFT);
 	}
-	else if (GetAsyncKeyState(VK_RIGHT) && 0x8000)	//오른쪽
+	if (GetAsyncKeyState(VK_RIGHT) && 0x8000)	//오른쪽
 	{
-		Move(RIGHT);
+		return Move(RIGHT);
 	}
-	else if (GetAsyncKeyState(VK_SPACE) && 0x8000)	//space 공격
+	if (GetAsyncKeyState(VK_SPACE) && 0x8000)	//space 공격
 	{
-		Attack();
+		return Attack();
 	}
-	else if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
+	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
 	{
-		PickItem();
+		return PickItem();
 	}
-	else
-	{	
-		isWalking = false;
-		walkCount = 0;
-		isAttack = false;
-		isPickup = false;
-	}
+
+	isWalking = false;
+	walkCount = 0;
+
+	return NONE;
 }
 
-void Player::Move(const int direct4)
+const int Player::Move(const int direct4)
 {
 	if (UP == direct4)			//위
 	{
 		if (dontMoveDir[0] == true)
-			return;
+			return NONE;
 		pos.SetY(pos.GetY() - 1);
 
 		isWalking = true;
@@ -104,7 +120,7 @@ void Player::Move(const int direct4)
 	else if (DOWN == direct4)	//아래
 	{
 		if (dontMoveDir[1] == true)
-			return;
+			return NONE;
 		pos.SetY(pos.GetY() + 1);
 		isWalking = true;
 		walkCount++;
@@ -114,7 +130,7 @@ void Player::Move(const int direct4)
 	else if (LEFT == direct4)	//왼쪽
 	{
 		if (dontMoveDir[2] == true)
-			return;
+			return NONE;
 		pos.SetX(pos.GetX() - 2);
 		isWalking = true;
 		dir = LEFT;
@@ -125,7 +141,7 @@ void Player::Move(const int direct4)
 	else if (RIGHT == direct4)	//오른쪽
 	{
 		if (dontMoveDir[3] == true)
-			return;
+			return NONE;
 		pos.SetX(pos.GetX() + 2);
 		isWalking = true;
 		dir = RIGHT;
@@ -138,16 +154,20 @@ void Player::Move(const int direct4)
 		isWalking = false;
 		walkCount = 0;
 	}
+
+	return MOVE;
 }
 
-void Player::Attack()
+const int Player::Attack()
 {
 	isAttack = true;
+	return ATTACK;
 }
 
-void Player::PickItem()
+const int Player::PickItem()
 {
 	isPickup = true;
+	return PICKUP;
 }
 
 void Player::Die()

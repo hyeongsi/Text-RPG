@@ -7,6 +7,7 @@ using namespace std;
 class Character
 {
 protected:
+	int MaxHp;
 	int Hp;
 	int power;
 	Pos pos;

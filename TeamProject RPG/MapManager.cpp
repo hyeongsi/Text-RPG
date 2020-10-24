@@ -28,6 +28,7 @@ void MapManager::LoadMap(int num)
 					break;
 				if (mapPiece == 'p') 
 				{
+					player = Player::GetInstance();
 					player->SetPos(x, y);
 					mapPiece = ' ';
 				}
