@@ -181,7 +181,7 @@ void GameInfo::LoadSlimeStats()
 	if (slime != nullptr)
 	{
 		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
-			(*slime)[i]->SetStats(ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i*200);
+			(*slime)[i]->SetStats(ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i*200);
 	}
 }
 

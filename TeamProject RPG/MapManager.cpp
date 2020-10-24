@@ -68,7 +68,8 @@ void MapManager::PrintMap()
 	//캐릭터 정보 가져와서 맵에 동기화
 	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());
-	PrintSlime(slime);
+	if(slime != nullptr)
+		PrintSlime(slime);
 
 	//출력할 맵 출력
 	GoToXY(0, 0);

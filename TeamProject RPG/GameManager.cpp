@@ -37,7 +37,10 @@ void GameManager::StartDungeon(int dungeonNumber)
 			if (slime != nullptr)
 			{
 				for (int i = 0; i < slime->size(); i++)
-					(*slime)[i]->Move(i);
+				{
+					(*slime)[i]->Move(i);		//움직임
+					(*slime)[i]->isHit(i);		//피격여부
+				}		
 			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인

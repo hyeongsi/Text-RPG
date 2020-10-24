@@ -1,2 +1,4 @@
 C:\Users\DBlab\Desktop\TeamProject-RPG\TeamProject RPG\x64\Debug\TeamProject RPG.exe
 C:\Users\DBlab\Desktop\TeamProject-RPG\TeamProject RPG\x64\Debug\TeamProject RPG.pdb
+C:\Users\user\Desktop\TeamProject-RPG\TeamProject RPG\x64\Debug\TeamProject RPG.exe
+C:\Users\user\Desktop\TeamProject-RPG\TeamProject RPG\x64\Debug\TeamProject RPG.pdb
