@@ -18,7 +18,8 @@ private:
 	//무기에맞았다면
 	bool isAttacked = false;
 	bool isInvincibility = false;	//무적상태여부
-	int rename = 3;		//맞았을때 밀려날 크기? 이름다시짓기
+	int invincibilityTime = 100;	//무적시간
+	int rename = 5;		//맞았을때 밀려날 크기? 이름다시짓기
 
 public:
 	static void AddInstance();
@@ -27,9 +28,8 @@ public:
 
 	void SetStats(int hp, int power, int speed);
 
-	void Move(int index);	//이동 함수
-	void Move();	//이동 함수.. 가상함수라 어쩔수없이
+	void Move();	//이동 함수
 	void Die();		//죽는 함수
-	void isHit(int index);	//맞으면실행
+	void isHit(int playerXPosition, int playerYPosition);	//맞으면실행
 };
 

@@ -30,3 +30,8 @@ void Character::SetPos(int x, int y)
 	pos.SetY(y);
 }
 
+int Character::GetPower()
+{
+	return power;
+}
+

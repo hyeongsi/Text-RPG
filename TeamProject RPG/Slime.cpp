@@ -1,5 +1,4 @@
-﻿
-#include "Slime.h"
+﻿#include "Slime.h"
 
 vector<Slime*>* Slime::slime = nullptr;
 
@@ -32,28 +31,24 @@ void Slime::SetStats(int hp, int power, int speed)
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
-void Slime::Move(int index)
+void Slime::Move()
 {
-	int playerPosX = player->GetPos().GetX();
-	int playerPosY = player->GetPos().GetY();
+	int playerXPosition = player->GetPos().GetX();
+	int playerYPosition = player->GetPos().GetY();
 
-	if ((*slime)[index]->isMove)
+	if (this->isMove)
 	{
 		moveDelaymanager.SetStartTime();
-		moveDelaymanager.SetDelayTime((*slime)[index]->speed);
+		moveDelaymanager.SetDelayTime(this->speed);
 	}
-	(*slime)[index]->isMove = false;
+	this->isMove = false;
 
 	if (!moveDelaymanager.CheckEndDelay())
 		return;
 
 	//간단히 설명하자면 캐릭터가있는 위치와 슬라임위치를 기준으로 슬라임이동방향을 결정
-	(*slime)[index]->SetPos(((*slime)[index]->GetPos().GetX()-playerPosX>0) ? (*slime)[index]->GetPos().GetX() - 1 : (*slime)[index]->GetPos().GetX() + 1, ((*slime)[index]->GetPos().GetY()- playerPosY > 0) ? (*slime)[index]->GetPos().GetY() - 1 : (*slime)[index]->GetPos().GetY() + 1);
-	(*slime)[index]->isMove = true;
-}
-
-void Slime::Move()
-{
+	this->SetPos((this->GetPos().GetX()-playerXPosition>0) ? this->GetPos().GetX() - 1 : this->GetPos().GetX() + 1, (this->GetPos().GetY()- playerYPosition > 0) ? this->GetPos().GetY() - 1 : this->GetPos().GetY() + 1);
+	this->isMove = true;
 }
 
 //이름 isDie변경생각.. 아유는 vector의 특정항목을 없앨라면 iterator를 사용해야하는데.. 그럴라면 자동적으로
@@ -74,54 +69,51 @@ void Slime::Die()
 }
 
 //슬라임이 맞았을 때 실행할 함수
-void Slime::isHit(int index)
+void Slime::isHit(int playerXPosition, int playerYPosition)
 {
 	//타점
-	int weaponXPosition = 0;
-	int weaponYPosition = 0;
+	int attackXPosition = 0;
+	int attackYPosition = 0;
 
 	//각 슬라임들의 위치
-	int slimeXPosition = (*slime)[index]->GetPos().GetX();
-	int slimeYPosition = (*slime)[index]->GetPos().GetY();
+	int slimeXPosition = this->GetPos().GetX();
+	int slimeYPosition = this->GetPos().GetY();
 
+	//플레이어보는방향에 따라서 공격위치설정
 	if (player->GetDir() == RIGHT)
 	{
-		weaponXPosition = player->GetPos().GetX() + 3;
-		weaponYPosition = player->GetPos().GetY() - 1;
+		attackXPosition = playerXPosition + 3;
+		attackYPosition = playerYPosition - 1;
 	}
 	else if (player->GetDir() == LEFT)
 	{
-		weaponXPosition = player->GetPos().GetX() - 5;
-		weaponYPosition = player->GetPos().GetY() - 1;
+		attackXPosition = playerXPosition - 5;
+		attackYPosition = playerYPosition - 1;
 	}
 
-	//여기 단순하게 만들기 생각해보기
 	for (int x = 0; x < 3; x++)
 	{
-		if (player->GetIsAttacking() && (weaponXPosition == slimeXPosition - 2) && (weaponYPosition == slimeYPosition - 2 + x))
+		for (int y = 0; y >= -2; y--)
 		{
-			isAttacked = true;
-		}
-		else if (player->GetIsAttacking() && (weaponXPosition == slimeXPosition - 1) && (weaponYPosition == slimeYPosition - 2 + x))
-		{
-			isAttacked = true;
-		}
-		else if (player->GetIsAttacking() && (weaponXPosition == slimeXPosition) && (weaponYPosition == slimeYPosition - 2 + x))
-		{
-			isAttacked = true;
+			if ((attackXPosition == slimeXPosition + y) && (attackYPosition == slimeYPosition - 2 + x))
+			{
+				isAttacked = true;
+			}
 		}
 	}
+
 	//getX setX안되는이유
 	if (isAttacked == true && isInvincibility == false)
 	{
 		if (player->GetDir() == RIGHT)
-			(*slime)[index]->SetPos(slimeXPosition + rename, slimeYPosition);
+			this->SetPos(slimeXPosition + rename, slimeYPosition);
+
 		else if (player->GetDir() == LEFT)
-			(*slime)[index]->SetPos(slimeXPosition - rename, slimeYPosition);
+			this->SetPos(slimeXPosition - rename, slimeYPosition);
 		attackDelaymanager.SetStartTime();
-		attackDelaymanager.SetDelayTime(1000);
+		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		(*slime)[index]->Hit(1);		//파워받아와서 매개변수교체
+		this->Hit(player->GetPower());		//Hit()를 밖에다 뺄지는 고민해봐야할듯
 	}
 	
 	if (isInvincibility == true)
