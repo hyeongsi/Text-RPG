@@ -11,6 +11,7 @@ void MapManager::LoadMap(int num)
 	string currentDungeon;
 	int y = 0;
 	char mapPiece;
+	itemPosition.clear();
 
 	switch (num)
 	{
@@ -78,10 +79,23 @@ void MapManager::PrintMap()
 			slimeNumber--;
 		}
 	}
-	if (itemDrop == ITEM_DROP)		//문제1 아이템박스 1개밖에생성못함 새로생성시 원래아이템박스 삭제됨.. 수정은가능한데 코드많이 더러워질까바 잠시보류
-		PrintItemBox(Slime::itemPosition->GetX(), Slime::itemPosition->GetY());
+	if (itemDrop == ITEM_DROP) {		//문제1 아이템박스 1개밖에생성못함 새로생성시 원래아이템박스 삭제됨.. 수정은가능한데 코드많이 더러워질까바 잠시보류
+		Pos tempItemPos;
+		tempItemPos.SetX(Slime::itemPosition->GetX());
+		tempItemPos.SetY(Slime::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		
+		for (auto itemPositions : itemPosition)
+			PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
+
+	}
 	//문제2 습득한 아이템에 대한 정보를 어따가 저장할지
 	//맵만들어서 아이템줍는동시에 아이템종류결정하고 맵에 저장할까?,, 생각중
+
+	//1. 아이템을 플레이어 보다 먼저 출력하기,
+	//2. slime에서 죽었을때 위치값을 저장했다가 get으로 받아 map에 list로 위치값 관리
+
 
 	//출력할 맵 출력
 	GoToXY(0, 0);
@@ -98,6 +112,31 @@ void MapManager::PrintCharacter(Character* character)
 
 	int playerPosX = player->GetPos().GetX();
 	int playerPosY = player->GetPos().GetY();
+
+	if (player->GetIsPickUp())	//줍기 모션 실행
+	{
+		if (RIGHT == player->GetDir())
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY - 2][playerPosX - 1 + index] = tempPlayerShape[7][index];
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[8][index];
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[9][index];
+		}
+		else if(LEFT == player->GetDir())
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY - 2][playerPosX + 1 - index] = tempPlayerShape[7][index];
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[8][index];
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[playerPosY][playerPosX + index] = tempPlayerShape[9][index];
+		}
+		
+		return;
+	}
+
 
 	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
 	//머리 출력
@@ -151,6 +190,9 @@ void MapManager::PrintCharacter(Character* character)
 
 void MapManager::PrintWeapon(string weapon)
 {
+	if (player->GetIsPickUp())
+		return;
+
 	string tempWeaponShape, tempWeaponSwingShape;
 	tempWeaponShape = gameInfo->GetItemShape(weapon,WEAPON);
 	tempWeaponSwingShape = gameInfo->GetItemShape(weapon, WEAPON_SWING_SHAPE);

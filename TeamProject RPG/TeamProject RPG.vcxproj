@@ -143,6 +143,7 @@
     <ClCompile Include="DelayManager.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="DelayManager.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pos.h" />

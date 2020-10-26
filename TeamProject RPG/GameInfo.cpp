@@ -204,6 +204,18 @@ void GameInfo::LoadPlayerShape(int dataNumber)
 			for (int col = 0; col < SHAPE_COL; col++)
 				playerShape[row][col] = loadData[col];
 			break;
+		case 7:ReadFileString("playerState", "head", "GameInfo\\player.ini");	//줍기모션(머리)
+			for (int col = 0; col < SHAPE_COL; col++)
+				playerShape[row][col] = loadData[col];
+			break;
+		case 8:ReadFileString("playerState", "body", "GameInfo\\player.ini");	//줍기모션(몸통)
+			for (int col = 0; col < SHAPE_COL; col++)
+				playerShape[row][col] = loadData[col];
+			break;
+		case 9:ReadFileString("playerState", "legs", "GameInfo\\player.ini");	//줍기모션(다리)
+			for (int col = 0; col < SHAPE_COL; col++)
+				playerShape[row][col] = loadData[col];
+			break;
 		}
 	}
 }

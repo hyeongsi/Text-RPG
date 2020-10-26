@@ -95,7 +95,7 @@ const int Player::InputBehavior()
 	}
 	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
 	{
-		return PickItem();
+		return PickUpItem();
 	}
 
 	isWalking = false;
@@ -164,7 +164,7 @@ const int Player::Attack()
 	return ATTACK;
 }
 
-const int Player::PickItem()
+const int Player::PickUpItem()
 {
 	isPickup = true;
 	return PICKUP;
@@ -188,6 +188,11 @@ const int Player::GetIsWalking()
 const int Player::GetIsAttacking()
 {
 	return isAttack;
+}
+
+const int Player::GetIsPickUp()
+{
+	return isPickup;
 }
 
 const bool Player::GetWalkCount()

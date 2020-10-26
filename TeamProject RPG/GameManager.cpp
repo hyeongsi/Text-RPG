@@ -46,9 +46,6 @@ void GameManager::StartDungeon(int dungeonNumber)
 			switch (tempPlayerState)
 			{
 			case ATTACK:
-				//slime->Ishit(player->GetPos().GetX(), player->GetPos().GetY())
-				//player pos를 기준으로  y+-1 범위에 슬라임 있으면 hit() 실행
-
 				if (slime != nullptr)
 				{
 					for (int i = 0; i < slime->size(); i++)
