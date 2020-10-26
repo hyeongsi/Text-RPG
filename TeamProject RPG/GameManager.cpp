@@ -13,19 +13,20 @@ void GameManager::StartDungeon(int dungeonNumber)
 	Pos *dontMovePos;
 	int tempPlayerState;
 
-	map = new MapManager();
-	map->LoadMap(dungeonNumber);
-	dontMovePos = map->GetDontMovePos();	//이동불가 영역 받아서 사용
+	mapManager = new MapManager();
+	mapManager->LoadMap(dungeonNumber);
+	dontMovePos = mapManager->GetDontMovePos();	//이동불가 영역 받아서 사용
 
 	slime = Slime::GetInstance();
 	if (slime != nullptr)		//슬라임객체가 존재하면 슬라임형태 불러오기 + 슬라임에 스텟설정하기
 	{
 		gameInfo->LoadSlimeShape();
 		gameInfo->LoadSlimeStats();
+		gameInfo->LoadItemBoxShape();
 	}
 	//다른몬스터도 추가되면 넣기
 
-	map->PrintMap();
+	mapManager->PrintMap();
 	while (loop)
 	{
 		if (delayManager.CheckEndDelay())
@@ -55,13 +56,13 @@ void GameManager::StartDungeon(int dungeonNumber)
 				}
 				break;
 			case PICKUP:
-
+				mapManager->SetItemDrop(-2);
 				break;
 			}
 
-			map->PrintMap();
+			mapManager->PrintMap();
 		}
-	}
+ 	}
 
 
 }

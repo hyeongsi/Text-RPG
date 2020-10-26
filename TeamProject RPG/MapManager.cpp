@@ -11,7 +11,6 @@ void MapManager::LoadMap(int num)
 	string currentDungeon;
 	int y = 0;
 	char mapPiece;
-	int slimeNumber = 0;
 
 	switch (num)
 	{
@@ -68,8 +67,21 @@ void MapManager::PrintMap()
 	//캐릭터 정보 가져와서 맵에 동기화
 	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());
-	if(slime != nullptr)
+	if (slime != nullptr)
+	{
 		PrintSlime(slime);
+		if (slimeNumber > slime->size())	//슬라임이 한마리 죽으면
+		{
+			srand((unsigned int)time(NULL));
+			if(itemDrop != ITEM_DROP)
+				itemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
+			slimeNumber--;
+		}
+	}
+	if (itemDrop == ITEM_DROP)		//문제1 아이템박스 1개밖에생성못함 새로생성시 원래아이템박스 삭제됨.. 수정은가능한데 코드많이 더러워질까바 잠시보류
+		PrintItemBox(Slime::itemPosition->GetX(), Slime::itemPosition->GetY());
+	//문제2 습득한 아이템에 대한 정보를 어따가 저장할지
+	//맵만들어서 아이템줍는동시에 아이템종류결정하고 맵에 저장할까?,, 생각중
 
 	//출력할 맵 출력
 	GoToXY(0, 0);
@@ -173,11 +185,12 @@ void MapManager::PrintWeapon(string weapon)
 
 void MapManager::PrintSlime(vector<Slime*>* slime)
 {
-	auto slimeShape = gameInfo->GetShape(SLIME);
+	//auto slimeShape = gameInfo->GetShape(SLIME);
+	auto slimeShape = gameInfo->GetShape1(SLIME);
 	int slimePosX;
 	int slimePosY;
 
-	//슬라임객체수만큼 반복
+	//테스트용
 	for (int i = 0; i < slime->size(); i++)
 	{
 		slimePosX = (*slime)[i]->GetPos().GetX();
@@ -185,16 +198,49 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 
 		//머리 출력
 		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
+			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape["head"][index];
 
 		//몸 출력
 		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
+			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape["body"][index];
 
 		//다리 출력
 		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];
+			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape["legs"][index];
 	}
+
+	//슬라임객체수만큼 반복
+	//for (int i = 0; i < slime->size(); i++)
+	//{
+	//	slimePosX = (*slime)[i]->GetPos().GetX();
+	//	slimePosY = (*slime)[i]->GetPos().GetY();
+
+	//	//머리 출력
+	//	for (int index = 0; index < SHAPE_COL; index++)
+	//		tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
+
+	//	//몸 출력
+	//	for (int index = 0; index < SHAPE_COL; index++)
+	//		tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
+
+	//	//다리 출력
+	//	for (int index = 0; index < SHAPE_COL; index++)
+	//		tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];
+	//}
+}
+
+void MapManager::PrintItemBox(int positionX, int positionY)
+{
+	auto itemBoxShape = gameInfo->GetShape1(ITEMBOX);
+
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[positionY - 2][positionX - 1 + index] = itemBoxShape["head"][index];
+
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[positionY - 1][positionX - 1 + index] = itemBoxShape["body"][index];
+
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[positionY][positionX - 1 + index] = itemBoxShape["legs"][index];
 }
 
 void MapManager::LoadCanMovePos()
@@ -232,4 +278,9 @@ void MapManager::LoadCanMovePos()
 Pos* MapManager::GetDontMovePos()
 {
 	return dontMovePos;
+}
+
+void MapManager::SetItemDrop(int itemDrop)
+{
+	this->itemDrop = itemDrop;
 }

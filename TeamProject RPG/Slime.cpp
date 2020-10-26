@@ -1,12 +1,13 @@
 ﻿#include "Slime.h"
 
 vector<Slime*>* Slime::slime = nullptr;
-
+Pos* Slime::itemPosition = new Pos();
 //객체추가
 void Slime::AddInstance()
 {
 	if (slime == nullptr)
 		slime = new vector<Slime*>();
+
 	slime->push_back(new Slime());		//slime객체 추가
 }
 
@@ -60,11 +61,17 @@ void Slime::Die()
 	{
 		if ((*slimeHP)->Hp <= 0 && slimeHP == --slime->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
 		{
+			itemPosition->SetX((*slimeHP)->GetPos().GetX());
+			itemPosition->SetY((*slimeHP)->GetPos().GetY());
 			slime->pop_back();
 			return;
 		}
-		else if((*slimeHP)->Hp <= 0)
+		else if ((*slimeHP)->Hp <= 0)
+		{
+			itemPosition->SetX((*slimeHP)->GetPos().GetX());
+			itemPosition->SetY((*slimeHP)->GetPos().GetY());
 			slimeHP = slime->erase(slimeHP);
+		}	
 	}
 }
 

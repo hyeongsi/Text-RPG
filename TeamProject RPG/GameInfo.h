@@ -14,8 +14,12 @@ private:
 	char playerShape[SHAPE_ROW][SHAPE_COL] = {' '};
 	char slimeShape[SHAPE_ROW][SHAPE_COL] = {' '};
 
+	//테스트용
+	map<string, string> slimeShape2;
+
 	map<string, string> weapon;
 	map<string, string> weaponShape;
+	map<string, string> itemBoxShape;
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
 	static GameInfo* gameInfoInstance;
@@ -28,12 +32,17 @@ public:
 	static void ReleaseInstance();
 
 	const char(*GetShape(const int character))[SHAPE_COL];
+
+	//테스트용
+	map<string, string> GetShape1(const int character);
+
 	string GetItemShape(string itemName, int option);	//0 : 무기, 1 : 아이템
 	
 	const int ReadFileInt(const char* section, const char* key, const char* path);
 	void ReadFileString(const char* section, const char* key, const char* path);
 
 	void LoadWeaponData();
+	void LoadItemBoxShape();
 
 	void LoadSaveData(int dataNumber);
 	void LoadPlayerStats(int dataNumber);
@@ -46,7 +55,8 @@ public:
 const enum items{
 	WEAPON,
 	ITEM,
-	WEAPON_SWING_SHAPE
+	WEAPON_SWING_SHAPE,
+	ITEMBOX
 };
 const enum characters{
 	MYPLAYER,

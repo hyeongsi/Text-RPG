@@ -21,10 +21,15 @@ private:
 	int invincibilityTime = 100;	//무적시간
 	int rename = 5;		//맞았을때 밀려날 크기? 이름다시짓기
 
+	
+
 public:
 	static void AddInstance();
 	static vector<Slime*>* GetInstance();
 	static void ReleaseInstance();
+
+	//아이템박스의 좌표(죽은슬라임의 좌표)
+	static Pos* itemPosition;
 
 	void SetStats(int hp, int power, int speed);
 

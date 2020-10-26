@@ -36,6 +36,24 @@ const char(*GameInfo::GetShape(const int character))[SHAPE_COL]
 		
 }
 
+//테스트용
+map<string, string> GameInfo::GetShape1(const int character)
+{
+	switch (character)
+	{
+	//case MYPLAYER:
+	//	return playerShape;
+	case SLIME:
+		return slimeShape2;
+	case ITEMBOX:
+		return itemBoxShape;
+
+
+	//default:
+	//	return playerShape;
+	}
+}
+
 string GameInfo::GetItemShape(string itemName, int option)
 {
 	try
@@ -95,6 +113,22 @@ void GameInfo::LoadWeaponData()
 		tempChar[index] = loadData[index];
 
 	weaponShape.insert(pair<string, char*>("axe", tempChar));
+}
+
+void GameInfo::LoadItemBoxShape()
+{
+	ReadFileString("itembox", "head", "GameInfo\\itemBox.ini");
+	itemBoxShape["head"] = loadData;
+
+	ReadFileString("itembox", "body", "GameInfo\\itemBox.ini");
+	itemBoxShape["body"] = loadData;
+
+	ReadFileString("itembox", "legs", "GameInfo\\itemBox.ini");
+	itemBoxShape["legs"] = loadData;
+
+	////아이템 종류결정... 0은코인 1은무기 2는 방패 이런느낌 아님말고
+	//srand((unsigned int)time(NULL));
+	//itemBoxShape["kinds"] = rand() % 5;
 }
 
 void GameInfo::LoadSaveData(int dataNumber)
@@ -193,20 +227,22 @@ void GameInfo::LoadSlimeShape()
 		{
 		case 0:
 			ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
-			for (int row = 0; row < SHAPE_COL; row++)
-				slimeShape[col][row] = loadData[row];
+			slimeShape2["head"] = loadData;
+			//for (int row = 0; row < SHAPE_COL; row++)
+			//	slimeShape[col][row] = loadData[row];
 			break;
 		case 1:
 			ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
-			for (int row = 0; row < SHAPE_COL; row++)
-				slimeShape[col][row] = loadData[row];
+			slimeShape2["body"] = loadData;
+			//for (int row = 0; row < SHAPE_COL; row++)
+			//	slimeShape[col][row] = loadData[row];
 			break;
 		case 2:
 			ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//다리
-			for (int row = 0; row < SHAPE_COL; row++)
-				slimeShape[col][row] = loadData[row];
+			slimeShape2["legs"] = loadData;
+			//for (int row = 0; row < SHAPE_COL; row++)
+			//	slimeShape[col][row] = loadData[row];
 			break;
 		}
 	}
-	
 }

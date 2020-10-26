@@ -8,7 +8,7 @@
 class GameManager
 {
 private:
-	MapManager* map;
+	MapManager* mapManager;
 	DelayManager delayManager;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player = Player::GetInstance();
