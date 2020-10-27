@@ -6,7 +6,7 @@
 #include "Slime.h"
 
 constexpr auto SHAPE_ROW = 10;
-constexpr auto SHAPE_COL = 3;
+constexpr auto SHAPE_COL = 4;
 
 class GameInfo
 {

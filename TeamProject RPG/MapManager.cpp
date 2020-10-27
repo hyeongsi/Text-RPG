@@ -65,9 +65,6 @@ void MapManager::PrintMap()
 			tempMap[col][row] = map[col][row];
 	}
 
-	//캐릭터 정보 가져와서 맵에 동기화
-	PrintCharacter(player);
-	PrintWeapon(player->GetHoldWeapon());
 	if (slime != nullptr)
 	{
 		PrintSlime(slime);
@@ -79,7 +76,7 @@ void MapManager::PrintMap()
 			slimeNumber--;
 		}
 	}
-	if (itemDrop == ITEM_DROP) {		//문제1 아이템박스 1개밖에생성못함 새로생성시 원래아이템박스 삭제됨.. 수정은가능한데 코드많이 더러워질까바 잠시보류
+	if (itemDrop == ITEM_DROP) {
 		Pos tempItemPos;
 		tempItemPos.SetX(Slime::itemPosition->GetX());
 		tempItemPos.SetY(Slime::itemPosition->GetY());
@@ -90,13 +87,14 @@ void MapManager::PrintMap()
 			PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
 
 	}
-	//문제2 습득한 아이템에 대한 정보를 어따가 저장할지
-	//맵만들어서 아이템줍는동시에 아이템종류결정하고 맵에 저장할까?,, 생각중
-
 	//1. 아이템을 플레이어 보다 먼저 출력하기,
 	//2. slime에서 죽었을때 위치값을 저장했다가 get으로 받아 map에 list로 위치값 관리
 
+	//오류.. 박스1개떨구고 줍고난뒤 다시 하나떨구면 이미주운것도 생성됨
 
+	//캐릭터 정보 가져와서 맵에 동기화
+	PrintCharacter(player);		//1번해결 플레이어가 아이템위에 출력됨
+	PrintWeapon(player->GetHoldWeapon());
 	//출력할 맵 출력
 	GoToXY(0, 0);
 	for (int y = 0; y < MAP_ROW; y++)

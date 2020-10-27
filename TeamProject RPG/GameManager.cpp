@@ -16,13 +16,13 @@ void GameManager::StartDungeon(int dungeonNumber)
 	mapManager = new MapManager();
 	mapManager->LoadMap(dungeonNumber);
 	dontMovePos = mapManager->GetDontMovePos();	//이동불가 영역 받아서 사용
+	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
 
 	slime = Slime::GetInstance();
 	if (slime != nullptr)		//슬라임객체가 존재하면 슬라임형태 불러오기 + 슬라임에 스텟설정하기
 	{
 		gameInfo->LoadSlimeShape();
 		gameInfo->LoadSlimeStats();
-		gameInfo->LoadItemBoxShape();
 	}
 	//다른몬스터도 추가되면 넣기
 
