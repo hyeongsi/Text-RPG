@@ -1,23 +1,46 @@
 ﻿#include "Inventory.h"
 
-bool Inventory::SetItem(int item)
+void Inventory::PushItem(const int item)
 {
-	if(IsFullInventory())
-		return false;
-
-	bag[selectInventoryIndex++] = item;
-	FixedOutofIndex();
+	if(!IsFullInventory())
+		bag.emplace_back(item);
 }
 
-bool Inventory::IsFullInventory()
+const int Inventory::GetItem(const int selectIndex)
 {
-	return (selectInventoryIndex >= (sizeof(bag) / sizeof(bag[0])));
+	count = 0;
+	for (auto bagIterator = bag.begin(); bagIterator != bag.end();)
+	{
+		if (count == selectIndex)
+			return *bagIterator;
+		
+		count++;
+		bagIterator++;
+	}
 }
 
-void Inventory::FixedOutofIndex()
+void Inventory::DeleteItem(const int selectIndex)
 {
-	if (0 > selectInventoryIndex)
-		selectInventoryIndex = 0;
-	if ((sizeof(bag) / sizeof(bag[0])) <= selectInventoryIndex)
-		selectInventoryIndex = (sizeof(bag) / sizeof(bag[0]))-1;
+	count = 0;
+	for (auto bagIterator = bag.begin(); bagIterator != bag.end();)
+	{
+		if (count == selectIndex)
+		{
+			bag.erase(bagIterator);
+			return;
+		}
+
+		count++;
+		bagIterator++;
+	}
+}
+
+const bool Inventory::IsEmptyInventory()
+{
+	return (0==bag.size());
+}
+
+const bool Inventory::IsFullInventory()
+{
+	return (BAG_SIZE==bag.size());
 }

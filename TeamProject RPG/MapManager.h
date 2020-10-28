@@ -52,6 +52,6 @@ public:
 
 	void LoadCanMovePos();
 	Pos* GetDontMovePos();
-	void SetItemDrop();
+	void SetDropItem();
 };
 

@@ -8,6 +8,8 @@ public:
 	Pos();
 	Pos(int x, int y);
 
+	bool operator==(Pos pos);
+
 	const int& GetX();
 	void SetX(const int x);
 

@@ -4,8 +4,12 @@ Player* Player::playerInstance = nullptr;
 
 Player* Player::GetInstance()
 {
-	if (playerInstance == nullptr)
+	if (playerInstance == nullptr) 
+	{
+		srand((unsigned int)time(NULL));
 		playerInstance = new Player();
+
+	}
 
 	return playerInstance;
 }
@@ -95,7 +99,7 @@ const int Player::InputBehavior()
 	}
 	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
 	{
-		return PickUpItem();
+		return SetPickUpState();
 	}
 
 	isWalking = false;
@@ -164,15 +168,32 @@ const int Player::Attack()
 	return ATTACK;
 }
 
-const int Player::PickUpItem()
+const int Player::SetPickUpState()
 {
 	isPickup = true;
 	return PICKUP;
 }
 
+const bool Player::PickUp()
+{
+	if(inventory.IsFullInventory())
+		return false;
+	else
+	{
+		//아이템 박스 습득 시 아이템 사이즈에 따라 랜덤 아이템 드랍
+		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);	
+		return true;
+	}
+}
+
+const int Player::GetInventoryItem(int itemIndex)
+{
+	return inventory.GetItem(itemIndex);
+}
+
 void Player::Die()
 {
-
+	isSurvival = false;
 }
 
 const string Player::GetHoldWeapon()

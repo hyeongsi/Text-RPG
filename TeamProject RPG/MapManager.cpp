@@ -411,15 +411,23 @@ Pos* MapManager::GetDontMovePos()
 	return dontMovePos;
 }
 
-void MapManager::SetItemDrop()
+void MapManager::SetDropItem()
 {
 	if (itemPosition.size() <= 0)		//아이템이 있을때만 실행
 		return;
 
-	itemPosition.pop_back();
-	cout << "현재 습득한 아이템수 : " << ++getItemNumber;		//나중에는 cout 지우기
+	for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
+	{
+		if ((*itemPositionIterator) == player->GetPos())
+		{
+			if (player->PickUp())
+				itemPosition.erase(itemPositionIterator);
 
-	//일단 지금은 아이템습득시 마지막에 떨군아이템부터 차례대로 습득함
+			return;
+		}
+		else
+			itemPositionIterator++;
+	}
 }
 
 //던전탈출시 초기화할것들

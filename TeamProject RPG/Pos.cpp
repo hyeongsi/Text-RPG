@@ -12,6 +12,11 @@ Pos::Pos(int x, int y)
 	this->y = y;
 }
 
+bool Pos::operator==(Pos pos)
+{
+	return (x == pos.GetX() && y == pos.GetY());
+}
+
 const int& Pos::GetX()
 {
 	return x;

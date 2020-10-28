@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Character.h"
 #include "Inventory.h"
+#include <time.h>
 #include <Windows.h>
 
 const enum DIR
@@ -40,7 +41,9 @@ public:
 	const int InputBehavior();	//행동 입력받는 함수
 	const int Move(const int direct4);	//이동 함수
 	const int Attack();	//공격 함수
-	const int PickUpItem();//아이템 습득
+	const int SetPickUpState();//습득 상태 설정
+	const bool PickUp();	//아이템 습득 시 인벤토리에 저장
+	const int GetInventoryItem(int itemIndex);
 	void Die();		//죽는 함수
 
 	const string GetHoldWeapon();	//가지고 있는 무기 이름 리턴

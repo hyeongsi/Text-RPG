@@ -68,7 +68,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 				}
 				break;
 			case PICKUP:
-				mapManager->SetItemDrop();
+				mapManager->SetDropItem();
 				break;
 			}
 
