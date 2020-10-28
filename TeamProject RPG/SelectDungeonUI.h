@@ -8,9 +8,11 @@ class SelectDungeonUI : public UI
 	map <string, string> select;
 	map <string, string> playerTemplate;
 	map <string, string> inventory;
+	map <string, int> playerStat;
 	string playerExplanation;
 	string inventoryExplanation;
 	GameInfo* gameInfo = GameInfo::GetInstance();
+	Player* player = Player::GetInstance();
 	int currentChoice = 3;
 	const int DUNGEON1 = 3;
 	const int DUNGEON2 = 5;

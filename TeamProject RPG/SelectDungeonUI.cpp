@@ -3,37 +3,33 @@
 SelectDungeonUI::SelectDungeonUI()
 {
 	system("cls");
+	string index;
 	//선택할 던전번호
-	ReadFileString("select", "0", select, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("select", "1", select, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("select", "2", select, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("select", "3", select, "GameInfo\\SelectDungeonUI.ini");
+	for (int i = 0; i <= 3; i++)
+	{
+		index = to_string(i);
+		ReadFileString("select", index, select, "GameInfo\\SelectDungeonUI.ini");
+	}
 
 	//플레이어 형태에 대한 제목
 	ReadFileString("playerExplanation", "playerExplanation", playerExplanation, "GameInfo\\SelectDungeonUI.ini");
 
 	//플레이어를 출력할때 사용할 틀
-	ReadFileString("playerTemplate", "0", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "1", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "2", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "3", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "4", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "5", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("playerTemplate", "6", playerTemplate, "GameInfo\\SelectDungeonUI.ini");
+	for (int i = 0; i <= 6; i++)
+	{
+		index = to_string(i);
+		ReadFileString("playerTemplate", index, playerTemplate, "GameInfo\\SelectDungeonUI.ini");
+	}
 
 	//플레이어 형태에 대한 제목
 	ReadFileString("inventoryExplanation", "inventoryExplanation", inventoryExplanation, "GameInfo\\SelectDungeonUI.ini");
 
 	//아이템 출력할 틀
-	ReadFileString("inventory", "0", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "1", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "2", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "3", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "4", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "5", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "6", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "7", inventory, "GameInfo\\SelectDungeonUI.ini");
-	ReadFileString("inventory", "8", inventory, "GameInfo\\SelectDungeonUI.ini");
+	for (int i = 0; i <= 8; i++)
+	{
+		index = to_string(i);
+		ReadFileString("inventory", index, inventory, "GameInfo\\SelectDungeonUI.ini");
+	}
 }
 
 void SelectDungeonUI::Show()
@@ -80,6 +76,14 @@ void SelectDungeonUI::Show()
 		GoToXY(7, 4 + i);
 		cout << tempPlayerShape[i];
 	}
+
+	//현재 플레이어 스텟 받아와서 출력
+	playerStat["hp"] = player->GetHp();
+	playerStat["power"] = player->GetPower();
+	GoToXY(15, 4);
+	cout << "HP : " << playerStat["hp"];
+	GoToXY(15, 6);
+	cout << "POWER : " << playerStat["power"];
 }
 
 int SelectDungeonUI::Select()

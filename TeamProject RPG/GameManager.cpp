@@ -24,7 +24,12 @@ void GameManager::StartDungeon(int dungeonNumber)
 		gameInfo->LoadSlimeShape();
 		gameInfo->LoadSlimeStats();
 	}
-	//다른몬스터도 추가되면 넣기
+	oak = Oak::GetInstance();
+	if (oak != nullptr)		//오크객체가 존재하면 오크형태 불러오기 + 오크에 스텟설정하기
+	{
+		gameInfo->LoadOakShape();
+		gameInfo->LoadOakStats();
+	}
 
 	mapManager->PrintMap();
 	while (loop)
@@ -39,6 +44,11 @@ void GameManager::StartDungeon(int dungeonNumber)
 				for (int i = 0; i < slime->size(); i++)
 					(*slime)[i]->Move();		//움직임	
 			}
+			if (oak != nullptr)
+			{
+				for (int i = 0; i < oak->size(); i++)
+					(*oak)[i]->Move();		//움직임	
+			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
 
@@ -49,11 +59,16 @@ void GameManager::StartDungeon(int dungeonNumber)
 				if (slime != nullptr)
 				{
 					for (int i = 0; i < slime->size(); i++)
-						(*slime)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
+						(*slime)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());	//피격여부
+				}
+				if (oak != nullptr)
+				{
+					for (int i = 0; i < oak->size(); i++)
+						(*oak)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
 				}
 				break;
 			case PICKUP:
-				mapManager->SetItemDrop(-2);
+				mapManager->SetItemDrop();
 				break;
 			}
 
@@ -85,7 +100,7 @@ void GameManager::CheckContact()
 			{
 				for (int x = -1; x <= 1; x++)
 				{
-					//여기 이론상계산해보니까 4중첩for문인것같은데..
+					//여기 이론상계산해보니까 4중첩for문인것같은데.. 일단보류
 				}
 			}
 		}

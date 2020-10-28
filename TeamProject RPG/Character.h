@@ -20,5 +20,6 @@ public:
 	void SetPos(int x, int y);
 
 	int GetPower();		//서로 타격당할때 공격력받아오기위해 추가
+	int GetHp();
 };
 

@@ -2,17 +2,20 @@
 
 GameStartUI::GameStartUI()
 {
+	string index;
 	//게임타이틀읽기
-	ReadFileString("title", "0", title, "GameInfo\\GameStartUI.ini");
-	ReadFileString("title", "1", title, "GameInfo\\GameStartUI.ini");
-	ReadFileString("title", "2", title, "GameInfo\\GameStartUI.ini");
-	ReadFileString("title", "3", title, "GameInfo\\GameStartUI.ini");
-	ReadFileString("title", "4", title, "GameInfo\\GameStartUI.ini");
+	for (int i = 0; i <= 4; i++)
+	{
+		index = to_string(i);
+		ReadFileString("title", index, title, "GameInfo\\GameStartUI.ini");
+	}
 
 	//메뉴창읽기
-	ReadFileString("select", "0", select, "GameInfo\\GameStartUI.ini");
-	ReadFileString("select", "1", select, "GameInfo\\GameStartUI.ini");
-	ReadFileString("select", "2", select, "GameInfo\\GameStartUI.ini");
+	for (int i = 0; i <= 2; i++)
+	{
+		index = to_string(i);
+		ReadFileString("select", index, select, "GameInfo\\GameStartUI.ini");
+	}
 }
 
 void GameStartUI::Show()

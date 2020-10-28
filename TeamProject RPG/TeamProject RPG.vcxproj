@@ -147,6 +147,7 @@
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
+    <ClCompile Include="Oak.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="SelectDungeonUI.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="GameStartUI.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="MapManager.h" />
+    <ClInclude Include="Oak.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="SelectDungeonUI.h" />

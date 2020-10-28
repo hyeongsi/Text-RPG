@@ -15,7 +15,7 @@ protected:
 
 protected:
 	void GoToXY(SHORT x, SHORT y);
-	void ReadFileString(const char* section, const char* key, map<string, string>& test, const char* path);
+	void ReadFileString(const char* section, string key, map<string, string>& test, const char* path);
 	void ReadFileString(const char* section, const char* key, string& test, const char* path);
 
 public:

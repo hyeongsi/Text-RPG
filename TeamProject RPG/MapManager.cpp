@@ -39,6 +39,13 @@ void MapManager::LoadMap(int num)
 					(*slime)[slimeNumber++]->SetPos(x, y);
 					mapPiece = ' ';
 				}	
+				else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+				{
+					Oak::AddInstance();
+					oak = Oak::GetInstance();
+					(*oak)[oakNumber++]->SetPos(x, y);
+					mapPiece = ' ';
+				}
 				map[y][x] = mapPiece;
 			}
 		}
@@ -46,6 +53,37 @@ void MapManager::LoadMap(int num)
 	case 2:
 		fcin.open("MapInfo\\dungeon2.txt");
 		getline(fcin, currentDungeon);
+
+		for (int y = 0; y < MAP_ROW; y++)
+		{
+			for (int x = 0; x < MAP_COL; x++)
+			{
+				fcin.get(mapPiece);
+				if (fcin.eof())
+					break;
+				if (mapPiece == 'p')
+				{
+					player = Player::GetInstance();
+					player->SetPos(x, y);
+					mapPiece = ' ';
+				}
+				else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+				{
+					Slime::AddInstance();
+					slime = Slime::GetInstance();
+					(*slime)[slimeNumber++]->SetPos(x, y);
+					mapPiece = ' ';
+				}
+				else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+				{
+					Oak::AddInstance();
+					oak = Oak::GetInstance();
+					(*oak)[oakNumber++]->SetPos(x, y);
+					mapPiece = ' ';
+				}
+				map[y][x] = mapPiece;
+			}
+		}
 		break;
 	default:
 		cout << "맵 로드 오류!!";
@@ -65,34 +103,62 @@ void MapManager::PrintMap()
 			tempMap[col][row] = map[col][row];
 	}
 
+	//슬라임출력부
 	if (slime != nullptr)
 	{
 		PrintSlime(slime);
 		if (slimeNumber > slime->size())	//슬라임이 한마리 죽으면
 		{
 			srand((unsigned int)time(NULL));
-			if(itemDrop != ITEM_DROP)
-				itemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
+			if(isSlimeItemDrop != ITEM_DROP)
+				isSlimeItemDrop = rand() % 5;	//드랍확률계산 20%확률로 아이템떨구기
+				//isSlimeItemDrop = 0;			//드랍확률 100%
 			slimeNumber--;
 		}
 	}
-	if (itemDrop == ITEM_DROP) {
+	//오크출력부
+	if (oak != nullptr)
+	{
+		PrintOak(oak);
+		if (oakNumber > oak->size())	//오크 한마리 죽으면
+		{
+			srand((unsigned int)time(NULL));
+			if (isOakItemDrop != ITEM_DROP)
+				isOakItemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
+				//isOakItemDrop = 0;
+			oakNumber--;
+		}
+	}
+
+	//슬라임의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isSlimeItemDrop == ITEM_DROP) {
 		Pos tempItemPos;
 		tempItemPos.SetX(Slime::itemPosition->GetX());
 		tempItemPos.SetY(Slime::itemPosition->GetY());
 
 		itemPosition.emplace_back(tempItemPos);
-		
-		for (auto itemPositions : itemPosition)
-			PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
-
+		isSlimeItemDrop = -1;
 	}
+	//슬라임의 아이템박스출력
+	for (auto itemPositions : itemPosition)
+		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
+	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isOakItemDrop == ITEM_DROP) {
+		Pos tempItemPos;
+		tempItemPos.SetX(Oak::itemPosition->GetX());
+		tempItemPos.SetY(Oak::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		isOakItemDrop = -1;
+	}
+	//슬라임의 아이템박스출력
+	for (auto itemPositions : itemPosition)
+		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
 	//1. 아이템을 플레이어 보다 먼저 출력하기,
 	//2. slime에서 죽었을때 위치값을 저장했다가 get으로 받아 map에 list로 위치값 관리
-
 	//오류.. 박스1개떨구고 줍고난뒤 다시 하나떨구면 이미주운것도 생성됨
-
 	//캐릭터 정보 가져와서 맵에 동기화
+
 	PrintCharacter(player);		//1번해결 플레이어가 아이템위에 출력됨
 	PrintWeapon(player->GetHoldWeapon());
 	//출력할 맵 출력
@@ -269,6 +335,31 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 	//}
 }
 
+void MapManager::PrintOak(vector<Oak*>* oak)
+{
+	auto oakShape = gameInfo->GetShape1(OAK);
+	int oakPosX;
+	int oakPosY;
+
+	for (int i = 0; i < oak->size(); i++)
+	{
+		oakPosX = (*oak)[i]->GetPos().GetX();
+		oakPosY = (*oak)[i]->GetPos().GetY();
+
+		//머리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[oakPosY - 2][oakPosX - 1 + index] = oakShape["head"][index];
+
+		//몸 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[oakPosY - 1][oakPosX - 1 + index] = oakShape["body"][index];
+
+		//다리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[oakPosY][oakPosX - 1 + index] = oakShape["legs"][index];
+	}
+}
+
 void MapManager::PrintItemBox(int positionX, int positionY)
 {
 	auto itemBoxShape = gameInfo->GetShape1(ITEMBOX);
@@ -320,7 +411,16 @@ Pos* MapManager::GetDontMovePos()
 	return dontMovePos;
 }
 
-void MapManager::SetItemDrop(int itemDrop)
+void MapManager::SetItemDrop()
 {
-	this->itemDrop = itemDrop;
+	if (itemPosition.size() <= 0)		//아이템이 있을때만 실행
+		return;
+
+	itemPosition.pop_back();
+	cout << "현재 습득한 아이템수 : " << ++getItemNumber;		//나중에는 cout 지우기
+
+	//일단 지금은 아이템습득시 마지막에 떨군아이템부터 차례대로 습득함
 }
+
+//던전탈출시 초기화할것들
+//1. monster, slime, oak, item관련 int변수랑, item 리스트초기화, slime, oak 벡터초기화, ..생각나면 더적고 추가하기

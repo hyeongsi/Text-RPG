@@ -35,3 +35,8 @@ int Character::GetPower()
 	return power;
 }
 
+int Character::GetHp()
+{
+	return Hp;
+}
+

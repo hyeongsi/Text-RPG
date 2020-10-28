@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Slime.h"
+#include "Oak.h"
 
 constexpr auto SHAPE_ROW = 10;
 constexpr auto SHAPE_COL = 4;
@@ -14,14 +15,17 @@ private:
 	char playerShape[SHAPE_ROW][SHAPE_COL] = {' '};
 	char slimeShape[SHAPE_ROW][SHAPE_COL] = {' '};
 
-	//테스트용
+	//========테스트용=============
 	map<string, string> slimeShape2;
+	map<string, string> oakShape;
+	//=============================
 
 	map<string, string> weapon;
 	map<string, string> weaponShape;
 	map<string, string> itemBoxShape;
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
+	vector<Oak*>* oak;
 	static GameInfo* gameInfoInstance;
 
 	TCHAR loadData[256];
@@ -51,6 +55,8 @@ public:
 	void LoadSlimeStats();
 	void LoadSlimeShape();
 
+	void LoadOakStats();
+	void LoadOakShape();
 };
 const enum items{
 	WEAPON,
@@ -60,7 +66,8 @@ const enum items{
 };
 const enum characters{
 	MYPLAYER,
-	SLIME
+	SLIME,
+	OAK
 	//그외에 적들 추가후 GetShape()에 넣기
 };
 

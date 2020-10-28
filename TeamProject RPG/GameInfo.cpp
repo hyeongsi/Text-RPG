@@ -27,6 +27,7 @@ const char(*GameInfo::GetShape(const int character))[SHAPE_COL]
 		return playerShape;
 	case SLIME:
 		return slimeShape;
+
 		//적추가하면넣기
 
 
@@ -47,7 +48,8 @@ map<string, string> GameInfo::GetShape1(const int character)
 		return slimeShape2;
 	case ITEMBOX:
 		return itemBoxShape;
-
+	case OAK:
+		return oakShape;
 
 	//default:
 	//	return playerShape;
@@ -125,10 +127,6 @@ void GameInfo::LoadItemBoxShape()
 
 	ReadFileString("itembox", "legs", "GameInfo\\itemBox.ini");
 	itemBoxShape["legs"] = loadData;
-
-	////아이템 종류결정... 0은코인 1은무기 2는 방패 이런느낌 아님말고
-	//srand((unsigned int)time(NULL));
-	//itemBoxShape["kinds"] = rand() % 5;
 }
 
 void GameInfo::LoadSaveData(int dataNumber)
@@ -257,4 +255,27 @@ void GameInfo::LoadSlimeShape()
 			break;
 		}
 	}
+}
+
+void GameInfo::LoadOakStats()
+{
+	oak = Oak::GetInstance();
+
+	if (oak != nullptr)
+	{
+		for (int i = 0; i < oak->size(); i++)		//오크객체에 체력과 공격력과 속도넣기
+			(*oak)[i]->SetStats(ReadFileInt("oak", "hp", "gameinfo\\oak.ini"), ReadFileInt("oak", "power", "gameinfo\\oak.ini"), ReadFileInt("oak", "speed", "gameinfo\\oak.ini") - i * 200);
+	}
+}
+
+void GameInfo::LoadOakShape()
+{
+	ReadFileString("oak", "head", "GameInfo\\oak.ini");	//머리
+	oakShape["head"] = loadData;
+
+	ReadFileString("oak", "body", "GameInfo\\oak.ini");	//몸
+	oakShape["body"] = loadData;
+
+	ReadFileString("oak", "legs", "GameInfo\\oak.ini");	//다리
+	oakShape["legs"] = loadData;
 }

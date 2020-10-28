@@ -25,10 +25,15 @@ private:
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player;
 	vector<Slime*>* slime;
+	vector<Oak*>* oak;
 
 	//아이템드랍관련변수들
+	int monsterNumer = 0;	//몬스터들의 수가 들어갈 변수.. 던전탈출조건으로 사용
 	int slimeNumber = 0;	//현재 슬라임수
-	int itemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
+	int oakNumber = 0;		//현재 슬라임수
+	int isSlimeItemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
+	int isOakItemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
+	int getItemNumber = 0;		//획득한 아이템수
 	list<Pos> itemPosition;
 
 	//플레이어가 움직일 수 있는 범위의 좌표 저장
@@ -42,10 +47,11 @@ public:
 	void PrintCharacter(Character* character);
 	void PrintWeapon(string weapon);
 	void PrintSlime(vector<Slime*>* slime);
+	void PrintOak(vector<Oak*>* oak);
 	void PrintItemBox(int positionX, int positionY);
 
 	void LoadCanMovePos();
 	Pos* GetDontMovePos();
-	void SetItemDrop(int itemDrop);
+	void SetItemDrop();
 };
 
