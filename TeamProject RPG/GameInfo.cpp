@@ -27,10 +27,13 @@ map<string, string> GameInfo::GetShape(const int character)
 		return playerShape;
 	case SLIME:
 		return slimeShape;
-	case ITEMBOX:
-		return itemBoxShape;
 	case OAK:
 		return oakShape;
+	case TANK:
+		return tankShape;
+	case ITEMBOX:
+		return itemBoxShape;
+
 
 	default:
 		return playerShape;
@@ -214,4 +217,30 @@ void GameInfo::LoadOakShape()
 
 	ReadFileString("oak", "legs", "GameInfo\\oak.ini");	//다리
 	oakShape["legs"] = loadData;
+}
+
+void GameInfo::LoadTankStats()
+{
+	tank = Tank::GetInstance();
+
+	if (tank != nullptr)
+	{
+		for (int i = 0; i < tank->size(); i++)		//탱크객체에 체력과 공격력과 속도넣기
+			(*tank)[i]->SetStats(ReadFileInt("tank", "hp", "gameinfo\\tank.ini"), ReadFileInt("tank", "power", "gameinfo\\tank.ini"), ReadFileInt("tank", "speed", "gameinfo\\tank.ini"));
+	}
+}
+
+void GameInfo::LoadTankShape()
+{
+	ReadFileString("tank", "head", "GameInfo\\tank.ini");	//머리
+	tankShape["head"] = loadData;
+
+	ReadFileString("tank", "bodyR", "GameInfo\\tank.ini");	//몸오른쪽
+	tankShape["bodyR"] = loadData;
+
+	ReadFileString("tank", "bodyL", "GameInfo\\tank.ini");	//몸왼쪽
+	tankShape["bodyL"] = loadData;
+
+	ReadFileString("tank", "legs", "GameInfo\\tank.ini");	//다리
+	tankShape["legs"] = loadData;
 }

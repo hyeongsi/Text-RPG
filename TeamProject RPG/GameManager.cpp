@@ -30,6 +30,12 @@ void GameManager::StartDungeon(int dungeonNumber)
 		gameInfo->LoadOakShape();
 		gameInfo->LoadOakStats();
 	}
+	tank = Tank::GetInstance();
+	if (tank != nullptr)		//탱크객체가 존재하면 탱크형태 불러오기 + 탱크에 스텟설정하기
+	{
+		gameInfo->LoadTankShape();
+		gameInfo->LoadTankStats();
+	}
 
 	mapManager->PrintMap(isOpenInventory);
 	while (loop)
@@ -49,6 +55,11 @@ void GameManager::StartDungeon(int dungeonNumber)
 				for (int i = 0; i < oak->size(); i++)
 					(*oak)[i]->Move();		//움직임	
 			}
+			if (tank != nullptr)
+			{
+				for (int i = 0; i < tank->size(); i++)
+					(*tank)[i]->Move();		//움직임	
+			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
 
@@ -65,6 +76,11 @@ void GameManager::StartDungeon(int dungeonNumber)
 				{
 					for (int i = 0; i < oak->size(); i++)
 						(*oak)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
+				}
+				if (tank != nullptr)
+				{
+					for (int i = 0; i < tank->size(); i++)
+						(*tank)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
 				}
 				break;
 			case PICKUP:

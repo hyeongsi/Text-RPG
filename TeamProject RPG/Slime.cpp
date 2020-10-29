@@ -52,23 +52,21 @@ void Slime::Move()
 	this->isMove = true;
 }
 
-//이름 isDie변경생각.. 아유는 vector의 특정항목을 없앨라면 iterator를 사용해야하는데.. 그럴라면 자동적으로
-//처음부터 끝까지 반복하니까.. 죽은놈객체의값으로 삭제할방법이 없는것같아서.. 이것도찾아보기
+//슬라임체력없으면 삭제
 void Slime::Die()
 {
-	//슬라임체력없으면 삭제
 	for (auto slimeHP = slime->begin(); slimeHP != slime->end(); slimeHP++)
 	{
 		if ((*slimeHP)->Hp <= 0 && slimeHP == --slime->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
 		{
-			itemPosition->SetX((*slimeHP)->GetPos().GetX());
+			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
 			slime->pop_back();
 			return;
 		}
 		else if ((*slimeHP)->Hp <= 0)
 		{
-			itemPosition->SetX((*slimeHP)->GetPos().GetX());
+			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
 			slimeHP = slime->erase(slimeHP);
 		}	
@@ -120,7 +118,7 @@ void Slime::isHit(int playerXPosition, int playerYPosition)
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		this->Hit(player->GetPower());		//Hit()를 밖에다 뺄지는 고민해봐야할듯
+		this->Hit(player->GetPower());
 	}
 	
 	if (isInvincibility == true)

@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Slime.h"
 #include "Oak.h"
+#include "Tank.h"
 #include "DelayManager.h"
 
 
@@ -16,6 +17,7 @@ private:
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime = Slime::GetInstance();
 	vector<Oak*>* oak = Oak::GetInstance();
+	vector<Tank*>* tank = Tank::GetInstance();
 
 	bool isOpenInventory = false;
 public:

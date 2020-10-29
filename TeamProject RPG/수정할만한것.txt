@@ -1,0 +1,11 @@
+슬라임, 오크에서 아이템박스좌표 Pos값 반환하는구문필요
+slime의 isHit()에서 슬라임좌표수정할때 x값만변환시키면되서 SetX하고싶은데 하면 반영이안됨
+gameInfo에서 아이템박스 리턴하는부분 바꾸기
+GameManager에 CheckContact()만들어야함    //이거는 플레이어가 맞는경우실행
+GameManager에 슬라임이랑 오크 충돌과 아이템처리부분 중복이 많은데 처리할방법이 있는지 생각해보기..
+loadMap()에서 currentDungeon을 사용안하는것같음.. 만든목적이 있었는데 기억이 안나서 생각해보기
+던전시작전에 버퍼지우기 넣어야함
+system(" mode  con lines=30   cols=120 ");이거안됨
+
+
+

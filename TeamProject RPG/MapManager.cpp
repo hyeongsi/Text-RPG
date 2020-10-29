@@ -18,80 +18,62 @@ void MapManager::LoadMap(int num)
 	case 1:
 		fcin.open("MapInfo\\dungeon1.txt");
 		getline(fcin, currentDungeon);
-
-		for (int y = 0; y < MAP_ROW; y++)
-		{
-			for (int x = 0; x < MAP_COL; x++)
-			{
-				fcin.get(mapPiece);
-				if (fcin.eof())
-					break;
-				if (mapPiece == 'p') 
-				{
-					player = Player::GetInstance();
-					player->SetPos(x, y);
-					mapPiece = ' ';
-				}
-				else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
-				{
-					Slime::AddInstance();
-					slime = Slime::GetInstance();
-					(*slime)[slimeNumber++]->SetPos(x, y);
-					mapPiece = ' ';
-				}	
-				else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
-				{
-					Oak::AddInstance();
-					oak = Oak::GetInstance();
-					(*oak)[oakNumber++]->SetPos(x, y);
-					mapPiece = ' ';
-				}
-				map[y][x] = mapPiece;
-			}
-		}
 		break;
 	case 2:
 		fcin.open("MapInfo\\dungeon2.txt");
 		getline(fcin, currentDungeon);
-
-		for (int y = 0; y < MAP_ROW; y++)
-		{
-			for (int x = 0; x < MAP_COL; x++)
-			{
-				fcin.get(mapPiece);
-				if (fcin.eof())
-					break;
-				if (mapPiece == 'p')
-				{
-					player = Player::GetInstance();
-					player->SetPos(x, y);
-					mapPiece = ' ';
-				}
-				else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
-				{
-					Slime::AddInstance();
-					slime = Slime::GetInstance();
-					(*slime)[slimeNumber++]->SetPos(x, y);
-					mapPiece = ' ';
-				}
-				else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
-				{
-					Oak::AddInstance();
-					oak = Oak::GetInstance();
-					(*oak)[oakNumber++]->SetPos(x, y);
-					mapPiece = ' ';
-				}
-				map[y][x] = mapPiece;
-			}
-		}
+		break;
+	case 3:
+		fcin.open("MapInfo\\dungeon3.txt");
+		getline(fcin, currentDungeon);
 		break;
 	default:
 		cout << "맵 로드 오류!!";
+		exit(0);
 		break;
 	}
 
+	for (int y = 0; y < MAP_ROW; y++)
+	{
+		for (int x = 0; x < MAP_COL; x++)
+		{
+			fcin.get(mapPiece);
+			if (fcin.eof())
+				break;
+			if (mapPiece == 'p')
+			{
+				player = Player::GetInstance();
+				player->SetPos(x, y);
+				mapPiece = ' ';
+			}
+			else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+			{
+				Slime::AddInstance();
+				slime = Slime::GetInstance();
+				(*slime)[slimeNumber++]->SetPos(x, y);
+				mapPiece = ' ';
+			}
+			else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+			{
+				Oak::AddInstance();
+				oak = Oak::GetInstance();
+				(*oak)[oakNumber++]->SetPos(x, y);
+				mapPiece = ' ';
+			}
+			else if (mapPiece == 't')		//탱크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
+			{
+				Tank::AddInstance();
+				tank = Tank::GetInstance();
+				(*tank)[tankNumber++]->SetPos(x, y);
+				mapPiece = ' ';
+			}
+			map[y][x] = mapPiece;
+		}
+	}
 	//플레이어가 움직일 수 있는 범위 측정
 	LoadCanMovePos();
+
+	fcin.close();
 }
 
 void MapManager::PrintMap(bool isOpenInventory)
@@ -111,7 +93,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 		{
 			srand((unsigned int)time(NULL));
 			if(isSlimeItemDrop != ITEM_DROP)
-				//isSlimeItemDrop = rand() % 5;	//드랍확률계산 20%확률로 아이템떨구기
+				//isSlimeItemDrop = rand() % 3;	//드랍확률계산 33%확률로 아이템떨구기
 				isSlimeItemDrop = 0;			//드랍확률 100%
 			slimeNumber--;
 		}
@@ -124,9 +106,22 @@ void MapManager::PrintMap(bool isOpenInventory)
 		{
 			srand((unsigned int)time(NULL));
 			if (isOakItemDrop != ITEM_DROP)
-				//isOakItemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
+				//isOakItemDrop = rand() % 5;		//드랍확률계산 20%확률로 아이템떨구기
 				isOakItemDrop = 0;
 			oakNumber--;
+		}
+	}
+	//탱크출력부
+	if (tank != nullptr)
+	{
+		PrintTank(tank);
+		if (tankNumber > tank->size())		//탱크 한마리 죽으면
+		{
+			srand((unsigned int)time(NULL));
+			if (isTankItemDrop != ITEM_DROP)
+				//isTankItemDrop = rand() % 10;		//드랍확률계산 10%확률로 아이템떨구기
+				isTankItemDrop = 0;
+			tankNumber--;
 		}
 	}
 
@@ -139,9 +134,6 @@ void MapManager::PrintMap(bool isOpenInventory)
 		itemPosition.emplace_back(tempItemPos);
 		isSlimeItemDrop = -1;
 	}
-	//슬라임의 아이템박스출력
-	for (auto itemPositions : itemPosition)
-		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());// 밑에랑 겹치는데???
 	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
 	if (isOakItemDrop == ITEM_DROP) {
 		Pos tempItemPos;
@@ -151,14 +143,20 @@ void MapManager::PrintMap(bool isOpenInventory)
 		itemPosition.emplace_back(tempItemPos);
 		isOakItemDrop = -1;
 	}
-	//슬라임의 아이템박스출력
+	//탱크의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isTankItemDrop == ITEM_DROP) {
+		Pos tempItemPos;
+		tempItemPos.SetX(Tank::itemPosition->GetX());
+		tempItemPos.SetY(Tank::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		isTankItemDrop = -1;
+	}
+	//아이템박스출력
 	for (auto itemPositions : itemPosition)
 		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
-	//2. slime에서 죽었을때 위치값을 저장했다가 get으로 받아 map에 list로 위치값 관리
-	//오류.. 박스1개떨구고 줍고난뒤 다시 하나떨구면 이미주운것도 생성됨
-	//캐릭터 정보 가져와서 맵에 동기화
 
-	PrintCharacter(player);		//1번해결 플레이어가 아이템위에 출력됨
+	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());
 
 	if (isOpenInventory)
@@ -209,7 +207,7 @@ void MapManager::PrintCharacter(Character* character)
 	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
 	//머리 출력
 	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[playerPosY - 2][playerPosX - 1+ index] = tempPlayerShape["head"][index];
+		tempMap[playerPosY - 2][playerPosX - 1 + index] = tempPlayerShape["head"][index];
 
 	//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
 	//몸 출력
@@ -294,12 +292,10 @@ void MapManager::PrintWeapon(string weapon)
 
 void MapManager::PrintSlime(vector<Slime*>* slime)
 {
-	//auto slimeShape = gameInfo->GetShape(SLIME);
 	auto slimeShape = gameInfo->GetShape(SLIME);
 	int slimePosX;
 	int slimePosY;
 
-	//테스트용
 	for (int i = 0; i < slime->size(); i++)
 	{
 		slimePosX = (*slime)[i]->GetPos().GetX();
@@ -317,25 +313,6 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape["legs"][index];
 	}
-
-	//슬라임객체수만큼 반복
-	//for (int i = 0; i < slime->size(); i++)
-	//{
-	//	slimePosX = (*slime)[i]->GetPos().GetX();
-	//	slimePosY = (*slime)[i]->GetPos().GetY();
-
-	//	//머리 출력
-	//	for (int index = 0; index < SHAPE_COL; index++)
-	//		tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape[0][index];
-
-	//	//몸 출력
-	//	for (int index = 0; index < SHAPE_COL; index++)
-	//		tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape[1][index];
-
-	//	//다리 출력
-	//	for (int index = 0; index < SHAPE_COL; index++)
-	//		tempMap[slimePosY][slimePosX - 1 + index] = slimeShape[2][index];
-	//}
 }
 
 void MapManager::PrintOak(vector<Oak*>* oak)
@@ -360,6 +337,31 @@ void MapManager::PrintOak(vector<Oak*>* oak)
 		//다리 출력
 		for (int index = 0; index < SHAPE_COL; index++)
 			tempMap[oakPosY][oakPosX - 1 + index] = oakShape["legs"][index];
+	}
+}
+
+void MapManager::PrintTank(vector<Tank*>* tank)
+{
+	auto tankShape = gameInfo->GetShape(TANK);
+	int tankPosX;
+	int tankPosY;
+
+	for (int i = 0; i < tank->size(); i++)
+	{
+		tankPosX = (*tank)[i]->GetPos().GetX();
+		tankPosY = (*tank)[i]->GetPos().GetY();
+
+		//머리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[tankPosY - 2][tankPosX - 1 + index] = tankShape["head"][index];
+
+		//몸 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyR"][index];
+
+		//다리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[tankPosY][tankPosX - 1 + index] = tankShape["legs"][index];
 	}
 }
 

@@ -154,6 +154,7 @@
     <ClCompile Include="SelectDungeonUI.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Tank.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <ClInclude Include="SelectDungeonUI.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Tank.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

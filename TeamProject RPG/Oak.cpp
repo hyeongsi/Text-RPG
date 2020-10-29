@@ -53,8 +53,6 @@ void Oak::Move()
 	this->isMove = true;
 }
 
-//이름 isDie변경생각.. 아유는 vector의 특정항목을 없앨라면 iterator를 사용해야하는데.. 그럴라면 자동적으로
-//처음부터 끝까지 반복하니까.. 죽은놈객체의값으로 삭제할방법이 없는것같아서.. 이것도찾아보기
 void Oak::Die()
 {
 	//오크체력없으면 삭제
@@ -62,14 +60,14 @@ void Oak::Die()
 	{
 		if ((*oakHP)->Hp <= 0 && oakHP == --oak->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
 		{
-			itemPosition->SetX((*oakHP)->GetPos().GetX());
+			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
 			itemPosition->SetY((*oakHP)->GetPos().GetY());
 			oak->pop_back();
 			return;
 		}
 		else if ((*oakHP)->Hp <= 0)
 		{
-			itemPosition->SetX((*oakHP)->GetPos().GetX());
+			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
 			itemPosition->SetY((*oakHP)->GetPos().GetY());
 			oakHP = oak->erase(oakHP);
 		}
