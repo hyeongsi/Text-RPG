@@ -94,7 +94,7 @@ void MapManager::LoadMap(int num)
 	LoadCanMovePos();
 }
 
-void MapManager::PrintMap()
+void MapManager::PrintMap(bool isOpenInventory)
 {
 	//원본맵을 출력할 맵에 복사 후
 	for (int col = 0; col < MAP_ROW; col++)
@@ -160,6 +160,12 @@ void MapManager::PrintMap()
 
 	PrintCharacter(player);		//1번해결 플레이어가 아이템위에 출력됨
 	PrintWeapon(player->GetHoldWeapon());
+
+	if (isOpenInventory)
+	{
+		player->OpenInventory();
+	}
+
 	//출력할 맵 출력
 	GoToXY(0, 0);
 	for (int y = 0; y < MAP_ROW; y++)

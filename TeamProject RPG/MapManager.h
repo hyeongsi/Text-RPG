@@ -43,7 +43,7 @@ public:
 	void GoToXY(SHORT x, SHORT y);
 	void LoadMap(int num);
 
-	void PrintMap();
+	void PrintMap(bool isOpenInventory);
 	void PrintCharacter(Character* character);
 	void PrintWeapon(string weapon);
 	void PrintSlime(vector<Slime*>* slime);

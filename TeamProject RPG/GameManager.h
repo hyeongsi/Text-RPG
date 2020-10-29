@@ -17,6 +17,7 @@ private:
 	vector<Slime*>* slime = Slime::GetInstance();
 	vector<Oak*>* oak = Oak::GetInstance();
 
+	bool isOpenInventory = false;
 public:
 	void Play(int saveFileNumber); //게임 시작버튼 눌렀을 때
 	void StartDungeon(int dungeonNumber);

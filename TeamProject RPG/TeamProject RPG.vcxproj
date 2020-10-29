@@ -145,6 +145,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameStartUI.cpp" />
     <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="InventoryUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Oak.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameStartUI.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="InventoryUI.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Oak.h" />
     <ClInclude Include="Player.h" />

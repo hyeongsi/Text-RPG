@@ -1,5 +1,15 @@
 ﻿#include "Inventory.h"
 
+void Inventory::OpenInventory()
+{
+	inventoryUI.OpenInventory();
+}
+
+void Inventory::CloseInventory()
+{
+	inventoryUI.CloseInventory();
+}
+
 void Inventory::PushItem(const int item)
 {
 	if(!IsFullInventory())

@@ -31,7 +31,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 		gameInfo->LoadOakStats();
 	}
 
-	mapManager->PrintMap();
+	mapManager->PrintMap(isOpenInventory);
 	while (loop)
 	{
 		if (delayManager.CheckEndDelay())
@@ -72,7 +72,18 @@ void GameManager::StartDungeon(int dungeonNumber)
 				break;
 			}
 
-			mapManager->PrintMap();
+			if (GetAsyncKeyState(VK_TAB) && 0x8000)	//tab 인벤토리 열기
+			{
+				if (isOpenInventory)
+				{
+					isOpenInventory = false;
+					player->CloseInventory();
+				}
+				else
+					isOpenInventory = true;
+			}
+
+			mapManager->PrintMap(isOpenInventory);
 		}
  	}
 

@@ -186,6 +186,16 @@ const bool Player::PickUp()
 	}
 }
 
+void Player::OpenInventory()
+{
+	inventory.OpenInventory();
+}
+
+void Player::CloseInventory()
+{
+	inventory.CloseInventory();
+}
+
 const int Player::GetInventoryItem(int itemIndex)
 {
 	return inventory.GetItem(itemIndex);
