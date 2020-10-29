@@ -71,11 +71,13 @@ void SelectDungeonUI::Show()
 
 	//현재 플레이어 형태 들고와서 출력
 	auto tempPlayerShape = gameInfo->GetShape(MYPLAYER);
-	for (int i = 0; i < 3; i++)
-	{
-		GoToXY(7, 4 + i);
-		cout << tempPlayerShape[i];
-	}
+
+	GoToXY(7, 4);
+		cout << tempPlayerShape["head"];
+	GoToXY(7, 5);
+		cout << tempPlayerShape["body"];
+	GoToXY(7, 6);
+		cout << tempPlayerShape["legs"];
 
 	//현재 플레이어 스텟 받아와서 출력
 	playerStat["hp"] = player->GetHp();

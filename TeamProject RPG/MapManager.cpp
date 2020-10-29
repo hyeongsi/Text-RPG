@@ -111,8 +111,8 @@ void MapManager::PrintMap()
 		{
 			srand((unsigned int)time(NULL));
 			if(isSlimeItemDrop != ITEM_DROP)
-				isSlimeItemDrop = rand() % 5;	//드랍확률계산 20%확률로 아이템떨구기
-				//isSlimeItemDrop = 0;			//드랍확률 100%
+				//isSlimeItemDrop = rand() % 5;	//드랍확률계산 20%확률로 아이템떨구기
+				isSlimeItemDrop = 0;			//드랍확률 100%
 			slimeNumber--;
 		}
 	}
@@ -124,8 +124,8 @@ void MapManager::PrintMap()
 		{
 			srand((unsigned int)time(NULL));
 			if (isOakItemDrop != ITEM_DROP)
-				isOakItemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
-				//isOakItemDrop = 0;
+				//isOakItemDrop = rand() % 3;		//드랍확률계산 33%확률로 아이템떨구기
+				isOakItemDrop = 0;
 			oakNumber--;
 		}
 	}
@@ -141,7 +141,7 @@ void MapManager::PrintMap()
 	}
 	//슬라임의 아이템박스출력
 	for (auto itemPositions : itemPosition)
-		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
+		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());// 밑에랑 겹치는데???
 	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
 	if (isOakItemDrop == ITEM_DROP) {
 		Pos tempItemPos;
@@ -154,7 +154,6 @@ void MapManager::PrintMap()
 	//슬라임의 아이템박스출력
 	for (auto itemPositions : itemPosition)
 		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
-	//1. 아이템을 플레이어 보다 먼저 출력하기,
 	//2. slime에서 죽었을때 위치값을 저장했다가 get으로 받아 map에 list로 위치값 관리
 	//오류.. 박스1개떨구고 줍고난뒤 다시 하나떨구면 이미주운것도 생성됨
 	//캐릭터 정보 가져와서 맵에 동기화
@@ -182,43 +181,41 @@ void MapManager::PrintCharacter(Character* character)
 		if (RIGHT == player->GetDir())
 		{
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY - 2][playerPosX - 1 + index] = tempPlayerShape[7][index];
+				tempMap[playerPosY - 2][playerPosX - 1 + index] = tempPlayerShape["pickupHead"][index];
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[8][index];
+				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape["pickupBody"][index];
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[9][index];
+				tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["pickupLegs"][index];
 		}
 		else if(LEFT == player->GetDir())
 		{
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY - 2][playerPosX + 1 - index] = tempPlayerShape[7][index];
+				tempMap[playerPosY - 2][playerPosX + 1 - index] = tempPlayerShape["pickupHead"][index];
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[8][index];
+				tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape["pickupBody"][index];
 			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[playerPosY][playerPosX + index] = tempPlayerShape[9][index];
+				tempMap[playerPosY][playerPosX + index] = tempPlayerShape["pickupLegs"][index];
 		}
 		
 		return;
 	}
 
-
 	//기준점 좌표로 부터 왼쪽 상단으로 이동해 이미지[0][0~3] 출력한다.
 	//머리 출력
 	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[playerPosY - 2][playerPosX - 1+ index] = tempPlayerShape[0][index];
-
+		tempMap[playerPosY - 2][playerPosX - 1+ index] = tempPlayerShape["head"][index];
 
 	//기준점 좌표 y-1 지점으로 이동해 이미지[1][0~3] 출력한다.
 	//몸 출력
 	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape[1][index];
+		tempMap[playerPosY - 1][playerPosX - 1 + index] = tempPlayerShape["body"][index];
 
 	//기준점 좌표 x-1 지점으로 이동해 이미지[2][0~3] 출력한다.
 	//다리 출력
 	if (!player->GetIsWalking())
 	{
 		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[2][index];
+			tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["legs"][index];
 	}
 	else
 	{
@@ -228,24 +225,24 @@ void MapManager::PrintCharacter(Character* character)
 			if (LEFT == player->GetDir())
 			{	//왼쪽1번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
-					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[5][index];
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["walkingLeft1"][index];
 			}
 			else if (RIGHT == player->GetDir())
 			{	//오른쪽1번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
-					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[3][index];
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["walkingRight1"][index];
 			}
 			break;
 		case 1:
 			if (LEFT == player->GetDir())
 			{	//왼쪽2번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
-					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[6][index];
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["walkingLeft2"][index];
 			}
 			else if(RIGHT == player->GetDir())
 			{	//오른쪽2번다리 출력
 				for (int index = 0; index < SHAPE_COL; index++)
-					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape[4][index];
+					tempMap[playerPosY][playerPosX - 1 + index] = tempPlayerShape["walkingRight2"][index];
 			}
 			break;
 		}
@@ -292,7 +289,7 @@ void MapManager::PrintWeapon(string weapon)
 void MapManager::PrintSlime(vector<Slime*>* slime)
 {
 	//auto slimeShape = gameInfo->GetShape(SLIME);
-	auto slimeShape = gameInfo->GetShape1(SLIME);
+	auto slimeShape = gameInfo->GetShape(SLIME);
 	int slimePosX;
 	int slimePosY;
 
@@ -337,7 +334,7 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 
 void MapManager::PrintOak(vector<Oak*>* oak)
 {
-	auto oakShape = gameInfo->GetShape1(OAK);
+	auto oakShape = gameInfo->GetShape(OAK);
 	int oakPosX;
 	int oakPosY;
 
@@ -362,7 +359,7 @@ void MapManager::PrintOak(vector<Oak*>* oak)
 
 void MapManager::PrintItemBox(int positionX, int positionY)
 {
-	auto itemBoxShape = gameInfo->GetShape1(ITEMBOX);
+	auto itemBoxShape = gameInfo->GetShape(ITEMBOX);
 
 	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[positionY - 2][positionX - 1 + index] = itemBoxShape["head"][index];

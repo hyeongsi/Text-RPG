@@ -7,21 +7,18 @@
 #include "Oak.h"
 
 constexpr auto SHAPE_ROW = 10;
-constexpr auto SHAPE_COL = 4;
+constexpr auto SHAPE_COL = 3;
 
 class GameInfo
 {
 private:
-	char playerShape[SHAPE_ROW][SHAPE_COL] = {' '};
-	char slimeShape[SHAPE_ROW][SHAPE_COL] = {' '};
+	map<string, string> playerShape;
 
-	//========테스트용=============
-	map<string, string> slimeShape2;
+	map<string, string> slimeShape;
 	map<string, string> oakShape;
-	//=============================
 
-	map<string, string> weapon;
 	map<string, string> weaponShape;
+	map<string, string> weaponSwingShape;
 	map<string, string> itemBoxShape;
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime;
@@ -29,16 +26,12 @@ private:
 	static GameInfo* gameInfoInstance;
 
 	TCHAR loadData[256];
-	char tempChar[2];
 	GameInfo() {};
 public:
 	static GameInfo* GetInstance();
 	static void ReleaseInstance();
 
-	const char(*GetShape(const int character))[SHAPE_COL];
-
-	//테스트용
-	map<string, string> GetShape1(const int character);
+	map<string, string> GetShape(const int character);
 
 	string GetItemShape(string itemName, int option);	//0 : 무기, 1 : 아이템
 	
