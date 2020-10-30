@@ -182,6 +182,7 @@ const bool Player::PickUp()
 	{
 		//아이템 박스 습득 시 아이템 사이즈에 따라 랜덤 아이템 드랍
 		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);	
+		inventory.SyncInventoryUI();
 		return true;
 	}
 }

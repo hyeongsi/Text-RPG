@@ -22,6 +22,8 @@ public:
 	const int GetItem(const int selectIndex);		//아이템 찾기
 	void DeleteItem(const int selectIndex);			//아이템 삭제
 
+	void SyncInventoryUI();				//인벤토리 UI랑 싱크 맞추기
+
 	const bool IsEmptyInventory();		//가방 사이즈를 통해 비었는지 판별
 	const bool IsFullInventory();		//가방 사이즈를 통해 가득인지 판별
 };

@@ -4,12 +4,14 @@
 class InventoryUI : public UI
 {
 private:
-	map <string, string> inventory;
+	map <string, wstring> inventory;
+	map <string, wstring> tempInventory;
 public:
 	InventoryUI();
 
 	void OpenInventory();
 	void CloseInventory();
-	void AddItemUI();
+	void SetItemUI(wstring itemName, int index, int inventoryColSize);
+	void ClearInventoryUI();
 };
 

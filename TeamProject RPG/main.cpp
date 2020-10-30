@@ -5,7 +5,7 @@
 
 void SetConsole()
 {
-	//system(" mode  con lines=30   cols=120 ");
+	system(" mode  con lines=40   cols=120 ");
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);

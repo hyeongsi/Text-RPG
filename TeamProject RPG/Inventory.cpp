@@ -45,6 +45,35 @@ void Inventory::DeleteItem(const int selectIndex)
 	}
 }
 
+void Inventory::SyncInventoryUI()
+{
+	inventoryUI.ClearInventoryUI();
+
+	int count = 0;
+	for (auto bagIterator = bag.begin(); bagIterator != bag.end(); bagIterator++)
+	{
+		count++;
+		switch (*bagIterator)
+		{
+		case 0:
+			inventoryUI.SetItemUI(L"HP", count, 4);
+			break;
+		case 1:
+			inventoryUI.SetItemUI(L"MP", count, 4);
+			break;
+		case 2:
+			inventoryUI.SetItemUI(L"-v", count, 4);
+			break;
+		case 3:
+			inventoryUI.SetItemUI(L"+-", count, 4);
+			break;
+		default:
+			break;
+		}	
+	}
+	OpenInventory();
+}
+
 const bool Inventory::IsEmptyInventory()
 {
 	return (0==bag.size());

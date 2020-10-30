@@ -1,5 +1,4 @@
-﻿
-#pragma once
+﻿#pragma once
 #include <iostream>
 #include <Windows.h>
 #include <string>
@@ -7,7 +6,6 @@
 #include <conio.h>
 
 using namespace std;
-
 
 class UI
 {
@@ -17,8 +15,9 @@ protected:
 protected:
 	void GoToXY(SHORT x, SHORT y);
 	void ReadFileString(const char* section, string key, map<string, string>& test, const char* path);
+	void ReadFileString(const char* section, string key, map<string, wstring>& test, const char* path);
 	void ReadFileString(const char* section, const char* key, string& test, const char* path);
-
+	wstring Str2Wstr(const string& str);	//??
 public:
 
 
