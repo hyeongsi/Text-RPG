@@ -51,7 +51,7 @@ void Tank::Die()
 {
 	for (auto tankHP = tank->begin(); tankHP != tank->end(); tankHP++)
 	{
-		if ((*tankHP)->Hp <= 0 && tankHP == --tank->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
+		if ((*tankHP)->Hp <= 0 && tankHP == --tank->end())
 		{
 			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
 			itemPosition->SetY((*tankHP)->GetPos().GetY());

@@ -356,8 +356,17 @@ void MapManager::PrintTank(vector<Tank*>* tank)
 			tempMap[tankPosY - 2][tankPosX - 1 + index] = tankShape["head"][index];
 
 		//몸 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyR"][index];
+		if (player->GetPos().GetX() - (*tank)[i]->GetPos().GetX() > 0)
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyL"][index];
+		}
+		else
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyR"][index];
+		}
+
 
 		//다리 출력
 		for (int index = 0; index < SHAPE_COL; index++)
@@ -371,6 +380,7 @@ void MapManager::PrintItemBox(int positionX, int positionY)
 
 	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[positionY - 2][positionX - 1 + index] = itemBoxShape["head"][index];
+
 
 	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[positionY - 1][positionX - 1 + index] = itemBoxShape["body"][index];

@@ -119,7 +119,7 @@ void Oak::isHit(int playerXPosition, int playerYPosition)
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		this->Hit(player->GetPower());		//Hit()¸¦ ¹Û¿¡´Ù »¬Áö´Â °í¹ÎÇØºÁ¾ßÇÒµí
+		this->Hit(player->GetPower());
 	}
 
 	if (isInvincibility == true)

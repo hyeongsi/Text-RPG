@@ -29,6 +29,9 @@ private:
 	int dir = RIGHT;
 	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
 
+	//충돌위해 추가함
+	int rename = 10;		//맞았을때 밀려날 크기? 이름다시짓기
+
 public:
 	static Player* GetInstance();
 	static void ReleaseInstance();
@@ -57,6 +60,8 @@ public:
 	const int GetIsPickUp();		//줍기상태 유무 리턴
 	const bool GetWalkCount();		//walkCount로 걷는모션 구현 위해 리턴
 	const int GetDir();			//보고있는 방향 리턴
+
+	void IsHit(int monsterXPosition, int monsterYPosition);
 };
 
 enum Behavior

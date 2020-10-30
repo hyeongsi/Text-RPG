@@ -235,3 +235,11 @@ const int Player::GetDir()
 {
 	return dir;
 }
+
+
+//플레이어가 적과 부딪혔을 때 실행할 함수
+void Player::IsHit(int monsterXPosition, int monsterYPosition)
+{
+	(this->GetPos().GetX() - monsterXPosition > 0) ? this->SetPos(this->GetPos().GetX() + rename, this->GetPos().GetY()) : this->SetPos(this->GetPos().GetX() - rename, this->GetPos().GetY());
+	//필요시 무적시간 설정해야함
+}

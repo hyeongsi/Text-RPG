@@ -21,8 +21,6 @@ private:
 	int invincibilityTime = 100;	//무적시간
 	int rename = 5;		//맞았을때 밀려날 크기? 이름다시짓기
 
-	
-
 public:
 	static void AddInstance();
 	static vector<Slime*>* GetInstance();
@@ -35,6 +33,6 @@ public:
 
 	void Move();	//이동 함수
 	void Die();		//죽는 함수
-	void isHit(int playerXPosition, int playerYPosition);	//맞으면실행
+	void IsHit(int playerXPosition, int playerYPosition);	//맞으면실행
 };
 

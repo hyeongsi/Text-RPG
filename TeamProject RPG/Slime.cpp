@@ -74,7 +74,7 @@ void Slime::Die()
 }
 
 //슬라임이 맞았을 때 실행할 함수
-void Slime::isHit(int playerXPosition, int playerYPosition)
+void Slime::IsHit(int playerXPosition, int playerYPosition)
 {
 	//타점
 	int attackXPosition = 0;
