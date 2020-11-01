@@ -96,6 +96,9 @@ void MapManager::PrintMap(bool isOpenInventory)
 				//isSlimeItemDrop = rand() % 3;	//드랍확률계산 33%확률로 아이템떨구기
 				isSlimeItemDrop = 0;			//드랍확률 100%
 			slimeNumber--;
+
+			player->SetExp(20);			//경험치 증가
+			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
 	//오크출력부
@@ -109,6 +112,9 @@ void MapManager::PrintMap(bool isOpenInventory)
 				//isOakItemDrop = rand() % 5;		//드랍확률계산 20%확률로 아이템떨구기
 				isOakItemDrop = 0;
 			oakNumber--;
+
+			player->SetExp(40);			//경험치 증가
+			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
 	//탱크출력부
@@ -122,6 +128,9 @@ void MapManager::PrintMap(bool isOpenInventory)
 				//isTankItemDrop = rand() % 10;		//드랍확률계산 10%확률로 아이템떨구기
 				isTankItemDrop = 0;
 			tankNumber--;
+
+			player->SetExp(60);			//경험치 증가
+			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
 

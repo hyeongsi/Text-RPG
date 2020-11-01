@@ -150,6 +150,7 @@
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Oak.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerStatsUI.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="SelectDungeonUI.cpp" />
     <ClCompile Include="Slime.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Oak.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerStatsUI.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="SelectDungeonUI.h" />
     <ClInclude Include="Slime.h" />

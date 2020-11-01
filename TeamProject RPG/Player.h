@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Character.h"
 #include "Inventory.h"
+#include "PlayerStatsUI.h"
 #include <time.h>
 #include <Windows.h>
 
@@ -18,6 +19,7 @@ private:
 	static Player* playerInstance;
 	Player() {};
 	Inventory inventory;
+	PlayerStatsUI playerStatsUI;
 	
 	string holdWeapon = "sword";
 
@@ -26,6 +28,10 @@ private:
 	bool isAttack = false;
 	bool isPickup = false;
 	bool isSurvival = true;
+
+	int exp = 0;	//경험치   /  100되면 level +1
+	int level = 1;	//레벨
+
 	int dir = RIGHT;
 	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
 
@@ -38,6 +44,7 @@ public:
 
 	void Init();
 	void SetStats(const int hpNum, const int powerNum);
+	void SyncStatsUI();
 
 	void CheckDontMoveDir(Pos leftUp, Pos rightDown);
 
@@ -60,6 +67,7 @@ public:
 	const int GetIsPickUp();		//줍기상태 유무 리턴
 	const bool GetWalkCount();		//walkCount로 걷는모션 구현 위해 리턴
 	const int GetDir();			//보고있는 방향 리턴
+	void SetExp(const int exp);	//경험치 증가
 
 	void IsHit(int monsterXPosition, int monsterYPosition);
 };

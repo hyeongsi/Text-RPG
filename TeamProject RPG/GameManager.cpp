@@ -38,6 +38,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 	}
 
 	mapManager->PrintMap(isOpenInventory);
+	player->Init();
 	while (loop)
 	{
 		if (delayManager.CheckEndDelay())
@@ -100,6 +101,12 @@ void GameManager::StartDungeon(int dungeonNumber)
 			}
 
 			mapManager->PrintMap(isOpenInventory);
+		}
+
+		if (0 >= player->GetHp())
+		{
+			loop = false;
+			player->Init();
 		}
  	}
 }

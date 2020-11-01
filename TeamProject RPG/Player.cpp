@@ -34,6 +34,10 @@ void Player::Init()
 	isSurvival = true;
 	dir = RIGHT;
 
+	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintExp(exp);
+	playerStatsUI.PrintLevel(level);
+
 	for (auto setInitDontMoveDir : dontMoveDir)
 		setInitDontMoveDir = false;
 }
@@ -41,8 +45,16 @@ void Player::Init()
 void Player::SetStats(const int hpNum, const int powerNum)
 {
 	Hp = hpNum;
+	MaxHp = Hp;
 	power = powerNum;
 	int walkCount = 0;
+}
+
+void Player::SyncStatsUI()
+{
+	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintExp(exp);
+	playerStatsUI.PrintLevel(level);
 }
 
 void Player::CheckDontMoveDir(Pos leftUp, Pos rightDown)
@@ -237,10 +249,21 @@ const int Player::GetDir()
 	return dir;
 }
 
+void Player::SetExp(const int exp)
+{
+	this->exp += exp;
+	if (this->exp >= 100)
+	{
+		this->exp -= 100;
+		level += 1;
+	}
+}
+
 
 //플레이어가 적과 부딪혔을 때 실행할 함수
 void Player::IsHit(int monsterXPosition, int monsterYPosition)
 {
 	(this->GetPos().GetX() - monsterXPosition > 0) ? this->SetPos(this->GetPos().GetX() + rename, this->GetPos().GetY()) : this->SetPos(this->GetPos().GetX() - rename, this->GetPos().GetY());
+	playerStatsUI.PrintHp(Hp-1);
 	//필요시 무적시간 설정해야함
 }

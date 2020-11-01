@@ -7,7 +7,6 @@
 #include "Tank.h"
 #include "DelayManager.h"
 
-
 class GameManager
 {
 private:
