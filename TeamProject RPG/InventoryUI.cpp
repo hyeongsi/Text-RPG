@@ -39,8 +39,8 @@ void InventoryUI::SetItemUI(wstring itemName, int index, int inventoryColSize)
 	int startColNum = 2;
 	int startRowNum = 1;	
 
-	startRowNum += ((index / inventoryColSize) * 2);
-	startColNum += ((index % inventoryColSize - 1) * 4);
+	startRowNum += (((index-1) / inventoryColSize) * 2);
+	startColNum += (((index-1) % inventoryColSize) * 4);
 
 	for (int index = 0; index < 2; index++)
 		inventory[to_string(startRowNum)][startColNum + index] = itemName[index];

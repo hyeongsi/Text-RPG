@@ -199,6 +199,31 @@ const bool Player::PickUp()
 	}
 }
 
+void Player::UseItem(int itemNumber)
+{
+	int tempItem = inventory.GetItem((itemNumber-1));
+
+	if (tempItem != -1)	//itemNumber이 가방에 존재하면
+	{
+		switch (tempItem)
+		{
+		case 0:	//hp포션
+			Hp += 1;
+			break;
+		case 1:	//MP포션
+			break;
+		case 2:	//도끼
+			break;
+		case 3:	//칼
+			break;
+		}
+
+		inventory.DeleteItem(itemNumber-1);
+		inventory.SyncInventoryUI();
+		inventory.OpenInventory();
+	}
+}
+
 void Player::OpenInventory()
 {
 	inventory.OpenInventory();
@@ -256,6 +281,8 @@ void Player::SetExp(const int exp)
 	{
 		this->exp -= 100;
 		level += 1;
+		MaxHp += 1;
+		Hp = MaxHp;
 	}
 }
 

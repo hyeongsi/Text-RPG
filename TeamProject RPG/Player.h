@@ -54,6 +54,7 @@ public:
 	const int SetPickUpState();//습득 상태 설정
 
 	const bool PickUp();	//아이템 습득 시 인벤토리에 저장
+	void UseItem(int itemNumber);	//아이템 사용
 	void OpenInventory();		//인벤토리 열기
 	void CloseInventory();		//인벤토리 닫기
 	const int GetInventoryItem(int itemIndex);
@@ -77,7 +78,7 @@ enum Behavior
 	NONE,
 	MOVE,
 	ATTACK,
-	PICKUP
+	PICKUP,
 };
 
 

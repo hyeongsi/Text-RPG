@@ -76,10 +76,10 @@ int GameStartUI::Select()
 				}
 			}
 			else
-				break;
+				break;	
 		}
 	}
-
+	
 	if (currentChoice == NEWGAME)		//새게임시작
 		return 0;
 	else if (currentChoice == CHARACTERSELECET)		//게임정보 불러오기

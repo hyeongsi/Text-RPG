@@ -27,6 +27,8 @@ const int Inventory::GetItem(const int selectIndex)
 		count++;
 		bagIterator++;
 	}
+
+	return -1;
 }
 
 void Inventory::DeleteItem(const int selectIndex)
@@ -55,16 +57,16 @@ void Inventory::SyncInventoryUI()
 		count++;
 		switch (*bagIterator)
 		{
-		case 0:
+		case 0:	//HP포션
 			inventoryUI.SetItemUI(L"HP", count, 4);
 			break;
-		case 1:
+		case 1: //MP포션
 			inventoryUI.SetItemUI(L"MP", count, 4);
 			break;
-		case 2:
+		case 2:	//도끼
 			inventoryUI.SetItemUI(L"-v", count, 4);
 			break;
-		case 3:
+		case 3:	//칼
 			inventoryUI.SetItemUI(L"+-", count, 4);
 			break;
 		default:

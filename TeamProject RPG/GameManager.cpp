@@ -12,6 +12,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 	bool loop = true;
 	Pos *dontMovePos;
 	int tempPlayerState;
+	int escUIState = NOTHING;
 
 	mapManager = new MapManager();
 	mapManager->LoadMap(dungeonNumber);
@@ -41,6 +42,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 	player->Init();
 	while (loop)
 	{
+		escUIState = NOTHING;
 		if (delayManager.CheckEndDelay())
 		{
 			player->CheckDontMoveDir(dontMovePos[0], dontMovePos[1]);
@@ -100,6 +102,15 @@ void GameManager::StartDungeon(int dungeonNumber)
 					isOpenInventory = true;
 			}
 
+			if (GetAsyncKeyState(VK_ESCAPE) && 0x8000)	//esc escMenu 열기	
+				escUIState = escMenuUI.OpenEscMenu();
+
+			if (escUIState == EXIT_ESC_MENU)	//종료버튼, 세이브하고 종료하기
+				return;
+
+			if (escUIState != NOTHING)
+				player->UseItem(escUIState);
+
 			mapManager->PrintMap(isOpenInventory);
 		}
 
@@ -107,6 +118,8 @@ void GameManager::StartDungeon(int dungeonNumber)
 		{
 			loop = false;
 			player->Init();
+
+			//여기다가 slime이나 nullptr이면 releaseInstance()하기
 		}
  	}
 }
@@ -127,7 +140,6 @@ void GameManager::CheckContact()
 
 	if (slime != nullptr)
 	{
-
 		int slimeXPosition;
 		int slimeYPosition;
 		for (int i = 0; i < slime->size(); i++)

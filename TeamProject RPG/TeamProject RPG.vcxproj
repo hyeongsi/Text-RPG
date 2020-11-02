@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="DelayManager.cpp" />
+    <ClCompile Include="EscMenuUI.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameStartUI.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="DelayManager.h" />
+    <ClInclude Include="EscMenuUI.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameStartUI.h" />

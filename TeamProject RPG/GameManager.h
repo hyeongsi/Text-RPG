@@ -6,12 +6,14 @@
 #include "Oak.h"
 #include "Tank.h"
 #include "DelayManager.h"
+#include "EscMenuUI.h"
 
 class GameManager
 {
 private:
 	MapManager* mapManager;
 	DelayManager delayManager;
+	EscMenuUI escMenuUI;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player = Player::GetInstance();
 	vector<Slime*>* slime = Slime::GetInstance();

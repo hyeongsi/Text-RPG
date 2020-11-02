@@ -125,8 +125,9 @@ int SelectDungeonUI::Select()
 					break;
 				}
 			}
-			else
+			else {
 				break;
+			}
 		}
 	}
 

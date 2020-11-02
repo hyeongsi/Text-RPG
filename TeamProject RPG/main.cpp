@@ -44,13 +44,11 @@ int main()
 	//던전선택 UI만들기
 	SelectDungeonUI* selectDungeonUI = new SelectDungeonUI();
 
-	while (1) {
-		system("cls");
-		dungeonSelect = selectDungeonUI->Select();
+	system("cls");
+	dungeonSelect = selectDungeonUI->Select();
 
 		//던전시작전에 버퍼지우기(메뉴창에서 입력받은 방향키랑 스페이스바가 남아있어서 게임시작하고 자동으로움직임)
-		gameManager.StartDungeon(dungeonSelect);
-	}
+	gameManager.StartDungeon(dungeonSelect);
 
 	//게임종료시 map할당받은 반환
 	delete selectDungeonUI;
