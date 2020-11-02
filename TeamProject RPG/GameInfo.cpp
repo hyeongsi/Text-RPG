@@ -244,3 +244,12 @@ void GameInfo::LoadTankShape()
 	ReadFileString("tank", "legs", "GameInfo\\tank.ini");	//다리
 	tankShape["legs"] = loadData;
 }
+
+void GameInfo::WriteData(string tempSection, string tempKey, string tempValue, string tempPath)
+{
+	auto section = tempSection.c_str();
+	auto key = tempKey.c_str();
+	auto value = tempValue.c_str();
+	auto path = tempPath.c_str();
+	WritePrivateProfileString(section, key, value, path);
+}

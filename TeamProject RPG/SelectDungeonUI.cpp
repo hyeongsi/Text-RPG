@@ -5,7 +5,7 @@ SelectDungeonUI::SelectDungeonUI()
 	system("cls");
 	string index;
 	//선택할 던전번호
-	for (int i = 0; i <= 3; i++)
+	for (int i = 0; i <= 4; i++)
 	{
 		index = to_string(i);
 		ReadFileString("select", index, select, "GameInfo\\SelectDungeonUI.ini");
@@ -41,7 +41,7 @@ void SelectDungeonUI::Show()
 	{
 		string s = to_string(i);
 		GoToXY(60, 1 + (i * 2));
-		cout << select[s] << endl;
+		cout << select[s];
 	}
 
 	//플레이어에 대한 설명 출력
@@ -114,7 +114,7 @@ int SelectDungeonUI::Select()
 					break;
 
 				case 80:							//아래로 이동
-					if (currentChoice + 2 > 7)
+					if (currentChoice + 2 > 9)
 						break;
 
 					GoToXY(57, currentChoice);
@@ -125,9 +125,8 @@ int SelectDungeonUI::Select()
 					break;
 				}
 			}
-			else {
-				break;
-			}
+			if (GetAsyncKeyState(VK_SPACE) & 0x8000)	//스페이스바를 누르면 반복문 탈출인데...
+				break;									//이전에 뭐가문제였는지 찾기
 		}
 	}
 
@@ -137,6 +136,8 @@ int SelectDungeonUI::Select()
 		return 2;
 	else if (currentChoice == DUNGEON3)	//3번던전
 		return 3;
+	else if (currentChoice == gameExit)	//게임종료
+		return 0;
 
 	return -1;		//잘못된값
 }

@@ -10,10 +10,10 @@ public:
 
 	bool operator==(Pos pos);
 
-	const int& GetX();
+	const int& GetX() const;
 	void SetX(const int x);
 
-	const int& GetY();
+	const int& GetY() const;
 	void SetY(const int y);
 };
 

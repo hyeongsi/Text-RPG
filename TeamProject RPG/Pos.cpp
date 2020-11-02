@@ -17,7 +17,7 @@ bool Pos::operator==(Pos pos)
 	return (x == pos.GetX() && y == pos.GetY());
 }
 
-const int& Pos::GetX()
+const int& Pos::GetX() const
 {
 	return x;
 }
@@ -28,7 +28,7 @@ void Pos::SetX(const int x)
 	this->x = x;
 }
 
-const int& Pos::GetY()
+const int& Pos::GetY() const
 {
 	return y;
 }

@@ -18,7 +18,13 @@ vector<Tank*>* Tank::GetInstance()
 
 void Tank::ReleaseInstance()
 {
-	//동적할당해제하기
+	for (int tankNumber = 0; tankNumber <= tank->size(); tankNumber++)
+	{
+		delete tank->back();
+		tank->pop_back();
+	}
+	delete tank;
+	tank = nullptr;
 }
 
 void Tank::SetStats(int hp, int power, int speed)
@@ -55,6 +61,7 @@ void Tank::Die()
 		{
 			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
 			itemPosition->SetY((*tankHP)->GetPos().GetY());
+			delete (tank->back());
 			tank->pop_back();
 			return;
 		}
@@ -62,6 +69,7 @@ void Tank::Die()
 		{
 			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
 			itemPosition->SetY((*tankHP)->GetPos().GetY());
+			delete (*tankHP);
 			tankHP = tank->erase(tankHP);
 		}
 	}

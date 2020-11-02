@@ -85,6 +85,37 @@ void MapManager::PrintMap(bool isOpenInventory)
 			tempMap[col][row] = map[col][row];
 	}
 
+	//슬라임의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isSlimeItemDrop == ITEM_DROP) {
+		Pos tempItemPos;
+		tempItemPos.SetX(Slime::itemPosition->GetX());
+		tempItemPos.SetY(Slime::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		isSlimeItemDrop = -1;
+	}
+	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isOakItemDrop == ITEM_DROP) {
+		Pos tempItemPos;
+		tempItemPos.SetX(Oak::itemPosition->GetX());
+		tempItemPos.SetY(Oak::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		isOakItemDrop = -1;
+	}
+	//탱크의 아이템드랍하면 좌표 아이템리스트에넣기
+	if (isTankItemDrop == ITEM_DROP) {
+		Pos tempItemPos;
+		tempItemPos.SetX(Tank::itemPosition->GetX());
+		tempItemPos.SetY(Tank::itemPosition->GetY());
+
+		itemPosition.emplace_back(tempItemPos);
+		isTankItemDrop = -1;
+	}
+	//아이템박스출력
+	for (auto itemPositions : itemPosition)
+		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
+
 	//슬라임출력부
 	if (slime != nullptr)
 	{
@@ -133,37 +164,6 @@ void MapManager::PrintMap(bool isOpenInventory)
 			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
-
-	//슬라임의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isSlimeItemDrop == ITEM_DROP) {
-		Pos tempItemPos;
-		tempItemPos.SetX(Slime::itemPosition->GetX());
-		tempItemPos.SetY(Slime::itemPosition->GetY());
-
-		itemPosition.emplace_back(tempItemPos);
-		isSlimeItemDrop = -1;
-	}
-	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isOakItemDrop == ITEM_DROP) {
-		Pos tempItemPos;
-		tempItemPos.SetX(Oak::itemPosition->GetX());
-		tempItemPos.SetY(Oak::itemPosition->GetY());
-
-		itemPosition.emplace_back(tempItemPos);
-		isOakItemDrop = -1;
-	}
-	//탱크의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isTankItemDrop == ITEM_DROP) {
-		Pos tempItemPos;
-		tempItemPos.SetX(Tank::itemPosition->GetX());
-		tempItemPos.SetY(Tank::itemPosition->GetY());
-
-		itemPosition.emplace_back(tempItemPos);
-		isTankItemDrop = -1;
-	}
-	//아이템박스출력
-	for (auto itemPositions : itemPosition)
-		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
 
 	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());

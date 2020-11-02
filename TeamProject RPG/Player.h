@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "Inventory.h"
 #include "PlayerStatsUI.h"
+#include "DelayManager.h"
 #include <time.h>
 #include <Windows.h>
 
@@ -35,7 +36,10 @@ private:
 	int dir = RIGHT;
 	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
 
-	//충돌위해 추가함
+	//피격당했을때 잠깐무적을 위해 추가
+	DelayManager attackedDelaymanager;
+	bool isInvincibility = false;	//무적상태여부
+	int invincibilityTime = 2500;	//무적시간
 	int rename = 10;		//맞았을때 밀려날 크기? 이름다시짓기
 
 public:
@@ -68,9 +72,11 @@ public:
 	const int GetIsPickUp();		//줍기상태 유무 리턴
 	const bool GetWalkCount();		//walkCount로 걷는모션 구현 위해 리턴
 	const int GetDir();			//보고있는 방향 리턴
+	const int GetLevel();
+	const int GetExp();
 	void SetExp(const int exp);	//경험치 증가
 
-	void IsHit(int monsterXPosition, int monsterYPosition);
+	void IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& rightLimit, int monsterPower);
 };
 
 enum Behavior

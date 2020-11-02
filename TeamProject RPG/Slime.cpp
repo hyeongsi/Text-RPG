@@ -20,7 +20,13 @@ vector<Slime*>* Slime::GetInstance()
 //동적할당해제하기
 void Slime::ReleaseInstance()
 {
-	//동적할당해제하기
+	for (int slimeNumber = 0; slimeNumber <= slime->size() + 1; slimeNumber++)
+	{
+		delete slime->back();
+		slime->pop_back();
+	}
+	delete slime;
+	slime = nullptr;
 }
 
 //각 슬라임마다 체력과 공격력과 스피드 설정하기
@@ -61,14 +67,16 @@ void Slime::Die()
 		{
 			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
-			slime->pop_back();
+			delete (slime->back());		//할당받은거 반납
+			slime->pop_back();			//벡터에서 삭제
 			return;
 		}
 		else if ((*slimeHP)->Hp <= 0)
 		{
 			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
-			slimeHP = slime->erase(slimeHP);
+			delete (*slimeHP);		//할당받은거 반납
+			slimeHP = slime->erase(slimeHP);	//벡터에서 삭제
 		}	
 	}
 }

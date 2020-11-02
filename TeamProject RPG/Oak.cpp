@@ -9,7 +9,7 @@ void Oak::AddInstance()
 	if (oak == nullptr)
 		oak = new vector<Oak*>();
 
-	oak->push_back(new Oak());		//slime객체 추가
+	oak->push_back(new Oak());		//oak객체 추가
 }
 
 //객체벡터반환
@@ -21,7 +21,13 @@ vector<Oak*>* Oak::GetInstance()
 //동적할당해제하기
 void Oak::ReleaseInstance()
 {
-	//동적할당해제하기
+	for (int oakNumber = 0; oakNumber <= oak->size() + 1; oakNumber++)
+	{
+		delete oak->back();
+		oak->pop_back();
+	}
+	delete oak;
+	oak = nullptr;
 }
 
 //각 오크마다 체력과 공격력과 스피드 설정하기
@@ -62,6 +68,7 @@ void Oak::Die()
 		{
 			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
 			itemPosition->SetY((*oakHP)->GetPos().GetY());
+			delete (oak->back());
 			oak->pop_back();
 			return;
 		}
@@ -69,6 +76,7 @@ void Oak::Die()
 		{
 			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
 			itemPosition->SetY((*oakHP)->GetPos().GetY());
+			delete (*oakHP);
 			oakHP = oak->erase(oakHP);
 		}
 	}

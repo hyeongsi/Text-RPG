@@ -8,4 +8,15 @@ loadMap()에서 currentDungeon을 사용안하는것같음.. 만든목적이 있
 system(" mode  con lines=30   cols=120 ");이거안됨
 
 
+내가 커밋한거1, 2
+1
+2
+
+pull
+marge
+
+stash
+2번	작성을한거
+1
+3
 

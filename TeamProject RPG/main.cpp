@@ -16,9 +16,9 @@ void SetConsole()
 }
 
 const enum select {
+	EXIT = -1,
 	NEWGAME,
 	CHARACTERSELECET,
-	EXIT
 };
 
 int main()
@@ -35,10 +35,13 @@ int main()
 
 	GameManager gameManager;
 	if (menuSelect == NEWGAME)
+	{
 		gameManager.Play(menuSelect);
+	}
 	else if (menuSelect == CHARACTERSELECET)
 	{
-		return 0;		//여기에는 이전 캐릭터 선택하는 UI만들어서 넣기
+		return 0;		//여기에는 이전 캐릭터 선택하는 UI만들어서 넣기, 반환값 saveCharacterNumber넣고
+		// gameManager.Play(saveCharacterNumber);
 	}	
 
 	//던전선택 UI만들기
@@ -47,8 +50,18 @@ int main()
 	system("cls");
 	dungeonSelect = selectDungeonUI->Select();
 
-		//던전시작전에 버퍼지우기(메뉴창에서 입력받은 방향키랑 스페이스바가 남아있어서 게임시작하고 자동으로움직임)
 	gameManager.StartDungeon(dungeonSelect);
+	while (1) {
+		system("cls");
+		dungeonSelect = selectDungeonUI->Select();
+		dungeonSelect = gameManager.StartDungeon(dungeonSelect);
+
+		if (EXIT == dungeonSelect)
+		{
+			//플레이어에서 할당받은거 있으면 여기서 삭제해야됨
+			break;
+		}
+	}
 
 	//게임종료시 map할당받은 반환
 	delete selectDungeonUI;

@@ -85,9 +85,9 @@ int GameStartUI::Select()
 	else if (currentChoice == CHARACTERSELECET)		//게임정보 불러오기
 		return 1;
 	else if (currentChoice == EXIT)		//게임나가기
-		return 2;
+		return -1;
 
-	return -1;		//잘못된값
+	return -2;		//잘못된값
 }
 
 //사용한 맵변수들 소멸

@@ -21,9 +21,12 @@ private:
 	vector<Tank*>* tank = Tank::GetInstance();
 
 	bool isOpenInventory = false;
+	string playerName;
+	string path = "playerList\\";
 public:
 	void Play(int saveFileNumber); //게임 시작버튼 눌렀을 때
-	void StartDungeon(int dungeonNumber);
+	int StartDungeon(int dungeonNumber);
+	void SavePlayerData();
 
 	void CheckContact();
 };

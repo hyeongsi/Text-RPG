@@ -56,6 +56,8 @@ public:
 
 	void LoadTankStats();
 	void LoadTankShape();
+
+	void WriteData(string tempSection, string tempKey, string tempValue, string tempPath);
 };
 const enum items{
 	WEAPON,

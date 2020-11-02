@@ -2,13 +2,24 @@
 
 void GameManager::Play(int saveFileNumber)
 {
+	if (0 == saveFileNumber)
+	{
+		system("cls");
+		mapManager->GoToXY(30, 10);
+		cout << "닉네임을 입력하세요 : ";
+		cin >> playerName;
+		path += playerName + ".ini";
+	}
 	gameInfo->LoadSaveData(saveFileNumber); // 세이브파일 번호
 	gameInfo->LoadPlayerShape(saveFileNumber);
 	gameInfo->LoadWeaponData();
 }
 
-void GameManager::StartDungeon(int dungeonNumber)
+int GameManager::StartDungeon(int dungeonNumber)
 {
+	if (0 == dungeonNumber)
+		return -1;
+
 	bool loop = true;
 	Pos *dontMovePos;
 	int tempPlayerState;
@@ -106,7 +117,7 @@ void GameManager::StartDungeon(int dungeonNumber)
 				escUIState = escMenuUI.OpenEscMenu();
 
 			if (escUIState == EXIT_ESC_MENU)	//종료버튼, 세이브하고 종료하기
-				return;
+				return 0;
 
 			if (escUIState != NOTHING)
 				player->UseItem(escUIState);
@@ -119,9 +130,53 @@ void GameManager::StartDungeon(int dungeonNumber)
 			loop = false;
 			player->Init();
 
-			//여기다가 slime이나 nullptr이면 releaseInstance()하기
+			if(slime != nullptr)
+				Slime::ReleaseInstance();
+
+			if (oak != nullptr)
+				Oak::ReleaseInstance();
+
+			if (tank != nullptr)
+				Tank::ReleaseInstance();
+		}
+		
+		//몬스터숫자세기
+		int monsterNumber = 0;
+		if (slime != nullptr)
+			monsterNumber += static_cast<int>(slime->size());
+		if (oak != nullptr)
+			monsterNumber += static_cast<int>(oak->size());
+		if (tank != nullptr)
+			monsterNumber += static_cast<int>(tank->size());
+
+		//몬스터가 다죽으면 던전선택화면으로이동
+		//여기 문제는 아이템줍지도못하고 강제탈출됨 던전탈출조건 추가필요
+		if (monsterNumber <= 0)
+		{
+			loop = false;
+			player->Init();
+
 		}
  	}
+
+	SavePlayerData();	//던전하나깰때마다 정보저장
+
+	return 0;
+}
+
+void GameManager::SavePlayerData()
+{
+	//여기서 플레이어 정보 기록하기 던전에서 탈출했을때
+	//게임시작할 때 이름 입력받아서 playerName에 넣기
+	string playerHp = to_string(player->GetHp());			//체력
+	string playerPower = to_string(player->GetPower());		//공격력
+	string playerLevel = to_string(player->GetLevel());		//레벨
+	string playerExp = to_string(player->GetExp());			//경험치
+
+	gameInfo->WriteData(playerName, "hp", playerHp, path);
+	gameInfo->WriteData(playerName, "power", playerPower, path);
+	gameInfo->WriteData(playerName, "level", playerLevel, path);
+	gameInfo->WriteData(playerName, "exp", playerExp, path);
 }
 
 //플레이어와 적의 충돌처리
@@ -317,18 +372,9 @@ void GameManager::CheckContact()
 	}
 
 	if (isCrashSilme == true)
-	{
-		player->IsHit((*slime)[crashIndex]->GetPos().GetX(), (*slime)[crashIndex]->GetPos().GetY());
-		player->Hit((*slime)[crashIndex]->GetPower());
-	}
+		player->IsHit((*slime)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 	else if (isCrashOak == true)
-	{
-		player->IsHit((*oak)[crashIndex]->GetPos().GetX(), (*oak)[crashIndex]->GetPos().GetY());
-		player->Hit((*oak)[crashIndex]->GetPower());
-	}
+		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 	else if (isCrashTank == true)
-	{
-		player->IsHit((*tank)[crashIndex]->GetPos().GetX(), (*tank)[crashIndex]->GetPos().GetY());
-		player->Hit((*tank)[crashIndex]->GetPower());
-	}
+		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 }
