@@ -10,6 +10,9 @@ void MapManager::Init()
 	isOakItemDrop = -1;
 	isTankItemDrop = -1;
 	getItemNumber = 0;		//획득한 아이템수
+	slime = nullptr;
+	oak = nullptr;
+	tank = nullptr;
 	itemPosition.clear();
 }
 
@@ -453,7 +456,7 @@ void MapManager::SetDropItem()
 	if (itemPosition.size() <= 0)		//아이템이 있을때만 실행
 		return;
 
-	/*for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
+	for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
 	{
 		if ((*itemPositionIterator) == player->GetPos())
 		{
@@ -464,8 +467,5 @@ void MapManager::SetDropItem()
 		}
 		else
 			itemPositionIterator++;
-	}*/
+	}
 }
-
-//던전탈출시 초기화할것들
-//1. monster, slime, oak, item관련 int변수랑, item 리스트초기화, slime, oak 벡터초기화, ..생각나면 더적고 추가하기

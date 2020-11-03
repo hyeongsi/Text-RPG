@@ -52,6 +52,7 @@ int main()
 		dungeonSelect = selectDungeonUI->Select();
 		dungeonSelect = gameManager.StartDungeon(dungeonSelect);
 
+
 		if (EXIT == dungeonSelect)
 		{
 			//플레이어에서 할당받은거 있으면 여기서 삭제해야됨

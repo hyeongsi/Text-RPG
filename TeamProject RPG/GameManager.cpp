@@ -94,7 +94,7 @@ int GameManager::StartDungeon(int dungeonNumber)
 				if (tank != nullptr)
 				{
 					for (int i = 0; i < tank->size(); i++)
-						(*tank)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
+						(*tank)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());	//피격여부
 				}
 				break;
 			case PICKUP:
@@ -141,9 +141,7 @@ int GameManager::StartDungeon(int dungeonNumber)
 			player->Init();
 
 			Slime::ReleaseInstance();
-
 			Oak::ReleaseInstance();
-
 			Tank::ReleaseInstance();
 		}
  	}

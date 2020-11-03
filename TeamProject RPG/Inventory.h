@@ -12,7 +12,7 @@ class Inventory
 private:
 	InventoryUI inventoryUI;
 
-	list<int>bag;
+	list<int>* bag = new list<int>();
 	int count = 0;
 public:
 	void OpenInventory();

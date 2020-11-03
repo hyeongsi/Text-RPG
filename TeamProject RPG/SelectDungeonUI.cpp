@@ -61,11 +61,11 @@ void SelectDungeonUI::Show()
 		cout << playerTemplate[index];
 	}
 
-	//인벤토리에 대한 설명 출력
+	////인벤토리에 대한 설명 출력
 	GoToXY(7, 14);
 	cout << inventoryExplanation;
 
-	//아이템 출력할 틀 출력
+	////아이템 출력할 틀 출력
 	for (int i = 0; i < inventory.size(); i++)
 	{
 		GoToXY(3, 15 + i);

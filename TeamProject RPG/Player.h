@@ -19,7 +19,7 @@ class Player : public Character
 private:
 	static Player* playerInstance;
 	Player() {};
-	//Inventory inventory;
+	Inventory inventory;
 	PlayerStatsUI playerStatsUI;
 	
 	string holdWeapon = "sword";
@@ -57,11 +57,11 @@ public:
 	const int Attack();	//공격 함수
 	const int SetPickUpState();//습득 상태 설정
 
-	//const bool PickUp();	//아이템 습득 시 인벤토리에 저장
+	const bool PickUp();	//아이템 습득 시 인벤토리에 저장
 	void UseItem(int itemNumber);	//아이템 사용
 	void OpenInventory();		//인벤토리 열기
 	void CloseInventory();		//인벤토리 닫기
-	//const int GetInventoryItem(int itemIndex);
+	const int GetInventoryItem(int itemIndex);
 
 	void Die();		//죽는 함수
 
