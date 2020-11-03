@@ -18,11 +18,15 @@ vector<Tank*>* Tank::GetInstance()
 
 void Tank::ReleaseInstance()
 {
-	for (int tankNumber = 0; tankNumber <= tank->size(); tankNumber++)
+	if (tank == nullptr)
+		return;
+
+	for (auto tankIterator = tank->begin(); tankIterator != tank->end();)
 	{
-		delete tank->back();
-		tank->pop_back();
+		delete *tankIterator;
+		tank->erase(tankIterator++);
 	}
+
 	delete tank;
 	tank = nullptr;
 }
@@ -55,23 +59,18 @@ void Tank::Move()
 
 void Tank::Die()
 {
-	for (auto tankHP = tank->begin(); tankHP != tank->end(); tankHP++)
+	for (auto tankHP = tank->begin(); tankHP != tank->end();)
 	{
-		if ((*tankHP)->Hp <= 0 && tankHP == --tank->end())
+		if ((*tankHP)->Hp <= 0)
 		{
 			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
 			itemPosition->SetY((*tankHP)->GetPos().GetY());
-			delete (tank->back());
-			tank->pop_back();
+			delete (*tankHP);		//할당받은거 반납
+			tank->erase(tankHP);	//벡터에서 삭제
 			return;
 		}
-		else if ((*tankHP)->Hp <= 0)
-		{
-			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
-			itemPosition->SetY((*tankHP)->GetPos().GetY());
-			delete (*tankHP);
-			tankHP = tank->erase(tankHP);
-		}
+		else
+			tankHP++;
 	}
 }
 

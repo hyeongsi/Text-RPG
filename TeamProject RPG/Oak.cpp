@@ -21,11 +21,15 @@ vector<Oak*>* Oak::GetInstance()
 //동적할당해제하기
 void Oak::ReleaseInstance()
 {
-	for (int oakNumber = 0; oakNumber <= oak->size() + 1; oakNumber++)
+	if (oak == nullptr)
+		return;
+
+	for (auto oakIterator = oak->begin(); oakIterator != oak->end();)
 	{
-		delete oak->back();
-		oak->pop_back();
+		delete* oakIterator;
+		oak->erase(oakIterator++);
 	}
+
 	delete oak;
 	oak = nullptr;
 }
@@ -62,23 +66,18 @@ void Oak::Move()
 void Oak::Die()
 {
 	//오크체력없으면 삭제
-	for (auto oakHP = oak->begin(); oakHP != oak->end(); oakHP++)
+	for (auto oakHP = oak->begin(); oakHP != oak->end();)
 	{
-		if ((*oakHP)->Hp <= 0 && oakHP == --oak->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
+		if ((*oakHP)->Hp <= 0)		
 		{
 			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
 			itemPosition->SetY((*oakHP)->GetPos().GetY());
-			delete (oak->back());
-			oak->pop_back();
+			delete (*oakHP);		//할당받은거 반납
+			oak->erase(oakHP);	//벡터에서 삭제
 			return;
 		}
-		else if ((*oakHP)->Hp <= 0)
-		{
-			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
-			itemPosition->SetY((*oakHP)->GetPos().GetY());
-			delete (*oakHP);
-			oakHP = oak->erase(oakHP);
-		}
+		else
+			oakHP++;
 	}
 }
 

@@ -47,10 +47,6 @@ int main()
 	//던전선택 UI만들기
 	SelectDungeonUI* selectDungeonUI = new SelectDungeonUI();
 
-	system("cls");
-	dungeonSelect = selectDungeonUI->Select();
-
-	gameManager.StartDungeon(dungeonSelect);
 	while (1) {
 		system("cls");
 		dungeonSelect = selectDungeonUI->Select();

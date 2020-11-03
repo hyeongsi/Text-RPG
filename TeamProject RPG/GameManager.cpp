@@ -5,7 +5,7 @@ void GameManager::Play(int saveFileNumber)
 	if (0 == saveFileNumber)
 	{
 		system("cls");
-		mapManager->GoToXY(30, 10);
+		mapManager.GoToXY(30, 10);
 		cout << "닉네임을 입력하세요 : ";
 		cin >> playerName;
 		path += playerName + ".ini";
@@ -25,9 +25,9 @@ int GameManager::StartDungeon(int dungeonNumber)
 	int tempPlayerState;
 	int escUIState = NOTHING;
 
-	mapManager = new MapManager();
-	mapManager->LoadMap(dungeonNumber);
-	dontMovePos = mapManager->GetDontMovePos();	//이동불가 영역 받아서 사용
+	mapManager.Init();
+	mapManager.LoadMap(dungeonNumber);
+	dontMovePos = mapManager.GetDontMovePos();	//이동불가 영역 받아서 사용
 	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
 
 	slime = Slime::GetInstance();
@@ -49,7 +49,7 @@ int GameManager::StartDungeon(int dungeonNumber)
 		gameInfo->LoadTankStats();
 	}
 
-	mapManager->PrintMap(isOpenInventory);
+	mapManager.PrintMap(isOpenInventory);
 	player->Init();
 	while (loop)
 	{
@@ -98,7 +98,7 @@ int GameManager::StartDungeon(int dungeonNumber)
 				}
 				break;
 			case PICKUP:
-				mapManager->SetDropItem();
+				mapManager.SetDropItem();
 				break;
 			}
 
@@ -116,21 +116,31 @@ int GameManager::StartDungeon(int dungeonNumber)
 			if (GetAsyncKeyState(VK_ESCAPE) && 0x8000)	//esc escMenu 열기	
 				escUIState = escMenuUI.OpenEscMenu();
 
-			if (escUIState == EXIT_ESC_MENU)	//종료버튼, 세이브하고 종료하기
-				return 0;
-
 			if (escUIState != NOTHING)
 				player->UseItem(escUIState);
 
-			mapManager->PrintMap(isOpenInventory);
+			mapManager.PrintMap(isOpenInventory);
 		}
 
-		if (0 >= player->GetHp())
+		
+		
+		//몬스터숫자세기
+		size_t monsterNumber = 0;
+		if (slime != nullptr)
+			monsterNumber += slime->size();
+		if (oak != nullptr)
+			monsterNumber += oak->size();
+		if (tank != nullptr)
+			monsterNumber += tank->size();
+
+		//몬스터가 다죽으면 던전선택화면으로이동
+		//여기 문제는 아이템줍지도못하고 강제탈출됨 던전탈출조건 추가필요
+		if (monsterNumber <= 0 || player->GetHp() <= 0 || escUIState == EXIT_ESC_MENU)
 		{
 			loop = false;
 			player->Init();
 
-			if(slime != nullptr)
+			if (slime != nullptr)
 				Slime::ReleaseInstance();
 
 			if (oak != nullptr)
@@ -138,24 +148,6 @@ int GameManager::StartDungeon(int dungeonNumber)
 
 			if (tank != nullptr)
 				Tank::ReleaseInstance();
-		}
-		
-		//몬스터숫자세기
-		int monsterNumber = 0;
-		if (slime != nullptr)
-			monsterNumber += static_cast<int>(slime->size());
-		if (oak != nullptr)
-			monsterNumber += static_cast<int>(oak->size());
-		if (tank != nullptr)
-			monsterNumber += static_cast<int>(tank->size());
-
-		//몬스터가 다죽으면 던전선택화면으로이동
-		//여기 문제는 아이템줍지도못하고 강제탈출됨 던전탈출조건 추가필요
-		if (monsterNumber <= 0)
-		{
-			loop = false;
-			player->Init();
-
 		}
  	}
 
@@ -372,9 +364,9 @@ void GameManager::CheckContact()
 	}
 
 	if (isCrashSilme == true)
-		player->IsHit((*slime)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
+		player->IsHit((*slime)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 	else if (isCrashOak == true)
-		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
+		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 	else if (isCrashTank == true)
-		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
+		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 }

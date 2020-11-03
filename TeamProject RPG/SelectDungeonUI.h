@@ -20,11 +20,13 @@ class SelectDungeonUI : public UI
 	const int gameExit = 9;
 
 public:
+	void Init();
+
 	SelectDungeonUI();
 	void Show();
 	int Select();
 
-	~SelectDungeonUI();
+	//~SelectDungeonUI();
 };
 
 

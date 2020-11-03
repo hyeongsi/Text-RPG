@@ -20,14 +20,18 @@ vector<Slime*>* Slime::GetInstance()
 //동적할당해제하기
 void Slime::ReleaseInstance()
 {
-	for (int slimeNumber = 0; slimeNumber <= slime->size() + 1; slimeNumber++)
+	if (slime == nullptr)
+		return;
+
+	for (auto slimeIterator = slime->begin(); slimeIterator != slime->end();)
 	{
-		delete slime->back();
-		slime->pop_back();
+		delete* slimeIterator;
+		slime->erase(slimeIterator++);
 	}
+
 	delete slime;
 	slime = nullptr;
-}
+}   
 
 //각 슬라임마다 체력과 공격력과 스피드 설정하기
 void Slime::SetStats(int hp, int power, int speed)
@@ -61,23 +65,18 @@ void Slime::Move()
 //슬라임체력없으면 삭제
 void Slime::Die()
 {
-	for (auto slimeHP = slime->begin(); slimeHP != slime->end(); slimeHP++)
+	for (auto slimeHP = slime->begin(); slimeHP != slime->end();)
 	{
-		if ((*slimeHP)->Hp <= 0 && slimeHP == --slime->end())		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
-		{
-			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
-			itemPosition->SetY((*slimeHP)->GetPos().GetY());
-			delete (slime->back());		//할당받은거 반납
-			slime->pop_back();			//벡터에서 삭제
-			return;
-		}
-		else if ((*slimeHP)->Hp <= 0)
+		if ((*slimeHP)->Hp <= 0)		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
 		{
 			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
 			delete (*slimeHP);		//할당받은거 반납
-			slimeHP = slime->erase(slimeHP);	//벡터에서 삭제
-		}	
+			slime->erase(slimeHP);	//벡터에서 삭제
+			return;
+		}
+		else
+			slimeHP++;
 	}
 }
 

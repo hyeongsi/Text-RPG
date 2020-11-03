@@ -1,5 +1,18 @@
 ﻿#include "MapManager.h"
 
+void MapManager::Init()
+{
+	monsterNumer = 0;	//몬스터들의 수가 들어갈 변수.. 던전탈출조건으로 사용
+	slimeNumber = 0;	//현재 슬라임, 오크, 탱크수
+	oakNumber = 0;
+	tankNumber = 0;
+	isSlimeItemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
+	isOakItemDrop = -1;
+	isTankItemDrop = -1;
+	getItemNumber = 0;		//획득한 아이템수
+	itemPosition.clear();
+}
+
 void MapManager::GoToXY(SHORT x, SHORT y)
 {
 	COORD pos = { x, y };
@@ -440,7 +453,7 @@ void MapManager::SetDropItem()
 	if (itemPosition.size() <= 0)		//아이템이 있을때만 실행
 		return;
 
-	for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
+	/*for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
 	{
 		if ((*itemPositionIterator) == player->GetPos())
 		{
@@ -451,7 +464,7 @@ void MapManager::SetDropItem()
 		}
 		else
 			itemPositionIterator++;
-	}
+	}*/
 }
 
 //던전탈출시 초기화할것들

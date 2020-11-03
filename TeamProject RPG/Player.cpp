@@ -8,7 +8,6 @@ Player* Player::GetInstance()
 	{
 		srand((unsigned int)time(NULL));
 		playerInstance = new Player();
-
 	}
 
 	return playerInstance;
@@ -186,58 +185,58 @@ const int Player::SetPickUpState()
 	return PICKUP;
 }
 
-const bool Player::PickUp()
-{
-	if(inventory.IsFullInventory())
-		return false;
-	else
-	{
-		//아이템 박스 습득 시 아이템 사이즈에 따라 랜덤 아이템 드랍
-		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);	
-		inventory.SyncInventoryUI();
-		return true;
-	}
-}
+//const bool Player::PickUp()
+//{
+//	if(inventory.IsFullInventory())
+//		return false;
+//	else
+//	{
+//		//아이템 박스 습득 시 아이템 사이즈에 따라 랜덤 아이템 드랍
+//		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);	
+//		inventory.SyncInventoryUI();
+//		return true;
+//	}
+//}
 
 void Player::UseItem(int itemNumber)
 {
-	int tempItem = inventory.GetItem((itemNumber-1));
+	//int tempItem = inventory.GetItem((itemNumber-1));
 
-	if (tempItem != -1)	//itemNumber이 가방에 존재하면
-	{
-		switch (tempItem)
-		{
-		case 0:	//hp포션
-			Hp += 1;
-			break;
-		case 1:	//MP포션
-			break;
-		case 2:	//도끼
-			break;
-		case 3:	//칼
-			break;
-		}
+	//if (tempItem != -1)	//itemNumber이 가방에 존재하면
+	//{
+	//	switch (tempItem)
+	//	{
+	//	case 0:	//hp포션
+	//		Hp += 1;
+	//		break;
+	//	case 1:	//MP포션
+	//		break;
+	//	case 2:	//도끼
+	//		break;
+	//	case 3:	//칼
+	//		break;
+	//	}
 
-		inventory.DeleteItem(itemNumber-1);
-		inventory.SyncInventoryUI();
-		inventory.OpenInventory();
-	}
+	//	inventory.DeleteItem(itemNumber-1);
+	//	inventory.SyncInventoryUI();
+	//	inventory.OpenInventory();
+	//}
 }
 
 void Player::OpenInventory()
 {
-	inventory.OpenInventory();
+	//inventory.OpenInventory();
 }
 
 void Player::CloseInventory()
 {
-	inventory.CloseInventory();
+	//inventory.CloseInventory();
 }
 
-const int Player::GetInventoryItem(int itemIndex)
-{
-	return inventory.GetItem(itemIndex);
-}
+//const int Player::GetInventoryItem(int itemIndex)
+//{
+//	return inventory.GetItem(itemIndex);
+//}
 
 void Player::Die()
 {

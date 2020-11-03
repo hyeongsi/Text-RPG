@@ -11,7 +11,7 @@
 class GameManager
 {
 private:
-	MapManager* mapManager;
+	MapManager mapManager;
 	DelayManager delayManager;
 	EscMenuUI escMenuUI;
 	GameInfo* gameInfo = GameInfo::GetInstance();
