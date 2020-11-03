@@ -21,11 +21,10 @@ void Tank::ReleaseInstance()
 	if (tank == nullptr)
 		return;
 
-	for (auto tankIterator = tank->begin(); tankIterator != tank->end();)
-	{
-		delete *tankIterator;
-		tank->erase(tankIterator++);
-	}
+	for (int i = 0; i < tank->size(); i++)
+		delete (*tank)[i];
+
+	tank->clear();
 
 	delete tank;
 	tank = nullptr;

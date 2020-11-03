@@ -140,14 +140,11 @@ int GameManager::StartDungeon(int dungeonNumber)
 			loop = false;
 			player->Init();
 
-			if (slime != nullptr)
-				Slime::ReleaseInstance();
+			Slime::ReleaseInstance();
 
-			if (oak != nullptr)
-				Oak::ReleaseInstance();
+			Oak::ReleaseInstance();
 
-			if (tank != nullptr)
-				Tank::ReleaseInstance();
+			Tank::ReleaseInstance();
 		}
  	}
 

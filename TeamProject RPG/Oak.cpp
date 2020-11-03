@@ -24,11 +24,10 @@ void Oak::ReleaseInstance()
 	if (oak == nullptr)
 		return;
 
-	for (auto oakIterator = oak->begin(); oakIterator != oak->end();)
-	{
-		delete* oakIterator;
-		oak->erase(oakIterator++);
-	}
+	for (int i = 0; i < oak->size(); i++)
+		delete (*oak)[i];
+
+	oak->clear();
 
 	delete oak;
 	oak = nullptr;

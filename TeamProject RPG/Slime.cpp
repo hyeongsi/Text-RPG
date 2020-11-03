@@ -22,12 +22,11 @@ void Slime::ReleaseInstance()
 {
 	if (slime == nullptr)
 		return;
+	
+	for (int i = 0; i < slime->size(); i++)
+		delete (*slime)[i];
 
-	for (auto slimeIterator = slime->begin(); slimeIterator != slime->end();)
-	{
-		delete* slimeIterator;
-		slime->erase(slimeIterator++);
-	}
+	slime->clear();
 
 	delete slime;
 	slime = nullptr;
