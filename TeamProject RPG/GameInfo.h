@@ -48,8 +48,9 @@ public:
 	void LoadPlayerStats(int dataNumber);
 	void LoadPlayerShape(int dataNumber);
 
-	void LoadSlimeStats();
 	void LoadSlimeShape();
+	void LoadSlimeStats();
+	void LoadSlimeDefaultSettingValue();
 
 	void LoadOakStats();
 	void LoadOakShape();

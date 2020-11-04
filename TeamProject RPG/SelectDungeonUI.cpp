@@ -147,23 +147,23 @@ int SelectDungeonUI::Select()
 	return -1;		//잘못된값
 }
 
-//SelectDungeonUI::~SelectDungeonUI()
-//{
-//	auto selectIterator = select.begin();
-//	while (selectIterator != select.end())
-//	{
-//		select.erase(selectIterator++);
-//	}
-//
-//	auto playerTemplateIterator = playerTemplate.begin();
-//	while (playerTemplateIterator != playerTemplate.end())
-//	{
-//		playerTemplate.erase(playerTemplateIterator++);
-//	}
-//
-//	auto inventoryIterator = inventory.begin();
-//	while (inventoryIterator != inventory.end())
-//	{
-//		inventory.erase(inventoryIterator++);
-//	}
-//}
+SelectDungeonUI::~SelectDungeonUI()
+{
+	auto selectIterator = select.begin();
+	while (selectIterator != select.end())
+	{
+		select.erase(selectIterator++);
+	}
+
+	auto playerTemplateIterator = playerTemplate.begin();
+	while (playerTemplateIterator != playerTemplate.end())
+	{
+		playerTemplate.erase(playerTemplateIterator++);
+	}
+
+	auto inventoryIterator = inventory.begin();
+	while (inventoryIterator != inventory.end())
+	{
+		inventory.erase(inventoryIterator++);
+	}
+}

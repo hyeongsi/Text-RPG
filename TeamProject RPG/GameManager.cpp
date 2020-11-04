@@ -35,6 +35,7 @@ int GameManager::StartDungeon(int dungeonNumber)
 	{
 		gameInfo->LoadSlimeShape();
 		gameInfo->LoadSlimeStats();
+		gameInfo->LoadSlimeDefaultSettingValue();
 	}
 	oak = Oak::GetInstance();
 	if (oak != nullptr)		//오크객체가 존재하면 오크형태 불러오기 + 오크에 스텟설정하기

@@ -40,6 +40,13 @@ void Slime::SetStats(int hp, int power, int speed)
 	this->speed = speed;
 }
 
+//다른기본값 설정
+void Slime::Setting(int invincibilityTime, int bounceSize)
+{
+	this->invincibilityTime = invincibilityTime;
+	this->bounceSize = bounceSize;
+}
+
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
 void Slime::Move()
 {
@@ -117,10 +124,10 @@ void Slime::IsHit(int playerXPosition, int playerYPosition)
 	if (isAttacked == true && isInvincibility == false)
 	{
 		if (player->GetDir() == RIGHT)
-			this->SetPos(slimeXPosition + rename, slimeYPosition);
+			this->SetPos(slimeXPosition + bounceSize, slimeYPosition);
 
 		else if (player->GetDir() == LEFT)
-			this->SetPos(slimeXPosition - rename, slimeYPosition);
+			this->SetPos(slimeXPosition - bounceSize, slimeYPosition);
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;

@@ -173,17 +173,6 @@ void GameInfo::LoadPlayerShape(int dataNumber)
 	playerShape["pickupLegs"] = loadData;
 }
 
-void GameInfo::LoadSlimeStats()
-{
-	slime = Slime::GetInstance();
-
-	if (slime != nullptr)
-	{
-		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
-			(*slime)[i]->SetStats(ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i*200);
-	}
-}
-
 void GameInfo::LoadSlimeShape()
 {
 	ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
@@ -194,6 +183,28 @@ void GameInfo::LoadSlimeShape()
 
 	ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//다리
 	slimeShape["legs"] = loadData;
+}
+
+void GameInfo::LoadSlimeStats()
+{
+	slime = Slime::GetInstance();
+
+	if (slime != nullptr)
+	{
+		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
+			(*slime)[i]->SetStats(ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i * 200);
+	}
+}
+
+void GameInfo::LoadSlimeDefaultSettingValue()
+{
+	slime = Slime::GetInstance();
+
+	if (slime != nullptr)
+	{
+		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
+			(*slime)[i]->Setting(ReadFileInt("slime", "invincibilityTime", "gameinfo\\slime.ini"), ReadFileInt("slime", "bounceSize", "gameinfo\\slime.ini"));
+	}
 }
 
 void GameInfo::LoadOakStats()

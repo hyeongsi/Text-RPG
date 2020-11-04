@@ -26,7 +26,7 @@ public:
 	void Show();
 	int Select();
 
-	//~SelectDungeonUI();
+	~SelectDungeonUI();
 };
 
 
