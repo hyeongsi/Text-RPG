@@ -2,6 +2,8 @@
 
 vector<Slime*>* Slime::slime = nullptr;
 Pos* Slime::itemPosition = new Pos();
+int Slime::exp = 0;
+
 //객체추가
 void Slime::AddInstance()
 {
@@ -33,26 +35,15 @@ void Slime::ReleaseInstance()
 }   
 
 //각 슬라임마다 체력과 공격력과 스피드 설정하기
-void Slime::SetStats(int hp, int power, int speed)
+void Slime::SetStats(int hp, int power, int speed, int exp)
 {
-	this->Hp = hp;
-	this->power = power;
-	this->speed = speed;
-}
-
-//다른기본값 설정
-void Slime::Setting(int invincibilityTime, int bounceSize)
-{
-	this->invincibilityTime = invincibilityTime;
-	this->bounceSize = bounceSize;
+	Monster::MonsterSetStats(hp, power, speed);
+	Slime::exp = exp;
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
-void Slime::Move()
+void Slime::Move(int playerXPosition, int playerYPosition)
 {
-	int playerXPosition = player->GetPos().GetX();
-	int playerYPosition = player->GetPos().GetY();
-
 	if (this->isMove)
 	{
 		moveDelaymanager.SetStartTime();
@@ -73,7 +64,7 @@ void Slime::Die()
 {
 	for (auto slimeHP = slime->begin(); slimeHP != slime->end();)
 	{
-		if ((*slimeHP)->Hp <= 0)		//벡터의 마지막에 있는놈은 특별대우.. 안하면 에러남 이유찾기
+		if ((*slimeHP)->Hp <= 0)
 		{
 			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
 			itemPosition->SetY((*slimeHP)->GetPos().GetY());
@@ -87,7 +78,7 @@ void Slime::Die()
 }
 
 //슬라임이 맞았을 때 실행할 함수
-void Slime::IsHit(int playerXPosition, int playerYPosition)
+void Slime::IsHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower)
 {
 	//타점
 	int attackXPosition = 0;
@@ -98,12 +89,12 @@ void Slime::IsHit(int playerXPosition, int playerYPosition)
 	int slimeYPosition = this->GetPos().GetY();
 
 	//플레이어보는방향에 따라서 공격위치설정
-	if (player->GetDir() == RIGHT)
+	if (playerDirection == RIGHT)
 	{
 		attackXPosition = playerXPosition + 3;
 		attackYPosition = playerYPosition - 1;
 	}
-	else if (player->GetDir() == LEFT)
+	else if (playerDirection == LEFT)
 	{
 		attackXPosition = playerXPosition - 5;
 		attackYPosition = playerYPosition - 1;
@@ -120,18 +111,17 @@ void Slime::IsHit(int playerXPosition, int playerYPosition)
 		}
 	}
 
-	//getX setX안되는이유
 	if (isAttacked == true && isInvincibility == false)
 	{
-		if (player->GetDir() == RIGHT)
+		if (playerDirection == RIGHT)
 			this->SetPos(slimeXPosition + bounceSize, slimeYPosition);
 
-		else if (player->GetDir() == LEFT)
+		else if (playerDirection == LEFT)
 			this->SetPos(slimeXPosition - bounceSize, slimeYPosition);
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		this->Hit(player->GetPower());
+		this->Hit(playerPower);
 	}
 	
 	if (isInvincibility == true)

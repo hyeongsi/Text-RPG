@@ -1,14 +1,9 @@
 ﻿#pragma once
-
 #include <fstream>
-#include <string>
 #include <iostream>
 #include <list>
-#include "Player.h"
-#include "Slime.h"
-#include "Tank.h"
-#include "GameInfo.h"
 #include <ctime>
+#include "GameInfo.h"
 
 constexpr auto MAP_ROW = 30;
 constexpr auto MAP_COL = 120;

@@ -2,6 +2,7 @@
 
 vector<Oak*>* Oak::oak = nullptr;
 Pos* Oak::itemPosition = new Pos();
+int Oak::exp = 0;
 
 //객체추가
 void Oak::AddInstance()
@@ -34,19 +35,15 @@ void Oak::ReleaseInstance()
 }
 
 //각 오크마다 체력과 공격력과 스피드 설정하기
-void Oak::SetStats(int hp, int power, int speed)
+void Oak::SetStats(int hp, int power, int speed, int exp)
 {
-	this->Hp = hp;
-	this->power = power;
-	this->speed = speed;
+	Monster::MonsterSetStats(hp, power, speed);
+	Oak::exp = exp;
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
-void Oak::Move()
+void Oak::Move(int playerXPosition, int playerYPosition)
 {
-	int playerXPosition = player->GetPos().GetX();
-	int playerYPosition = player->GetPos().GetY();
-
 	if (this->isMove)
 	{
 		moveDelaymanager.SetStartTime();
@@ -81,7 +78,7 @@ void Oak::Die()
 }
 
 //오쿠이 맞았을 때 실행할 함수
-void Oak::isHit(int playerXPosition, int playerYPosition)
+void Oak::isHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower)
 {
 	//타점
 	int attackXPosition = 0;
@@ -92,12 +89,12 @@ void Oak::isHit(int playerXPosition, int playerYPosition)
 	int oakYPosition = this->GetPos().GetY();
 
 	//플레이어보는방향에 따라서 공격위치설정
-	if (player->GetDir() == RIGHT)
+	if (playerDirection == RIGHT)
 	{
 		attackXPosition = playerXPosition + 3;
 		attackYPosition = playerYPosition - 1;
 	}
-	else if (player->GetDir() == LEFT)
+	else if (playerDirection == LEFT)
 	{
 		attackXPosition = playerXPosition - 5;
 		attackYPosition = playerYPosition - 1;
@@ -114,18 +111,17 @@ void Oak::isHit(int playerXPosition, int playerYPosition)
 		}
 	}
 
-	//getX setX안되는이유
 	if (isAttacked == true && isInvincibility == false)
 	{
-		if (player->GetDir() == RIGHT)
-			this->SetPos(oakXPosition + rename, oakYPosition);
+		if (playerDirection == RIGHT)
+			this->SetPos(oakXPosition + bounceSize, oakYPosition);
 
-		else if (player->GetDir() == LEFT)
-			this->SetPos(oakXPosition - rename, oakYPosition);
+		else if (playerDirection == LEFT)
+			this->SetPos(oakXPosition - bounceSize, oakYPosition);
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		this->Hit(player->GetPower());
+		this->Hit(playerPower);
 	}
 
 	if (isInvincibility == true)

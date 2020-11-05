@@ -14,8 +14,10 @@ Character::Character()
 void Character::Hit(const int power)
 {
 	Hp -= power;
-	if(Hp<=0)
+	if (Hp <= 0)
+	{
 		Die();
+	}
 }
 
 Pos Character::GetPos()

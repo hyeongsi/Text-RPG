@@ -25,7 +25,6 @@ void MapManager::GoToXY(SHORT x, SHORT y)
 void MapManager::LoadMap(int num)
 {
 	string currentDungeon;
-	int y = 0;
 	char mapPiece;
 	itemPosition.clear();
 
@@ -144,7 +143,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 				isSlimeItemDrop = 0;			//드랍확률 100%
 			slimeNumber--;
 
-			player->SetExp(20);			//경험치 증가
+			player->SetExp(Slime::exp);		//경험치 증가
 			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
@@ -160,7 +159,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 				isOakItemDrop = 0;
 			oakNumber--;
 
-			player->SetExp(40);			//경험치 증가
+			player->SetExp(Oak::exp);			//경험치 증가
 			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}
@@ -176,7 +175,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 				isTankItemDrop = 0;
 			tankNumber--;
 
-			player->SetExp(60);			//경험치 증가
+			player->SetExp(Tank::exp);			//경험치 증가
 			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		}
 	}

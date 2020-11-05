@@ -2,17 +2,17 @@
 #include "Character.h"
 #include "Inventory.h"
 #include "PlayerStatsUI.h"
-#include "DelayManager.h"
 #include <time.h>
 #include <Windows.h>
 
-const enum DIR
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
+//이거 character로 옮김
+//const enum DIR
+//{
+//	UP,
+//	DOWN,
+//	LEFT,
+//	RIGHT
+//};
 
 class Player : public Character
 {

@@ -188,33 +188,36 @@ void GameInfo::LoadSlimeShape()
 void GameInfo::LoadSlimeStats()
 {
 	slime = Slime::GetInstance();
+	int slimeHp = 0;
+	int slimePower = 0;
+	int slimeSpeed = 0;
+	int slimeExp = 0;
 
 	if (slime != nullptr)
 	{
+		slimeHp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+		slimePower = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+		slimeSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
+		slimeExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
+
 		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
-			(*slime)[i]->SetStats(ReadFileInt("slime", "hp", "gameinfo\\slime.ini"), ReadFileInt("slime", "power", "gameinfo\\slime.ini"), ReadFileInt("slime", "speed", "gameinfo\\slime.ini") - i * 200);
+			(*slime)[i]->SetStats(slimeHp, slimePower, slimeSpeed - i * 200, slimeExp);
 	}
 }
 
 void GameInfo::LoadSlimeDefaultSettingValue()
 {
 	slime = Slime::GetInstance();
+	int slimeInvincibilityTime = 0;
+	int bounceSize = 0;
 
 	if (slime != nullptr)
 	{
+		slimeInvincibilityTime = ReadFileInt("slime", "invincibilityTime", "gameinfo\\slime.ini");
+		bounceSize = ReadFileInt("slime", "bounceSize", "gameinfo\\slime.ini");
+
 		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
-			(*slime)[i]->Setting(ReadFileInt("slime", "invincibilityTime", "gameinfo\\slime.ini"), ReadFileInt("slime", "bounceSize", "gameinfo\\slime.ini"));
-	}
-}
-
-void GameInfo::LoadOakStats()
-{
-	oak = Oak::GetInstance();
-
-	if (oak != nullptr)
-	{
-		for (int i = 0; i < oak->size(); i++)		//오크객체에 체력과 공격력과 속도넣기
-			(*oak)[i]->SetStats(ReadFileInt("oak", "hp", "gameinfo\\oak.ini"), ReadFileInt("oak", "power", "gameinfo\\oak.ini"), ReadFileInt("oak", "speed", "gameinfo\\oak.ini") - i * 200);
+			(*slime)[i]->Setting(slimeInvincibilityTime, bounceSize);
 	}
 }
 
@@ -230,14 +233,39 @@ void GameInfo::LoadOakShape()
 	oakShape["legs"] = loadData;
 }
 
-void GameInfo::LoadTankStats()
+void GameInfo::LoadOakStats()
 {
-	tank = Tank::GetInstance();
+	oak = Oak::GetInstance();
+	int oakHp = 0;
+	int oakPower = 0;
+	int oakSpeed = 0;
+	int oakExp = 0;
 
-	if (tank != nullptr)
+	if (oak != nullptr)
 	{
-		for (int i = 0; i < tank->size(); i++)		//탱크객체에 체력과 공격력과 속도넣기
-			(*tank)[i]->SetStats(ReadFileInt("tank", "hp", "gameinfo\\tank.ini"), ReadFileInt("tank", "power", "gameinfo\\tank.ini"), ReadFileInt("tank", "speed", "gameinfo\\tank.ini"));
+		oakHp = ReadFileInt("oak", "hp", "gameinfo\\oak.ini");
+		oakPower = ReadFileInt("oak", "power", "gameinfo\\oak.ini");
+		oakSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
+		oakExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
+
+		for (int i = 0; i < oak->size(); i++)		//오크객체에 체력과 공격력과 속도넣기
+			(*oak)[i]->SetStats(oakHp, oakPower, oakSpeed - i * 200, oakExp);
+	}
+}
+
+void GameInfo::LoadOakDefaultSettingValue()
+{
+	oak = Oak::GetInstance();
+	int oakInvincibilityTime = 0;
+	int bounceSize = 0;
+
+	if (oak != nullptr)
+	{
+		oakInvincibilityTime = ReadFileInt("oak", "invincibilityTime", "gameinfo\\oak.ini");
+		bounceSize = ReadFileInt("oak", "bounceSize", "gameinfo\\oak.ini");
+
+		for (int i = 0; i < oak->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
+			(*oak)[i]->Setting(oakInvincibilityTime, bounceSize);
 	}
 }
 
@@ -254,6 +282,30 @@ void GameInfo::LoadTankShape()
 
 	ReadFileString("tank", "legs", "GameInfo\\tank.ini");	//다리
 	tankShape["legs"] = loadData;
+}
+
+void GameInfo::LoadTankStats()
+{
+	tank = Tank::GetInstance();
+	int tankHp = 0;
+	int tankPower = 0;
+	int tankSpeed = 0;
+	int tankExp = 0;
+
+	if (tank != nullptr)
+	{
+		tankHp = ReadFileInt("tank", "hp", "gameinfo\\tank.ini");
+		tankPower = ReadFileInt("tank", "power", "gameinfo\\tank.ini");
+		tankSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
+		tankExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
+		for (int i = 0; i < tank->size(); i++)		//탱크객체에 체력과 공격력과 속도넣기
+			(*tank)[i]->SetStats(tankHp, tankPower, tankSpeed, tankExp);
+	}
+}
+
+void GameInfo::LoadTankDefaultSettingValue()
+{
+
 }
 
 void GameInfo::WriteData(string tempSection, string tempKey, string tempValue, string tempPath)

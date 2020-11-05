@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include <Windows.h>
 #include <map>
-#include <iostream>
 #include "Player.h"
 #include "Slime.h"
 #include "Tank.h"
@@ -52,11 +51,13 @@ public:
 	void LoadSlimeStats();
 	void LoadSlimeDefaultSettingValue();
 
-	void LoadOakStats();
 	void LoadOakShape();
+	void LoadOakStats();
+	void LoadOakDefaultSettingValue();
 
-	void LoadTankStats();
 	void LoadTankShape();
+	void LoadTankStats();
+	void LoadTankDefaultSettingValue();
 
 	void WriteData(string tempSection, string tempKey, string tempValue, string tempPath);
 };

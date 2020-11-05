@@ -1,11 +1,5 @@
 ﻿#pragma once
 #include "MapManager.h"
-#include "GameInfo.h"
-#include "Player.h"
-#include "Slime.h"
-#include "Oak.h"
-#include "Tank.h"
-#include "DelayManager.h"
 #include "EscMenuUI.h"
 
 class GameManager

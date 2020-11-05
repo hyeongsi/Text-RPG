@@ -54,6 +54,12 @@ int GameManager::StartDungeon(int dungeonNumber)
 	player->Init();
 	while (loop)
 	{
+		//추가
+		int playerXPosition = player->GetPos().GetX();
+		int playerYPosition = player->GetPos().GetY();
+		int playerDirection = player->GetDir();
+		int playerPower = player->GetPower();
+
 		escUIState = NOTHING;
 		if (delayManager.CheckEndDelay())
 		{
@@ -63,17 +69,17 @@ int GameManager::StartDungeon(int dungeonNumber)
 			if (slime != nullptr)
 			{
 				for (int i = 0; i < slime->size(); i++)
-					(*slime)[i]->Move();		//움직임	
+					(*slime)[i]->Move(playerXPosition, playerYPosition);		//움직임	
 			}
 			if (oak != nullptr)
 			{
 				for (int i = 0; i < oak->size(); i++)
-					(*oak)[i]->Move();		//움직임	
+					(*oak)[i]->Move(playerXPosition, playerYPosition);		//움직임	
 			}
 			if (tank != nullptr)
 			{
 				for (int i = 0; i < tank->size(); i++)
-					(*tank)[i]->Move();		//움직임	
+					(*tank)[i]->Move(playerXPosition, playerYPosition);		//움직임	
 			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
@@ -85,17 +91,17 @@ int GameManager::StartDungeon(int dungeonNumber)
 				if (slime != nullptr)
 				{
 					for (int i = 0; i < slime->size(); i++)
-						(*slime)[i]->IsHit(player->GetPos().GetX(), player->GetPos().GetY());	//피격여부
+						(*slime)[i]->IsHit(playerXPosition, playerYPosition, playerDirection, playerPower);	//피격여부
 				}
 				if (oak != nullptr)
 				{
 					for (int i = 0; i < oak->size(); i++)
-						(*oak)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());		//피격여부
+						(*oak)[i]->isHit(playerXPosition, playerYPosition, playerDirection, playerPower);		//피격여부
 				}
 				if (tank != nullptr)
 				{
 					for (int i = 0; i < tank->size(); i++)
-						(*tank)[i]->isHit(player->GetPos().GetX(), player->GetPos().GetY());	//피격여부
+						(*tank)[i]->isHit(playerXPosition, playerYPosition, playerDirection, playerPower);	//피격여부
 				}
 				break;
 			case PICKUP:
@@ -168,7 +174,6 @@ void GameManager::SavePlayerData()
 }
 
 //플레이어와 적의 충돌처리
-//일단 만들긴했는데  간단한방법이 있을것같은데 더복잡하게 만든느낌
 void GameManager::CheckContact()
 {
 	//피격 시

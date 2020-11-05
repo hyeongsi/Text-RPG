@@ -2,6 +2,7 @@
 
 vector<Tank*>* Tank::tank = nullptr;
 Pos* Tank::itemPosition = new Pos();
+int Tank::exp = 0;
 
 void Tank::AddInstance()
 {
@@ -30,18 +31,14 @@ void Tank::ReleaseInstance()
 	tank = nullptr;
 }
 
-void Tank::SetStats(int hp, int power, int speed)
+void Tank::SetStats(int hp, int power, int speed, int exp)
 {
-	this->Hp = hp;
-	this->power = power;
-	this->speed = speed;
+	Monster::MonsterSetStats(hp, power, speed);
+	Tank::exp = exp;
 }
 
-void Tank::Move()
+void Tank::Move(int playerXPosition, int playerYPosition)
 {
-	int playerXPosition = player->GetPos().GetX();
-	int playerYPosition = player->GetPos().GetY();
-
 	if (this->isMove)
 	{
 		moveDelaymanager.SetStartTime();
@@ -73,7 +70,7 @@ void Tank::Die()
 	}
 }
 
-void Tank::isHit(int playerXPosition, int playerYPosition)
+void Tank::isHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower)
 {
 	int attackXPosition = 0;
 	int attackYPosition = 0;
@@ -81,12 +78,12 @@ void Tank::isHit(int playerXPosition, int playerYPosition)
 	int tankXPosition = this->GetPos().GetX();
 	int tankYPosition = this->GetPos().GetY();
 
-	if (player->GetDir() == RIGHT)
+	if (playerDirection == RIGHT)
 	{
 		attackXPosition = playerXPosition + 3;
 		attackYPosition = playerYPosition - 1;
 	}
-	else if (player->GetDir() == LEFT)
+	else if (playerDirection == LEFT)
 	{
 		attackXPosition = playerXPosition - 5;
 		attackYPosition = playerYPosition - 1;
@@ -105,14 +102,14 @@ void Tank::isHit(int playerXPosition, int playerYPosition)
 
 	if (isAttacked == true && isInvincibility == false)
 	{
-		if (player->GetDir() == RIGHT)
-			this->SetPos(tankXPosition + rename, tankYPosition);
-		else if (player->GetDir() == LEFT)
-			this->SetPos(tankXPosition - rename, tankYPosition);
+		if (playerDirection == RIGHT)
+			this->SetPos(tankXPosition + bounceSize, tankYPosition);
+		else if (playerDirection == LEFT)
+			this->SetPos(tankXPosition - bounceSize, tankYPosition);
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;
-		this->Hit(player->GetPower());
+		this->Hit(playerPower);
 	}
 
 	if (isInvincibility == true)

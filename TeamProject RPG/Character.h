@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "Pos.h"
-#include <iostream>
-
-using namespace std;
+#include "DelayManager.h"
 
 class Character
 {
@@ -23,3 +21,12 @@ public:
 	int GetHp();
 };
 
+//이거 monster에도 필요한데 player를 include안시킬거라 character로 옮겨서
+//모든 캐릭터라 사용할 수 있게 했음
+const enum DIR
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
