@@ -42,7 +42,7 @@ void Oak::SetStats(int hp, int power, int speed, int exp)
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
-void Oak::Move(int playerXPosition, int playerYPosition)
+void Oak::Move(const int& playerXPosition, const int& playerYPosition)
 {
 	if (this->isMove)
 	{
@@ -78,7 +78,7 @@ void Oak::Die()
 }
 
 //오쿠이 맞았을 때 실행할 함수
-void Oak::isHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower)
+void Oak::isHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
 {
 	//타점
 	int attackXPosition = 0;

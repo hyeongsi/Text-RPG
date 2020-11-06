@@ -18,7 +18,7 @@ public:
 
 	void SetStats(int hp, int power, int speed, int exp);
 
-	void Move(int playerXPosition, int playerYPosition);	//이동 함수
+	void Move(const int& playerXPosition, const int& playerYPosition);	//이동 함수
 	void Die();		//죽는 함수
-	void IsHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower);	//맞으면실행
+	void IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower);	//맞으면실행
 };

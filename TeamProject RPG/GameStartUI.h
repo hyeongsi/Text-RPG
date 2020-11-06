@@ -15,7 +15,7 @@ private:
 
 public:
 	GameStartUI();
-	int Select();
+	const int& Select();
 	~GameStartUI();
 };
 

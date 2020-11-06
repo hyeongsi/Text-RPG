@@ -20,24 +20,24 @@ void Character::Hit(const int power)
 	}
 }
 
-Pos Character::GetPos()
+const Pos& Character::GetPos()
 {
 	return pos;
 }
 
 
-void Character::SetPos(int x, int y)
+void Character::SetPos(const int& x, const int& y)
 {
 	pos.SetX(x);
 	pos.SetY(y);
 }
 
-int Character::GetPower()
+int Character::GetPower() const
 {
 	return power;
 }
 
-int Character::GetHp()
+int Character::GetHp() const
 {
 	return Hp;
 }

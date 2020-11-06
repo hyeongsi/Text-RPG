@@ -1,13 +1,13 @@
 ﻿#include "Monster.h"
 
-void Monster::MonsterSetStats(int hp, int power, int speed)
+void Monster::MonsterSetStats(const int& hp, const int& power, const int& speed)
 {
 	this->Hp = hp;
 	this->power = power;
 	this->speed = speed;
 }
 
-void Monster::Setting(int invincibilityTime, int bounceSize)
+void Monster::Setting(const int& invincibilityTime, const int& bounceSize)
 {
 	this->invincibilityTime = invincibilityTime;
 	this->bounceSize = bounceSize;

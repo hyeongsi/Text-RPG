@@ -33,9 +33,9 @@ public:
 	static GameInfo* GetInstance();
 	static void ReleaseInstance();
 
-	map<string, string> GetShape(const int character);
+	const map<string, string>& GetShape(const int& character);
 
-	string GetItemShape(string itemName, int option);	//0 : 무기, 1 : 아이템
+	const string& GetItemShape(string itemName, int option);	//0 : 무기, 1 : 아이템
 	
 	const int ReadFileInt(const char* section, const char* key, const char* path);
 	void ReadFileString(const char* section, const char* key, const char* path);
@@ -43,9 +43,9 @@ public:
 	void LoadWeaponData();
 	void LoadItemBoxShape();
 
-	void LoadSaveData(int dataNumber);
-	void LoadPlayerStats(int dataNumber);
-	void LoadPlayerShape(int dataNumber);
+	void LoadSaveData(const int& dataNumber);
+	void LoadPlayerStats(const int& dataNumber);
+	void LoadPlayerShape(const int& dataNumber);
 
 	void LoadSlimeShape();
 	void LoadSlimeStats();

@@ -15,8 +15,8 @@ protected:
 	int speed = 0;		//기본값지정 값은 파일에서 읽어서 저장함
 
 public:
-	void MonsterSetStats(int hp, int power, int speed);
-	void Setting(int invincibilityTime, int bounceSize);
+	void MonsterSetStats(const int& hp, const int& power, const int& speed);
+	void Setting(const int& invincibilityTime, const int& bounceSize);
 	virtual ~Monster();
 
 };

@@ -14,11 +14,11 @@ public:
 	virtual void Die() = 0;		//죽는 함수
 	void Hit(const int power);	//피격 함수
 
-	Pos GetPos();
-	void SetPos(int x, int y);
+	const Pos& GetPos();
+	void SetPos(const int& x, const int& y);
 
-	int GetPower();		//서로 타격당할때 공격력받아오기위해 추가
-	int GetHp();
+	int GetPower() const;		//서로 타격당할때 공격력받아오기위해 추가
+	int GetHp() const;
 };
 
 //이거 monster에도 필요한데 player를 include안시킬거라 character로 옮겨서

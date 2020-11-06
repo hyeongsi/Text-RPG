@@ -23,6 +23,7 @@ private:
 	vector<Slime*>* slime;
 	vector<Oak*>* oak;
 	vector<Tank*>* tank;
+	Pos exitPosition;		//탈출구 좌표
 
 	//아이템드랍관련변수들
 	int monsterNumer = 0;	//몬스터들의 수가 들어갈 변수.. 던전탈출조건으로 사용
@@ -42,15 +43,16 @@ public:
 	void Init();
 
 	void GoToXY(SHORT x, SHORT y);
-	void LoadMap(int num);
+	void LoadMap(const int& num);
+	const Pos& GetExitPosition();
 
 	void PrintMap(bool isOpenInventory);
 	void PrintCharacter(Character* character);
 	void PrintWeapon(string weapon);
-	void PrintSlime(vector<Slime*>* slime);
-	void PrintOak(vector<Oak*>* oak);
-	void PrintTank(vector<Tank*>* tank);
-	void PrintItemBox(int positionX, int positionY);
+	void PrintSlime();
+	void PrintOak();
+	void PrintTank();
+	void PrintItemBox();
 
 	void LoadCanMovePos();
 	Pos* GetDontMovePos();

@@ -19,7 +19,7 @@ void GameInfo::ReleaseInstance()
 	}
 }
 
-map<string, string> GameInfo::GetShape(const int character)
+const map<string, string>& GameInfo::GetShape(const int& character)
 {
 	switch (character)
 	{
@@ -36,11 +36,11 @@ map<string, string> GameInfo::GetShape(const int character)
 
 
 	default:
-		return playerShape;
+		return playerShape;		//여기 잘못된값 넘겨주는거 처리만들고 받는부분에서 체크하는것도 만들기
 	}
 }
 
-string GameInfo::GetItemShape(string itemName, int option)
+const string& GameInfo::GetItemShape(string itemName, int option)
 {
 	try
 	{
@@ -101,7 +101,7 @@ void GameInfo::LoadItemBoxShape()
 	itemBoxShape["legs"] = loadData;
 }
 
-void GameInfo::LoadSaveData(int dataNumber)
+void GameInfo::LoadSaveData(const int& dataNumber)
 {
 	switch (dataNumber)
 	{
@@ -117,7 +117,7 @@ void GameInfo::LoadSaveData(int dataNumber)
 	}
 }
 
-void GameInfo::LoadPlayerStats(int dataNumber)
+void GameInfo::LoadPlayerStats(const int& dataNumber)
 {
 	int hp = 0;
 	int power = 0;
@@ -140,7 +140,7 @@ void GameInfo::LoadPlayerStats(int dataNumber)
 	player->SetStats(hp, power);
 }
 
-void GameInfo::LoadPlayerShape(int dataNumber)
+void GameInfo::LoadPlayerShape(const int& dataNumber)
 {
 	ReadFileString("player", "head", "GameInfo\\player.ini");	//머리
 	playerShape["head"] = loadData;

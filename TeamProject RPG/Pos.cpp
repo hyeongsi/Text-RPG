@@ -12,7 +12,7 @@ Pos::Pos(int x, int y)
 	this->y = y;
 }
 
-bool Pos::operator==(Pos pos)
+bool Pos::operator==(const Pos& pos) const
 {
 	return (x == pos.GetX() && y == pos.GetY());
 }

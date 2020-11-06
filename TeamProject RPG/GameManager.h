@@ -18,8 +18,8 @@ private:
 	string playerName;
 	string path = "playerList\\";
 public:
-	void Play(int saveFileNumber); //게임 시작버튼 눌렀을 때
-	int StartDungeon(int dungeonNumber);
+	void Play(const int& saveFileNumber); //게임 시작버튼 눌렀을 때
+	const int& StartDungeon(const int& dungeonNumber);
 	void SavePlayerData();
 
 	void CheckContact();

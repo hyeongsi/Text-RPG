@@ -1,6 +1,6 @@
 ﻿#include "GameManager.h"
 
-void GameManager::Play(int saveFileNumber)
+void GameManager::Play(const int& saveFileNumber)
 {
 	if (0 == saveFileNumber)
 	{
@@ -15,7 +15,7 @@ void GameManager::Play(int saveFileNumber)
 	gameInfo->LoadWeaponData();
 }
 
-int GameManager::StartDungeon(int dungeonNumber)
+const int& GameManager::StartDungeon(const int& dungeonNumber)
 {
 	if (0 == dungeonNumber)
 		return -1;
@@ -42,12 +42,14 @@ int GameManager::StartDungeon(int dungeonNumber)
 	{
 		gameInfo->LoadOakShape();
 		gameInfo->LoadOakStats();
+		gameInfo->LoadOakDefaultSettingValue();
 	}
 	tank = Tank::GetInstance();
 	if (tank != nullptr)		//탱크객체가 존재하면 탱크형태 불러오기 + 탱크에 스텟설정하기
 	{
 		gameInfo->LoadTankShape();
 		gameInfo->LoadTankStats();
+		gameInfo->LoadTankDefaultSettingValue();
 	}
 
 	mapManager.PrintMap(isOpenInventory);
@@ -140,9 +142,18 @@ int GameManager::StartDungeon(int dungeonNumber)
 		if (tank != nullptr)
 			monsterNumber += tank->size();
 
-		//몬스터가 다죽으면 던전선택화면으로이동
-		//여기 문제는 아이템줍지도못하고 강제탈출됨 던전탈출조건 추가필요
-		if (monsterNumber <= 0 || player->GetHp() <= 0 || escUIState == EXIT_ESC_MENU)
+		//조건에 해당하면 던전탈출
+		if (player->GetHp() <= 0 || escUIState == EXIT_ESC_MENU)
+		{
+			loop = false;
+			player->Init();
+
+			Slime::ReleaseInstance();
+			Oak::ReleaseInstance();
+			Tank::ReleaseInstance();
+		}
+		//지금은 몬스터 다잡고 포탈에 들어가기만하면 던전탈출 ... 일단 if문조건이 너무많아가지고 알아보기쉽게할라고 같은문장실행인데도 따로나눠서적음
+		if (monsterNumber <= 0 && (mapManager.GetExitPosition() == player->GetPos()))
 		{
 			loop = false;
 			player->Init();

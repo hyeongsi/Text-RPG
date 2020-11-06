@@ -37,7 +37,7 @@ void Tank::SetStats(int hp, int power, int speed, int exp)
 	Tank::exp = exp;
 }
 
-void Tank::Move(int playerXPosition, int playerYPosition)
+void Tank::Move(const int& playerXPosition, const int& playerYPosition)
 {
 	if (this->isMove)
 	{
@@ -70,7 +70,7 @@ void Tank::Die()
 	}
 }
 
-void Tank::isHit(int playerXPosition, int playerYPosition, int playerDirection, int playerPower)
+void Tank::isHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
 {
 	int attackXPosition = 0;
 	int attackYPosition = 0;

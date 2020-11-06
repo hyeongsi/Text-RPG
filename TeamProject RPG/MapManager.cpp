@@ -22,7 +22,7 @@ void MapManager::GoToXY(SHORT x, SHORT y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-void MapManager::LoadMap(int num)
+void MapManager::LoadMap(const int& num)
 {
 	string currentDungeon;
 	char mapPiece;
@@ -82,6 +82,13 @@ void MapManager::LoadMap(int num)
 				(*tank)[tankNumber++]->SetPos(x, y);
 				mapPiece = ' ';
 			}
+			else if (mapPiece == 'e')
+			{
+				//좌표따기
+				exitPosition.SetX(x);
+				exitPosition.SetY(y);
+				mapPiece = '+';
+			}
 			map[y][x] = mapPiece;
 		}
 	}
@@ -89,6 +96,11 @@ void MapManager::LoadMap(int num)
 	LoadCanMovePos();
 
 	fcin.close();
+}
+
+const Pos& MapManager::GetExitPosition()
+{
+	return exitPosition;
 }
 
 void MapManager::PrintMap(bool isOpenInventory)
@@ -128,13 +140,13 @@ void MapManager::PrintMap(bool isOpenInventory)
 		isTankItemDrop = -1;
 	}
 	//아이템박스출력
-	for (auto itemPositions : itemPosition)
-		PrintItemBox(itemPositions.GetX(), itemPositions.GetY());
+	//for (auto itemPositions : itemPosition)
+	PrintItemBox();
 
 	//슬라임출력부
 	if (slime != nullptr)
 	{
-		PrintSlime(slime);
+		PrintSlime();
 		if (slimeNumber > slime->size())	//슬라임이 한마리 죽으면
 		{
 			srand((unsigned int)time(NULL));
@@ -150,7 +162,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 	//오크출력부
 	if (oak != nullptr)
 	{
-		PrintOak(oak);
+		PrintOak();
 		if (oakNumber > oak->size())	//오크 한마리 죽으면
 		{
 			srand((unsigned int)time(NULL));
@@ -166,7 +178,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 	//탱크출력부
 	if (tank != nullptr)
 	{
-		PrintTank(tank);
+		PrintTank();
 		if (tankNumber > tank->size())		//탱크 한마리 죽으면
 		{
 			srand((unsigned int)time(NULL));
@@ -314,7 +326,7 @@ void MapManager::PrintWeapon(string weapon)
 	}
 }
 
-void MapManager::PrintSlime(vector<Slime*>* slime)
+void MapManager::PrintSlime()
 {
 	auto slimeShape = gameInfo->GetShape(SLIME);
 	int slimePosX;
@@ -339,7 +351,7 @@ void MapManager::PrintSlime(vector<Slime*>* slime)
 	}
 }
 
-void MapManager::PrintOak(vector<Oak*>* oak)
+void MapManager::PrintOak()
 {
 	auto oakShape = gameInfo->GetShape(OAK);
 	int oakPosX;
@@ -364,7 +376,7 @@ void MapManager::PrintOak(vector<Oak*>* oak)
 	}
 }
 
-void MapManager::PrintTank(vector<Tank*>* tank)
+void MapManager::PrintTank()
 {
 	auto tankShape = gameInfo->GetShape(TANK);
 	int tankPosX;
@@ -398,19 +410,27 @@ void MapManager::PrintTank(vector<Tank*>* tank)
 	}
 }
 
-void MapManager::PrintItemBox(int positionX, int positionY)
+void MapManager::PrintItemBox()
 {
 	auto itemBoxShape = gameInfo->GetShape(ITEMBOX);
+	int itemPositionX = 0;
+	int itemPositionY = 0;
 
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[positionY - 2][positionX - 1 + index] = itemBoxShape["head"][index];
+	for (auto itemPositions : itemPosition)
+	{
+		itemPositionX = itemPositions.GetX();
+		itemPositionY = itemPositions.GetY();
 
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[itemPositionY - 2][itemPositionX - 1 + index] = itemBoxShape["head"][index];
 
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[positionY - 1][positionX - 1 + index] = itemBoxShape["body"][index];
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[itemPositionY - 1][itemPositionX - 1 + index] = itemBoxShape["body"][index];
 
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[positionY][positionX - 1 + index] = itemBoxShape["legs"][index];
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[itemPositionY][itemPositionX - 1 + index] = itemBoxShape["legs"][index];
+	}
+
 }
 
 void MapManager::LoadCanMovePos()

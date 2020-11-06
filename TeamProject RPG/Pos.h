@@ -8,7 +8,7 @@ public:
 	Pos();
 	Pos(int x, int y);
 
-	bool operator==(Pos pos);
+	bool operator==(const Pos& pos) const;
 
 	const int& GetX() const;
 	void SetX(const int x);
