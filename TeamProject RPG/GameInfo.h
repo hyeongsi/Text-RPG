@@ -43,9 +43,10 @@ public:
 	void LoadWeaponData();
 	void LoadItemBoxShape();
 
+	void LoadNewData();
 	void LoadSaveData(const int& dataNumber);
 	void LoadPlayerStats(const int& dataNumber);
-	void LoadPlayerShape(const int& dataNumber);
+	void LoadPlayerShape();
 
 	void LoadSlimeShape();
 	void LoadSlimeStats();

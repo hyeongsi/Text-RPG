@@ -1,4 +1,66 @@
 ﻿#include "GameManager.h"
+#include "GameStartUI.h"
+#include "SelectDungeonUI.h"
+
+GameManager::GameManager()
+{
+	gameStartUI = new GameStartUI();
+	selectDungeonUI = new SelectDungeonUI();
+}
+
+const int& GameManager::TitleMenuPrint()
+{
+	int menuSelect = -1;		//게임시작에서 선택여부를 저장할 변수
+	int dungeonSelect = 1;		//던전을 선택할 변수
+
+	menuSelect = gameStartUI->Select();
+
+	if (menuSelect == EXIT)	//게임종료
+	{
+		delete gameStartUI;
+		delete selectDungeonUI;
+		return EXIT;
+	}
+
+	if (menuSelect == NEWGAME)
+		NewPlayerMenu();
+	else if (menuSelect == CHARACTERSELECET)
+	{
+		return CHARACTERSELECET;		//여기에는 이전 캐릭터 선택하는 UI만들어서 넣기, 반환값 saveCharacterNumber넣고
+		// gameManager.Play(saveCharacterNumber);
+	}
+
+	return NEWGAME;
+}
+
+void GameManager::NewPlayerMenu()
+{
+	system("cls");
+	mapManager.GoToXY(30, 10);
+	cout << "신규생성 닉네임을 입력하세요 : ";
+
+	cin >> playerName;
+	path += playerName + ".ini";
+
+	gameInfo->LoadNewData();
+	gameInfo->LoadPlayerShape();
+	gameInfo->LoadWeaponData();
+}
+
+const int GameManager::SelectDungeonMenuPrint()
+{
+	system("cls");
+	int returnValue = 0;
+	returnValue = selectDungeonUI->Select();
+
+	if (returnValue == 0)
+	{
+		delete selectDungeonUI;
+		return EXIT;
+	}
+	else
+		return returnValue;
+}
 
 void GameManager::Play(const int& saveFileNumber)
 {
@@ -11,7 +73,7 @@ void GameManager::Play(const int& saveFileNumber)
 		path += playerName + ".ini";
 	}
 	gameInfo->LoadSaveData(saveFileNumber); // 세이브파일 번호
-	gameInfo->LoadPlayerShape(saveFileNumber);
+	gameInfo->LoadPlayerShape();
 	gameInfo->LoadWeaponData();
 }
 
@@ -21,46 +83,17 @@ const int& GameManager::StartDungeon(const int& dungeonNumber)
 		return -1;
 
 	bool loop = true;
-	Pos *dontMovePos;
 	int tempPlayerState;
 	int escUIState = NOTHING;
 
-	mapManager.Init();
-	mapManager.LoadMap(dungeonNumber);
-	dontMovePos = mapManager.GetDontMovePos();	//이동불가 영역 받아서 사용
-	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
-
-	slime = Slime::GetInstance();
-	if (slime != nullptr)		//슬라임객체가 존재하면 슬라임형태 불러오기 + 슬라임에 스텟설정하기
-	{
-		gameInfo->LoadSlimeShape();
-		gameInfo->LoadSlimeStats();
-		gameInfo->LoadSlimeDefaultSettingValue();
-	}
-	oak = Oak::GetInstance();
-	if (oak != nullptr)		//오크객체가 존재하면 오크형태 불러오기 + 오크에 스텟설정하기
-	{
-		gameInfo->LoadOakShape();
-		gameInfo->LoadOakStats();
-		gameInfo->LoadOakDefaultSettingValue();
-	}
-	tank = Tank::GetInstance();
-	if (tank != nullptr)		//탱크객체가 존재하면 탱크형태 불러오기 + 탱크에 스텟설정하기
-	{
-		gameInfo->LoadTankShape();
-		gameInfo->LoadTankStats();
-		gameInfo->LoadTankDefaultSettingValue();
-	}
-
-	mapManager.PrintMap(isOpenInventory);
 	player->Init();
+	mapManager.Init();
+
+	LoadDungeonData(dungeonNumber);
+	mapManager.PrintMap(isOpenInventory);
 	while (loop)
 	{
-		//추가
-		int playerXPosition = player->GetPos().GetX();
-		int playerYPosition = player->GetPos().GetY();
-		int playerDirection = player->GetDir();
-		int playerPower = player->GetPower();
+		playerPos = player->GetPos();
 
 		escUIState = NOTHING;
 		if (delayManager.CheckEndDelay())
@@ -71,17 +104,17 @@ const int& GameManager::StartDungeon(const int& dungeonNumber)
 			if (slime != nullptr)
 			{
 				for (int i = 0; i < slime->size(); i++)
-					(*slime)[i]->Move(playerXPosition, playerYPosition);		//움직임	
+					(*slime)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
 			}
 			if (oak != nullptr)
 			{
 				for (int i = 0; i < oak->size(); i++)
-					(*oak)[i]->Move(playerXPosition, playerYPosition);		//움직임	
+					(*oak)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
 			}
 			if (tank != nullptr)
 			{
 				for (int i = 0; i < tank->size(); i++)
-					(*tank)[i]->Move(playerXPosition, playerYPosition);		//움직임	
+					(*tank)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
 			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
@@ -93,17 +126,17 @@ const int& GameManager::StartDungeon(const int& dungeonNumber)
 				if (slime != nullptr)
 				{
 					for (int i = 0; i < slime->size(); i++)
-						(*slime)[i]->IsHit(playerXPosition, playerYPosition, playerDirection, playerPower);	//피격여부
+						(*slime)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());	//피격여부
 				}
 				if (oak != nullptr)
 				{
 					for (int i = 0; i < oak->size(); i++)
-						(*oak)[i]->isHit(playerXPosition, playerYPosition, playerDirection, playerPower);		//피격여부
+						(*oak)[i]->isHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());		//피격여부
 				}
 				if (tank != nullptr)
 				{
 					for (int i = 0; i < tank->size(); i++)
-						(*tank)[i]->isHit(playerXPosition, playerYPosition, playerDirection, playerPower);	//피격여부
+						(*tank)[i]->isHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());	//피격여부
 				}
 				break;
 			case PICKUP:
@@ -131,8 +164,6 @@ const int& GameManager::StartDungeon(const int& dungeonNumber)
 			mapManager.PrintMap(isOpenInventory);
 		}
 
-		
-		
 		//몬스터숫자세기
 		size_t monsterNumber = 0;
 		if (slime != nullptr)
@@ -167,6 +198,35 @@ const int& GameManager::StartDungeon(const int& dungeonNumber)
 	SavePlayerData();	//던전하나깰때마다 정보저장
 
 	return 0;
+}
+
+void GameManager::LoadDungeonData(const int& dungeonNumber)
+{
+	mapManager.LoadMap(dungeonNumber);
+	dontMovePos = mapManager.GetDontMovePos();	//이동불가 영역 받아서 사용
+	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
+
+	slime = Slime::GetInstance();
+	if (slime != nullptr)		//슬라임객체가 존재하면 슬라임형태 불러오기 + 슬라임에 스텟설정하기
+	{
+		gameInfo->LoadSlimeShape();
+		gameInfo->LoadSlimeStats();
+		gameInfo->LoadSlimeDefaultSettingValue();
+	}
+	oak = Oak::GetInstance();
+	if (oak != nullptr)		//오크객체가 존재하면 오크형태 불러오기 + 오크에 스텟설정하기
+	{
+		gameInfo->LoadOakShape();
+		gameInfo->LoadOakStats();
+		gameInfo->LoadOakDefaultSettingValue();
+	}
+	tank = Tank::GetInstance();
+	if (tank != nullptr)		//탱크객체가 존재하면 탱크형태 불러오기 + 탱크에 스텟설정하기
+	{
+		gameInfo->LoadTankShape();
+		gameInfo->LoadTankStats();
+		gameInfo->LoadTankDefaultSettingValue();
+	}
 }
 
 void GameManager::SavePlayerData()

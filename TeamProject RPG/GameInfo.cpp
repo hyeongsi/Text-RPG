@@ -91,6 +91,9 @@ void GameInfo::LoadWeaponData()
 
 void GameInfo::LoadItemBoxShape()
 {
+	if (itemBoxShape.size() > 4)
+		return;
+
 	ReadFileString("itembox", "head", "GameInfo\\itemBox.ini");
 	itemBoxShape["head"] = loadData;
 
@@ -99,6 +102,16 @@ void GameInfo::LoadItemBoxShape()
 
 	ReadFileString("itembox", "legs", "GameInfo\\itemBox.ini");
 	itemBoxShape["legs"] = loadData;
+}
+
+void GameInfo::LoadNewData()
+{
+	int hp = 0;
+	int power = 0;
+
+	hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");//섹션수정
+	power = ReadFileInt("player", "power", "GameInfo\\player.ini");//섹션수정
+	player->SetStats(hp, power);
 }
 
 void GameInfo::LoadSaveData(const int& dataNumber)
@@ -113,7 +126,7 @@ void GameInfo::LoadSaveData(const int& dataNumber)
 		break;
 	default:
 		LoadPlayerStats(dataNumber);
-		break;	//새게임
+		break;	
 	}
 }
 
@@ -140,7 +153,7 @@ void GameInfo::LoadPlayerStats(const int& dataNumber)
 	player->SetStats(hp, power);
 }
 
-void GameInfo::LoadPlayerShape(const int& dataNumber)
+void GameInfo::LoadPlayerShape()
 {
 	ReadFileString("player", "head", "GameInfo\\player.ini");	//머리
 	playerShape["head"] = loadData;

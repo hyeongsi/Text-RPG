@@ -144,7 +144,7 @@ int SelectDungeonUI::Select()
 	else if (currentChoice == gameExit)	//게임종료
 		return 0;
 
-	return -1;		//잘못된값
+	return 0;		//잘못된값
 }
 
 SelectDungeonUI::~SelectDungeonUI()
