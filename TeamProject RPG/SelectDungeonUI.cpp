@@ -85,17 +85,18 @@ void SelectDungeonUI::Show()
 		cout << tempPlayerShape["legs"];
 
 	//현재 플레이어 스텟 받아와서 출력
-	playerStat["hp"] = player->GetHp();
-	playerStat["power"] = player->GetPower();
+	GoToXY(15, 2);
+	cout << "HP :\t" << player->GetHp();
 	GoToXY(15, 4);
-	cout << "HP : " << playerStat["hp"];
+	cout << "POWER :\t" << player->GetPower();
 	GoToXY(15, 6);
-	cout << "POWER : " << playerStat["power"];
+	cout << "EXP :\t" << player->GetExp();
+	GoToXY(15, 8);
+	cout << "LEVEL :\t" << player->GetLevel();
 }
 
 int SelectDungeonUI::Select()
 {
-	Show();
 	GoToXY(57, currentChoice);
 	cout << CHOICE;
 

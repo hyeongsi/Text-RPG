@@ -41,11 +41,13 @@ void Player::Init()
 		setInitDontMoveDir = false;
 }
 
-void Player::SetStats(const int hpNum, const int powerNum)
+void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, const int& level)
 {
 	Hp = hpNum;
 	MaxHp = Hp;
 	power = powerNum;
+	this->exp = exp;
+	this->level = level;
 	int walkCount = 0;
 }
 
@@ -301,17 +303,17 @@ void Player::IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& 
 	if (isInvincibility == false)
 	{
 		attackedDelaymanager.SetStartTime();
-		attackedDelaymanager.SetDelayTime(invincibilityTime);
+		attackedDelaymanager.SetDelayTime(INVINCIBILITY_TIME);
 		isInvincibility = true;
 
 		//무적아니면 실행 ... 일단 한가지문제는 부딪히는곳 반대로 튕길때 있고,, 무적일때 바로알아볼수있게 이펙트추가하면 좋을것같음
-		if ((this->GetPos().GetX() - monsterPosition.GetX() >= 0) && ((this->GetPos().GetX() + rename) < rightLimit.GetX()))
+		if ((this->GetPos().GetX() - monsterPosition.GetX() >= 0) && ((this->GetPos().GetX() + NUCKBACK_SIZE) < rightLimit.GetX()))
 		{
-			this->SetPos(this->GetPos().GetX() + rename, this->GetPos().GetY());		//오른쪽으로 밀려남,, 조건은 오른쪽경계체크
+			this->SetPos(this->GetPos().GetX() + NUCKBACK_SIZE, this->GetPos().GetY());		//오른쪽으로 밀려남,, 조건은 오른쪽경계체크
 		}
-		if ((this->GetPos().GetX() - monsterPosition.GetX() < 0) && ((this->GetPos().GetX() - rename) > leftLimit.GetX()))
+		if ((this->GetPos().GetX() - monsterPosition.GetX() < 0) && ((this->GetPos().GetX() - NUCKBACK_SIZE) > leftLimit.GetX()))
 		{
-			this->SetPos(this->GetPos().GetX() - rename, this->GetPos().GetY());		//왼쪽으로 밀려남,, 조건은 왼쪽 경계체크
+			this->SetPos(this->GetPos().GetX() - NUCKBACK_SIZE, this->GetPos().GetY());		//왼쪽으로 밀려남,, 조건은 왼쪽 경계체크
 		}
 		this->Hit(monsterPower);
 		playerStatsUI.PrintHp(Hp);

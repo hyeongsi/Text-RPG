@@ -114,43 +114,18 @@ void GameInfo::LoadNewData()
 	player->SetStats(hp, power);
 }
 
-void GameInfo::LoadSaveData(const int& dataNumber)
-{
-	switch (dataNumber)
-	{
-	case 1:
-		LoadPlayerStats(dataNumber);
-		break;
-	case 2:
-		LoadPlayerStats(dataNumber);
-		break;
-	default:
-		LoadPlayerStats(dataNumber);
-		break;	
-	}
-}
-
-void GameInfo::LoadPlayerStats(const int& dataNumber)
+void GameInfo::LoadPlayerStats(const string& path, const string& name)
 {
 	int hp = 0;
 	int power = 0;
+	int exp = 0;
+	int level = 0;
 
-	switch (dataNumber)
-	{
-	case 1:
-		hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");//섹션수정
-		power = ReadFileInt("player", "power", "GameInfo\\player.ini");//섹션수정
-		break;
-	case 2:
-		hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");	//섹션수정
-		power = ReadFileInt("player", "power", "GameInfo\\player.ini");//섹션수정
-		break;
-	default:
-		hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");
-		power = ReadFileInt("player", "power", "GameInfo\\player.ini");
-		break;
-	}
-	player->SetStats(hp, power);
+	hp = ReadFileInt(name.c_str(), "hp", path.c_str());//섹션수정
+	power = ReadFileInt(name.c_str(), "power", path.c_str());//섹션수정
+	exp = ReadFileInt(name.c_str(), "exp", path.c_str());
+	level = ReadFileInt(name.c_str(), "level", path.c_str());
+	player->SetStats(hp, power, exp, level);
 }
 
 void GameInfo::LoadPlayerShape()

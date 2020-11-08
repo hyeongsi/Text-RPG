@@ -16,7 +16,6 @@ protected:
 	void GoToXY(SHORT x, SHORT y) const;
 	void ReadFileString(const char* section, string key, map<string, string>& test, const char* path) const;
 	void ReadFileString(const char* section, const char* key, string& test, const char* path) const;
-	wstring Str2Wstr(const string& str);	//item 넣을 때 사용 str->wstr
 public:
 
 

@@ -8,7 +8,6 @@ class SelectDungeonUI : public UI
 	map <string, string> select;
 	map <string, string> playerTemplate;
 	map <string, string> inventory;
-	map <string, int> playerStat;
 	string playerExplanation;
 	string inventoryExplanation;
 	GameInfo* gameInfo = GameInfo::GetInstance();

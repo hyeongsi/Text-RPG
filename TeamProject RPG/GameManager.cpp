@@ -2,6 +2,8 @@
 #include "GameStartUI.h"
 #include "SelectDungeonUI.h"
 
+namespace fs = experimental::filesystem;
+
 GameManager::GameManager()
 {
 	gameStartUI = new GameStartUI();
@@ -25,12 +27,9 @@ const int& GameManager::TitleMenuPrint()
 	if (menuSelect == NEWGAME)
 		NewPlayerMenu();
 	else if (menuSelect == CHARACTERSELECET)
-	{
-		return CHARACTERSELECET;		//여기에는 이전 캐릭터 선택하는 UI만들어서 넣기, 반환값 saveCharacterNumber넣고
-		// gameManager.Play(saveCharacterNumber);
-	}
+		LoadPlayerSelectMenu();
 
-	return NEWGAME;
+	return STARTGAME;
 }
 
 void GameManager::NewPlayerMenu()
@@ -47,10 +46,43 @@ void GameManager::NewPlayerMenu()
 	gameInfo->LoadWeaponData();
 }
 
+void GameManager::LoadPlayerSelectMenu()
+{
+	system("cls");
+
+	mapManager.GoToXY(30, 10);
+	cout << "닉네임을 입력하세요 : ";
+	cin >> playerName;
+	path += playerName + ".ini";
+
+	string fileName(path);
+	ifstream fin(fileName.c_str());
+
+	if (fin.fail())
+	{
+		cout << endl;
+		cout << "해당 정보가 없습니다. 해당 이름으로 신규 생성합니다." << endl;
+		Sleep(1000);
+
+		gameInfo->LoadNewData();
+		gameInfo->LoadPlayerShape();
+		gameInfo->LoadWeaponData();
+		return;
+	}
+	else
+	{
+		gameInfo->LoadPlayerStats(path, playerName);
+		gameInfo->LoadPlayerShape();
+		gameInfo->LoadWeaponData();
+	}
+
+}
+
 const int GameManager::SelectDungeonMenuPrint()
 {
 	system("cls");
 	int returnValue = 0;
+	selectDungeonUI->Show();
 	returnValue = selectDungeonUI->Select();
 
 	if (returnValue == 0)
@@ -60,21 +92,6 @@ const int GameManager::SelectDungeonMenuPrint()
 	}
 	else
 		return returnValue;
-}
-
-void GameManager::Play(const int& saveFileNumber)
-{
-	if (0 == saveFileNumber)
-	{
-		system("cls");
-		mapManager.GoToXY(30, 10);
-		cout << "닉네임을 입력하세요 : ";
-		cin >> playerName;
-		path += playerName + ".ini";
-	}
-	gameInfo->LoadSaveData(saveFileNumber); // 세이브파일 번호
-	gameInfo->LoadPlayerShape();
-	gameInfo->LoadWeaponData();
 }
 
 const int& GameManager::StartDungeon(const int& dungeonNumber)

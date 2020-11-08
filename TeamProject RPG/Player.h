@@ -5,15 +5,6 @@
 #include <time.h>
 #include <Windows.h>
 
-//이거 character로 옮김
-//const enum DIR
-//{
-//	UP,
-//	DOWN,
-//	LEFT,
-//	RIGHT
-//};
-
 class Player : public Character
 {
 private:
@@ -39,15 +30,15 @@ private:
 	//피격당했을때 잠깐무적을 위해 추가
 	DelayManager attackedDelaymanager;
 	bool isInvincibility = false;	//무적상태여부
-	int invincibilityTime = 2500;	//무적시간
-	int rename = 10;		//맞았을때 밀려날 크기? 이름다시짓기
+	const int INVINCIBILITY_TIME = 2500;	//무적시간
+	const int NUCKBACK_SIZE = 10;		//맞았을때 밀려날 크기
 
 public:
 	static Player* GetInstance();
 	static void ReleaseInstance();
 
 	void Init();
-	void SetStats(const int hpNum, const int powerNum);
+	void SetStats(const int& hpNum, const int& powerNum, const int& exp = 0, const int& level = 0);
 	void SyncStatsUI();
 
 	void CheckDontMoveDir(Pos leftUp, Pos rightDown);

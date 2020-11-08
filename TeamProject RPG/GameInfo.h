@@ -44,8 +44,7 @@ public:
 	void LoadItemBoxShape();
 
 	void LoadNewData();
-	void LoadSaveData(const int& dataNumber);
-	void LoadPlayerStats(const int& dataNumber);
+	void LoadPlayerStats(const string& path, const string& name);
 	void LoadPlayerShape();
 
 	void LoadSlimeShape();

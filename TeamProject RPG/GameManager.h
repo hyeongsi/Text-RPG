@@ -28,9 +28,9 @@ public:
 	GameManager();
 	const int& TitleMenuPrint();		//타이틀 선택창
 	void NewPlayerMenu();
+	void LoadPlayerSelectMenu(); //기존 유저 데이터 선택 메뉴
 
 	const int SelectDungeonMenuPrint();		//던전 선택창
-	void Play(const int& saveFileNumber); //게임 시작버튼 눌렀을 때
 	const int& StartDungeon(const int& dungeonNumber);
 
 	void LoadDungeonData(const int& dungeonNumber);		//던전 데이터 로드
@@ -43,4 +43,5 @@ const enum select {
 	EXIT = -1,
 	NEWGAME,
 	CHARACTERSELECET,
+	STARTGAME
 };
