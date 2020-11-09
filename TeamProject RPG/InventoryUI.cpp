@@ -45,7 +45,7 @@ void InventoryUI::SetItemUI(string itemName, int index, int inventoryColSize)
 	startColNum += (((index-1) % inventoryColSize) * 6);
 
 	for (int i = 0; i < 2; i++)
-		(inventory[to_string(startRowNum)])[(startColNum) + i] = itemName[i];
+		(inventory[to_string(startRowNum)])[startColNum + i] = itemName[i];
 }
 
 void InventoryUI::ClearInventoryUI()

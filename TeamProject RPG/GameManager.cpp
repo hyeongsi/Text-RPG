@@ -2,15 +2,14 @@
 #include "GameStartUI.h"
 #include "SelectDungeonUI.h"
 
-namespace fs = experimental::filesystem;
-
 GameManager::GameManager()
 {
+	dontMovePos = nullptr;
 	gameStartUI = new GameStartUI();
 	selectDungeonUI = new SelectDungeonUI();
 }
 
-const int& GameManager::TitleMenuPrint()
+const int GameManager::TitleMenuPrint()
 {
 	int menuSelect = -1;		//게임시작에서 선택여부를 저장할 변수
 	int dungeonSelect = 1;		//던전을 선택할 변수
@@ -72,10 +71,10 @@ void GameManager::LoadPlayerSelectMenu()
 	else
 	{
 		gameInfo->LoadPlayerStats(path, playerName);
+		gameInfo->LoadInventoryItem(path, playerName);
 		gameInfo->LoadPlayerShape();
 		gameInfo->LoadWeaponData();
 	}
-
 }
 
 const int GameManager::SelectDungeonMenuPrint()
@@ -87,6 +86,7 @@ const int GameManager::SelectDungeonMenuPrint()
 
 	if (returnValue == 0)
 	{
+		SavePlayerData();
 		delete selectDungeonUI;
 		return EXIT;
 	}
@@ -94,7 +94,7 @@ const int GameManager::SelectDungeonMenuPrint()
 		return returnValue;
 }
 
-const int& GameManager::StartDungeon(const int& dungeonNumber)
+const int GameManager::StartDungeon(const int& dungeonNumber)
 {
 	if (0 == dungeonNumber)
 		return -1;
@@ -254,11 +254,23 @@ void GameManager::SavePlayerData()
 	string playerPower = to_string(player->GetPower());		//공격력
 	string playerLevel = to_string(player->GetLevel());		//레벨
 	string playerExp = to_string(player->GetExp());			//경험치
+	Inventory& tempInventroy = player->GetInventory();
+	string playerInventorySize = to_string(tempInventroy.GetInventorySize());	//인벤토리 사이즈
 
 	gameInfo->WriteData(playerName, "hp", playerHp, path);
 	gameInfo->WriteData(playerName, "power", playerPower, path);
 	gameInfo->WriteData(playerName, "level", playerLevel, path);
 	gameInfo->WriteData(playerName, "exp", playerExp, path);
+	gameInfo->WriteData(playerName, "size", playerInventorySize, path);
+
+	for (int inventoryItemNumber = 0; inventoryItemNumber < tempInventroy.GetInventorySize(); inventoryItemNumber++)
+	{
+		int itemValue= tempInventroy.GetItem(inventoryItemNumber);
+		if (itemValue == -1)
+			return;
+
+		gameInfo->WriteData(playerName, to_string(inventoryItemNumber),to_string(itemValue), path);
+	}
 }
 
 //플레이어와 적의 충돌처리

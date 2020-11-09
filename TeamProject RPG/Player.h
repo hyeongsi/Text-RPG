@@ -48,7 +48,7 @@ public:
 	const int Attack();	//공격 함수
 	const int SetPickUpState();//습득 상태 설정
 
-	const bool PickUp();	//아이템 습득 시 인벤토리에 저장
+	const bool PickUp(const int& itemNumber = -1);	//아이템 습득 시 인벤토리에 저장
 	void UseItem(int itemNumber);	//아이템 사용
 	void OpenInventory();		//인벤토리 열기
 	void CloseInventory();		//인벤토리 닫기
@@ -65,6 +65,7 @@ public:
 	const int GetDir();			//보고있는 방향 리턴
 	const int GetLevel();
 	const int GetExp();
+	Inventory& GetInventory();
 	void SetExp(const int exp);	//경험치 증가
 
 	void IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& rightLimit, int monsterPower);

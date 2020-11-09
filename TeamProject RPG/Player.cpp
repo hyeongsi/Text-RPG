@@ -187,17 +187,23 @@ const int Player::SetPickUpState()
 	return PICKUP;
 }
 
-const bool Player::PickUp()
+const bool Player::PickUp(const int& itemNumber)
 {
 	if(inventory.IsFullInventory())
 		return false;
-	else
+
+	if (itemNumber == -1)
 	{
 		//아이템 박스 습득 시 아이템 사이즈에 따라 랜덤 아이템 드랍
-		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);	
-		inventory.SyncInventoryUI();
+		inventory.PushItem(rand() % RANDOM_ITEM_SIZE);
 		return true;
 	}
+	else
+	{
+		inventory.PushItem(itemNumber);
+		return true;
+	}
+	
 }
 
 void Player::UseItem(int itemNumber)
@@ -220,7 +226,6 @@ void Player::UseItem(int itemNumber)
 		}
 
 		inventory.DeleteItem(itemNumber-1);
-		inventory.SyncInventoryUI();
 		inventory.OpenInventory();
 	}
 }
@@ -283,6 +288,11 @@ const int Player::GetLevel()
 const int Player::GetExp()
 {
 	return exp;
+}
+
+Inventory& Player::GetInventory()
+{
+	return inventory;
 }
 
 void Player::SetExp(const int exp)

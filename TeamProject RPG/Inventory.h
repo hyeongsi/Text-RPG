@@ -26,5 +26,6 @@ public:
 
 	const bool IsEmptyInventory();		//가방 사이즈를 통해 비었는지 판별
 	const bool IsFullInventory();		//가방 사이즈를 통해 가득인지 판별
+	const int GetInventorySize();
 };
 

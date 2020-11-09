@@ -13,13 +13,13 @@ void SetConsole()
 	SetConsoleCursorInfo(hConsole, &ConsoleCursor);
 }
 
-void main()
+int main()
 {
 	SetConsole();
 
 	GameManager gameManager;
 	if (gameManager.TitleMenuPrint() == EXIT)
-		return;
+		return 0;
 
 	int returnValue = 0;
 	while (true)
@@ -29,6 +29,6 @@ void main()
 			returnValue = gameManager.StartDungeon(returnValue);
 		
 		if (returnValue == EXIT)
-			return;
+			return 0;
 	}
 }

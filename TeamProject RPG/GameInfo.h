@@ -46,6 +46,7 @@ public:
 	void LoadNewData();
 	void LoadPlayerStats(const string& path, const string& name);
 	void LoadPlayerShape();
+	void LoadInventoryItem(const string& path, const string& name);
 
 	void LoadSlimeShape();
 	void LoadSlimeStats();
