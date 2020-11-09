@@ -66,6 +66,7 @@ void GameManager::LoadPlayerSelectMenu()
 		gameInfo->LoadNewData();
 		gameInfo->LoadPlayerShape();
 		gameInfo->LoadWeaponData();
+		fin.close();
 		return;
 	}
 	else
@@ -74,6 +75,7 @@ void GameManager::LoadPlayerSelectMenu()
 		gameInfo->LoadInventoryItem(path, playerName);
 		gameInfo->LoadPlayerShape();
 		gameInfo->LoadWeaponData();
+		fin.close();
 	}
 }
 

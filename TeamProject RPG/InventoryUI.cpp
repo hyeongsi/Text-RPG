@@ -12,16 +12,29 @@ InventoryUI::InventoryUI()
 	tempInventory = inventory;
 }
 
-void InventoryUI::OpenInventory()
+void InventoryUI::OpenInventory(const bool isMenu)
 {
 	string index;
 
 	setlocale(LC_ALL, "ko_KR.UTF8");
-	for (int i = 0; i < inventory.size(); i++)
+
+	if (isMenu == false)
 	{
-		GoToXY(3, 30 + i);
-		index = to_string(i);
-		cout << inventory[index];
+		for (int i = 0; i < inventory.size(); i++)
+		{
+			GoToXY(3, 30 + i);
+			index = to_string(i);
+			cout << inventory[index];
+		}
+	}
+	else
+	{
+		for (int i = 0; i < inventory.size(); i++)
+		{
+			GoToXY(3, 15 + i);
+			index = to_string(i);
+			cout << inventory[index];
+		}
 	}
 	setlocale(LC_ALL, "");
 }

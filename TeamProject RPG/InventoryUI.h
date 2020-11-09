@@ -9,7 +9,7 @@ private:
 public:
 	InventoryUI();
 
-	void OpenInventory();
+	void OpenInventory(const bool isMenu = false);
 	void CloseInventory();
 	void SetItemUI(string itemName, int index, int inventoryColSize);
 	void ClearInventoryUI();

@@ -61,18 +61,13 @@ void SelectDungeonUI::Show()
 		cout << playerTemplate[index];
 	}
 
-	////인벤토리에 대한 설명 출력
+	//인벤토리에 대한 설명 출력
 	GoToXY(7, 14);
 	cout << inventoryExplanation;
-
-	////아이템 출력할 틀 출력
-	for (int i = 0; i < inventory.size(); i++)
-	{
-		GoToXY(3, 15 + i);
-		index = to_string(i);
-		cout << inventory[index];
-	}
 	setlocale(LC_ALL, "");
+
+	Inventory tempInventory = player->GetInventory();
+	tempInventory.OpenInventory(true);
 
 	//현재 플레이어 형태 들고와서 출력
 	auto tempPlayerShape = gameInfo->GetShape(MYPLAYER);

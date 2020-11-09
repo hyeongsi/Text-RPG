@@ -1,8 +1,11 @@
 ﻿#include "Inventory.h"
 
-void Inventory::OpenInventory()
+void Inventory::OpenInventory(const bool isMenu)
 {
-	inventoryUI.OpenInventory();
+	if (isMenu == true)
+		inventoryUI.OpenInventory(true);
+	else
+		inventoryUI.OpenInventory();
 }
 
 void Inventory::CloseInventory()
@@ -10,12 +13,16 @@ void Inventory::CloseInventory()
 	inventoryUI.CloseInventory();
 }
 
-void Inventory::PushItem(const int item)
+void Inventory::PushItem(const int item, const bool isMenu)
 {
 	if (!IsFullInventory())
 	{
 		bag->emplace_back(item);
 		SyncInventoryUI();
+		if (isMenu)
+			return;
+
+		OpenInventory();
 	}
 }
 
@@ -47,6 +54,7 @@ void Inventory::DeleteItem(const int selectIndex)
 		{
 			bag->erase(bagIterator);
 			SyncInventoryUI();
+			OpenInventory();
 			return;
 		}
 
@@ -81,7 +89,6 @@ void Inventory::SyncInventoryUI()
 			break;
 		}	
 	}
-	OpenInventory();
 }
 
 const bool Inventory::IsEmptyInventory()
@@ -96,5 +103,5 @@ const bool Inventory::IsFullInventory()
 
 const int Inventory::GetInventorySize()
 {
-	return bag->size();
+	return static_cast<int>(bag->size());
 }

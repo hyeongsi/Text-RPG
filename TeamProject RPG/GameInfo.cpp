@@ -164,13 +164,11 @@ void GameInfo::LoadPlayerShape()
 void GameInfo::LoadInventoryItem(const string& path, const string& name)
 {
 	int inventorySize = 0;
-	Inventory tempInventory = player->GetInventory();
+	Inventory &tempInventory = player->GetInventory();
 
 	inventorySize = ReadFileInt(name.c_str(), "size", path.c_str());//섹션수정
 	for (int i = 0; i < inventorySize; i++)
-		tempInventory.PushItem(ReadFileInt(name.c_str(), to_string(i).c_str(), path.c_str()));
-
-	tempInventory.SyncInventoryUI();
+		tempInventory.PushItem(ReadFileInt(name.c_str(), to_string(i).c_str(), path.c_str()), true);
 }
 
 void GameInfo::LoadSlimeShape()
