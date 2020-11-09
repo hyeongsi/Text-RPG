@@ -57,5 +57,7 @@ public:
 	void LoadCanMovePos();
 	Pos* GetDontMovePos();
 	void SetDropItem();
+
+	void SetColor(int forground, int background);
 };
 

@@ -139,8 +139,8 @@ void MapManager::PrintMap(bool isOpenInventory)
 		itemPosition.emplace_back(tempItemPos);
 		isTankItemDrop = -1;
 	}
+
 	//아이템박스출력
-	//for (auto itemPositions : itemPosition)
 	PrintItemBox();
 
 	//슬라임출력부
@@ -200,12 +200,26 @@ void MapManager::PrintMap(bool isOpenInventory)
 		player->OpenInventory();
 	}
 
+	//잠깐추가
+	int playerXPosition = player->GetPos().GetX();
+	int playerYPosition = player->GetPos().GetY();
+
 	//출력할 맵 출력
 	GoToXY(0, 0);
 	for (int y = 0; y < MAP_ROW; y++)
 	{
 		for (int x = 0; x < MAP_COL; x++)
+		{
+			if (player->GetIsInvincibility() == true)		//현재 무적시간이면 플레이어 색깔 빨간색으로출력
+			{
+				if ((playerXPosition >= x - 1 && playerXPosition <= x + 1) && (playerYPosition >= y && playerYPosition <= y + 2))
+					SetColor(4, 0);
+			}
+
 			cout << tempMap[y][x];
+
+			SetColor(15, 0);
+		}
 	}
 }
 
@@ -487,4 +501,11 @@ void MapManager::SetDropItem()
 		else
 			itemPositionIterator++;
 	}
+}
+
+void MapManager::SetColor(int forground, int background)
+{
+	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	int code = forground + background * 16;
+	SetConsoleTextAttribute(consoleHandle, code);
 }

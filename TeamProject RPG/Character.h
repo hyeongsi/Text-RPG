@@ -19,10 +19,12 @@ public:
 
 	int GetPower() const;		//서로 타격당할때 공격력받아오기위해 추가
 	int GetHp() const;
+
+	void SetHp(int hp);
+	void SetPower(int power);
+	void SetMaxHp(int Hp);
 };
 
-//이거 monster에도 필요한데 player를 include안시킬거라 character로 옮겨서
-//모든 캐릭터라 사용할 수 있게 했음
 const enum DIR
 {
 	UP,

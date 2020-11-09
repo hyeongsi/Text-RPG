@@ -1,13 +1,14 @@
 ﻿#pragma once
 #include "UI.h"
 #include "GameInfo.h"	//캐릭터형태 불러오기
-#include "Inventory.h"	//아이템 보유현황 불러오기
+#include "InventoryUI.h"	//아이템 보유현황 불러오기
 
 class SelectDungeonUI : public UI
 {
 	map <string, string> select;
 	map <string, string> playerTemplate;
 	map <string, string> inventory;
+	InventoryUI inventoryUI;
 	string playerExplanation;
 	string inventoryExplanation;
 	GameInfo* gameInfo = GameInfo::GetInstance();

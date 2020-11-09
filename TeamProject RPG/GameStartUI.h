@@ -11,18 +11,11 @@ private:
 	const int CHARACTERSELECET = 14;
 	const int EXIT = 16;
 
+private:
 	void Show();
 
 public:
 	GameStartUI();
-	const int& Select();
+	const int Select();
 	~GameStartUI();
 };
-
-/*
-■■■■              ■■■■      ■■■■    ■■■■      ■■■■■
-■                    ■            ■    ■    ■    ■    ■
-■■■■    ■■■    ■■■■      ■■        ■■■■    ■    ■■■
-      ■                    ■      ■  ■      ■         ■      ■
-■■■■              ■■■■      ■    ■    ■            ■■■■■
-*/

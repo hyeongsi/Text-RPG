@@ -228,6 +228,11 @@ void Player::UseItem(int itemNumber)
 		inventory.DeleteItem(itemNumber-1);
 		inventory.OpenInventory();
 	}
+
+	//아이템 사용후 UI최신화
+	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintExp(exp);
+	playerStatsUI.PrintLevel(level);
 }
 
 void Player::OpenInventory()
@@ -248,6 +253,11 @@ const int Player::GetInventoryItem(int itemIndex)
 void Player::Die()
 {
 	isSurvival = false;
+
+	//죽었을때 패널티
+	SetMaxHp(MaxHp - 2);
+	SetPower(power - 1);
+	SetExp(-exp);
 }
 
 const string Player::GetHoldWeapon()
@@ -316,7 +326,6 @@ void Player::IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& 
 		attackedDelaymanager.SetDelayTime(INVINCIBILITY_TIME);
 		isInvincibility = true;
 
-		//무적아니면 실행 ... 일단 한가지문제는 부딪히는곳 반대로 튕길때 있고,, 무적일때 바로알아볼수있게 이펙트추가하면 좋을것같음
 		if ((this->GetPos().GetX() - monsterPosition.GetX() >= 0) && ((this->GetPos().GetX() + NUCKBACK_SIZE) < rightLimit.GetX()))
 		{
 			this->SetPos(this->GetPos().GetX() + NUCKBACK_SIZE, this->GetPos().GetY());		//오른쪽으로 밀려남,, 조건은 오른쪽경계체크
@@ -328,6 +337,14 @@ void Player::IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& 
 		this->Hit(monsterPower);
 		playerStatsUI.PrintHp(Hp);
 	}
+}
+
+//무적시간측정
+void Player::IsInvincibilityTimer()
+{
+	if (isInvincibility == false)
+		return;
+
 	//무적시간카운트
 	if (isInvincibility == true)
 	{
@@ -336,4 +353,10 @@ void Player::IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& 
 
 		isInvincibility = false;
 	}
+}
+
+//현재상태반환
+bool Player::GetIsInvincibility()
+{
+	return isInvincibility;
 }

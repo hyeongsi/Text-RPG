@@ -57,7 +57,6 @@ void Inventory::DeleteItem(const int selectIndex)
 			OpenInventory();
 			return;
 		}
-
 		count++;
 		bagIterator++;
 	}

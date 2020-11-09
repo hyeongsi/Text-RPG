@@ -54,8 +54,8 @@ void InventoryUI::SetItemUI(string itemName, int index, int inventoryColSize)
 	int startColNum = 4;
 	int startRowNum = 1;
 
-	startRowNum += (((index-1) / inventoryColSize) * 2);
-	startColNum += (((index-1) % inventoryColSize) * 6);
+	startRowNum += static_cast<int>(((index - 1) / inventoryColSize) * 2);
+	startColNum += static_cast<int>(((index - 1) % inventoryColSize) * 6);
 
 	for (int i = 0; i < 2; i++)
 		(inventory[to_string(startRowNum)])[startColNum + i] = itemName[i];

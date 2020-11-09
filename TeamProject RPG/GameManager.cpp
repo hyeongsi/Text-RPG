@@ -40,9 +40,29 @@ void GameManager::NewPlayerMenu()
 	cin >> playerName;
 	path += playerName + ".ini";
 
-	gameInfo->LoadNewData();
-	gameInfo->LoadPlayerShape();
-	gameInfo->LoadWeaponData();
+	string fileName(path);
+	ifstream fin(fileName.c_str());
+
+	if (fin.fail())
+	{
+		cout << endl;
+		cout << "해당 정보가 없습니다. 해당 이름으로 신규 생성합니다." << endl;
+		Sleep(1000);
+
+		gameInfo->LoadNewData();
+		gameInfo->LoadPlayerShape();
+		gameInfo->LoadWeaponData();
+		fin.close();
+		return;
+	}
+	else
+	{
+		cout << endl << endl << endl << "중복되는 닉네임입니다. 새로운 닉네임을 입력해주세요!" << endl;
+		Sleep(1000);
+		path = "playerList\\";
+		fin.close();
+		NewPlayerMenu();
+	}
 }
 
 void GameManager::LoadPlayerSelectMenu()
@@ -81,6 +101,7 @@ void GameManager::LoadPlayerSelectMenu()
 
 const int GameManager::SelectDungeonMenuPrint()
 {
+	SavePlayerData();
 	system("cls");
 	int returnValue = 0;
 	selectDungeonUI->Show();
@@ -137,6 +158,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			}
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
+			player->IsInvincibilityTimer();		//플레이어 무적시간측정
 
 			//플레이어 상태를 기준으로 행동 실행
 			switch (tempPlayerState)
@@ -214,7 +236,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 		}
  	}
 
-	SavePlayerData();	//던전하나깰때마다 정보저장
+	SavePlayerData();
 
 	return 0;
 }
@@ -469,7 +491,7 @@ void GameManager::CheckContact()
 	if (isCrashSilme == true)
 		player->IsHit((*slime)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
 	else if (isCrashOak == true)
-		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
+		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*oak)[crashIndex]->GetPower());
 	else if (isCrashTank == true)
-		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
+		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*tank)[crashIndex]->GetPower());
 }

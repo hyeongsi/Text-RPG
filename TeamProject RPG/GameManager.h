@@ -20,7 +20,7 @@ private:
 	vector<Tank*>* tank = Tank::GetInstance();
 
 	Pos playerPos;		//플레이어 좌표
-	Pos* dontMovePos;	//이동불가 영역
+	Pos* dontMovePos = nullptr;	//이동불가 영역
 	bool isOpenInventory = false;
 	string playerName;
 	string path = "playerList\\";

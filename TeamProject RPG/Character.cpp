@@ -42,3 +42,19 @@ int Character::GetHp() const
 	return Hp;
 }
 
+void Character::SetHp(int hp)
+{
+	this->Hp = hp;
+}
+
+void Character::SetPower(int power)
+{
+	if (power <= 0)
+		power = 0;
+	this->power = power;
+}
+
+void Character::SetMaxHp(int Hp)
+{
+	this->MaxHp = Hp;
+}

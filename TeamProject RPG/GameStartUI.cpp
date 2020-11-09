@@ -38,7 +38,7 @@ void GameStartUI::Show()
 	setlocale(LC_ALL, "");
 }
 
-const int& GameStartUI::Select()
+const int GameStartUI::Select()
 {
 	Show();
 	GoToXY(42, currentChoice);

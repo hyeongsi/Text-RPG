@@ -303,7 +303,18 @@ void GameInfo::LoadTankStats()
 
 void GameInfo::LoadTankDefaultSettingValue()
 {
+	tank = Tank::GetInstance();
+	int tankInvincibilityTime = 0;
+	int bounceSize = 0;
 
+	if (tank != nullptr)
+	{
+		tankInvincibilityTime = ReadFileInt("tank", "invincibilityTime", "gameinfo\\tank.ini");
+		bounceSize = ReadFileInt("tank", "bounceSize", "gameinfo\\tank.ini");
+
+		for (int i = 0; i < tank->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
+			(*tank)[i]->Setting(tankInvincibilityTime, bounceSize);
+	}
 }
 
 void GameInfo::WriteData(string tempSection, string tempKey, string tempValue, string tempPath)

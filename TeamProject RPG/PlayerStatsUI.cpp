@@ -3,11 +3,15 @@
 void PlayerStatsUI::PrintHp(const int& hp) const
 {
 	GoToXY(50, 31);
+	cout << "                        ";
+	GoToXY(50, 31);
 	cout << "HP : " << hp << endl;
 }
 
 void PlayerStatsUI::PrintExp(const int& exp) const
 {
+	GoToXY(50, 33);
+	cout << "                        ";
 	GoToXY(50, 33);
 	cout << "exp : " << exp << " / 100"<< endl;
 }

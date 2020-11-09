@@ -51,6 +51,7 @@ const int EscMenuUI::OpenEscMenu()
 
 const int EscMenuUI::SelectEscMenu()
 {
+	//char temp = 0;
 	if (GetAsyncKeyState(VK_RETURN) && 0x0001);//이걸로 버퍼 제거
 	while (1)
 	{
@@ -101,10 +102,10 @@ const int EscMenuUI::SelectEscMenu()
 			case 2:
 				GoToXY(70, 34);
 				cout << "사용할 아이템 번호(0 ~ 16) : ";
-				getchar();	//버퍼제거
+				//temp = getchar();	//버퍼제거
 				GoToXY(98, 34);
 				cin >> selectItem;
-				getchar();	//버퍼제거
+				//temp = getchar();	//버퍼제거
 				Sleep(50);
 
 				if ((NOTHING != selectItem) && (0 <= selectItem) && (16 >= selectItem))

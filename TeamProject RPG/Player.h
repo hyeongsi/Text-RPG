@@ -69,6 +69,8 @@ public:
 	void SetExp(const int exp);	//경험치 증가
 
 	void IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& rightLimit, int monsterPower);
+	void IsInvincibilityTimer();
+	bool GetIsInvincibility();
 };
 
 enum Behavior
