@@ -41,7 +41,7 @@ void Player::Init()
 		setInitDontMoveDir = false;
 }
 
-void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, const int& level)
+void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, const int& level, const string& weapon)
 {
 	Hp = hpNum;
 	MaxHp = Hp;
@@ -49,7 +49,8 @@ void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, con
 	this->exp = exp;
 	this->level = level;
 	int walkCount = 0;
-}
+	holdWeapon = weapon;
+ }
 
 void Player::SyncStatsUI()
 {
@@ -220,8 +221,12 @@ void Player::UseItem(int itemNumber)
 		case 1:	//MP포션
 			break;
 		case 2:	//도끼
+			holdWeapon = "axe";
+			inventory.PushItem(3);
 			break;
 		case 3:	//칼
+			holdWeapon = "sword";
+			inventory.PushItem(2);
 			break;
 		}
 
@@ -300,6 +305,11 @@ const int Player::GetExp()
 	return exp;
 }
 
+const string& Player::GetCurrentWeapon()
+{
+	return holdWeapon;
+}
+
 Inventory& Player::GetInventory()
 {
 	return inventory;
@@ -313,6 +323,7 @@ void Player::SetExp(const int exp)
 		this->exp -= 100;
 		level += 1;
 		MaxHp += 1;
+		power += 1;
 		Hp = MaxHp;
 	}
 }

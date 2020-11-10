@@ -71,6 +71,11 @@ void GameInfo::ReadFileString(const char* section, const char* key, const char* 
 {
 	GetPrivateProfileString(section, key,"", loadData, sizeof(loadData), path);
 }
+const TCHAR* GameInfo::GetReadFileString(const char* section, const char* key, const char* path)
+{
+	GetPrivateProfileString(section, key, "", loadData, sizeof(loadData), path);
+	return loadData;
+}
 
 void GameInfo::LoadWeaponData()
 {
@@ -120,12 +125,15 @@ void GameInfo::LoadPlayerStats(const string& path, const string& name)
 	int power = 0;
 	int exp = 0;
 	int level = 0;
+	string weapon;
 
 	hp = ReadFileInt(name.c_str(), "hp", path.c_str());//섹션수정
 	power = ReadFileInt(name.c_str(), "power", path.c_str());//섹션수정
 	exp = ReadFileInt(name.c_str(), "exp", path.c_str());
 	level = ReadFileInt(name.c_str(), "level", path.c_str());
-	player->SetStats(hp, power, exp, level);
+	weapon = GetReadFileString(name.c_str(), "currentWeapon", path.c_str());
+	
+	player->SetStats(hp, power, exp, level, weapon);
 }
 
 void GameInfo::LoadPlayerShape()

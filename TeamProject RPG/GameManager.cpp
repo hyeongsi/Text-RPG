@@ -223,6 +223,8 @@ void GameManager::SavePlayerData()
 	string playerPower = to_string(player->GetPower());		//공격력
 	string playerLevel = to_string(player->GetLevel());		//레벨
 	string playerExp = to_string(player->GetExp());			//경험치
+	string playerWeapon = player->GetCurrentWeapon();			//무기
+
 	Inventory& tempInventroy = player->GetInventory();
 	string playerInventorySize = to_string(tempInventroy.GetInventorySize());	//인벤토리 사이즈
 
@@ -231,6 +233,7 @@ void GameManager::SavePlayerData()
 	gameInfo->WriteData(playerName, "level", playerLevel, path);
 	gameInfo->WriteData(playerName, "exp", playerExp, path);
 	gameInfo->WriteData(playerName, "size", playerInventorySize, path);
+	gameInfo->WriteData(playerName, "currentWeapon", playerWeapon, path);
 
 	for (int inventoryItemNumber = 0; inventoryItemNumber < tempInventroy.GetInventorySize(); inventoryItemNumber++)
 	{

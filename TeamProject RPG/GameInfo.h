@@ -36,6 +36,7 @@ public:
 	
 	const int ReadFileInt(const char* section, const char* key, const char* path);
 	void ReadFileString(const char* section, const char* key, const char* path);
+	const TCHAR* GetReadFileString(const char* section, const char* key, const char* path);
 
 	void LoadWeaponData();
 	void LoadItemBoxShape();

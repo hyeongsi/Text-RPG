@@ -38,7 +38,7 @@ public:
 	static void ReleaseInstance();
 
 	void Init();
-	void SetStats(const int& hpNum, const int& powerNum, const int& exp = 0, const int& level = 0);
+	void SetStats(const int& hpNum, const int& powerNum, const int& exp = 0, const int& level = 0, const string& weapon = "sword");
 	void SyncStatsUI();
 
 	void CheckDontMoveDir(Pos leftUp, Pos rightDown);
@@ -65,6 +65,7 @@ public:
 	const int GetDir();			//보고있는 방향 리턴
 	const int GetLevel();
 	const int GetExp();
+	const string& GetCurrentWeapon();
 	Inventory& GetInventory();
 	void SetExp(const int exp);	//경험치 증가
 
