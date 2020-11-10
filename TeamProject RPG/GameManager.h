@@ -15,15 +15,15 @@ private:
 	EscMenuUI escMenuUI;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player = Player::GetInstance();
-	vector<Slime*>* slime = Slime::GetInstance();
-	vector<Oak*>* oak = Oak::GetInstance();
-	vector<Tank*>* tank = Tank::GetInstance();
+
+	vector<Monster*>* monster = nullptr;
 
 	Pos playerPos;		//플레이어 좌표
 	Pos* dontMovePos = nullptr;	//이동불가 영역
 	bool isOpenInventory = false;
 	string playerName;
 	string path = "playerList\\";
+
 public:
 	GameManager();
 	const int TitleMenuPrint();		//타이틀 선택창

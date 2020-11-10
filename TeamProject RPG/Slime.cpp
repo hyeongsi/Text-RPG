@@ -1,44 +1,21 @@
 ﻿#include "Slime.h"
 
-vector<Slime*>* Slime::slime = nullptr;
-Pos* Slime::itemPosition = new Pos();
 int Slime::exp = 0;
+int Slime::itemDropPercentage = 0;
 
 //객체추가
 void Slime::AddInstance()
 {
-	if (slime == nullptr)
-		slime = new vector<Slime*>();
-
-	slime->push_back(new Slime());		//slime객체 추가
-}
-
-//객체벡터반환
-vector<Slime*>* Slime::GetInstance()
-{
-	return slime;
-}
-
-//동적할당해제하기
-void Slime::ReleaseInstance()
-{
-	if (slime == nullptr)
-		return;
-	
-	for (int i = 0; i < slime->size(); i++)
-		delete (*slime)[i];
-
-	slime->clear();
-
-	delete slime;
-	slime = nullptr;
+	Monster::AddInstance();
+	monster->push_back(new Slime());		//slime객체 추가
 }   
 
 //각 슬라임마다 체력과 공격력과 스피드 설정하기
-void Slime::SetStats(int hp, int power, int speed, int exp)
+void Slime::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
 {
 	Monster::MonsterSetStats(hp, power, speed);
 	Slime::exp = exp;
+	Slime::itemDropPercentage = itemDropPercentage;
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임
@@ -57,24 +34,6 @@ void Slime::Move(const int& playerXPosition, const int& playerYPosition)
 	//간단히 설명하자면 캐릭터가있는 위치와 슬라임위치를 기준으로 슬라임이동방향을 결정
 	this->SetPos((this->GetPos().GetX()-playerXPosition>0) ? this->GetPos().GetX() - 1 : this->GetPos().GetX() + 1, (this->GetPos().GetY()- playerYPosition > 0) ? this->GetPos().GetY() - 1 : this->GetPos().GetY() + 1);
 	this->isMove = true;
-}
-
-//슬라임체력없으면 삭제
-void Slime::Die()
-{
-	for (auto slimeHP = slime->begin(); slimeHP != slime->end();)
-	{
-		if ((*slimeHP)->Hp <= 0)
-		{
-			itemPosition->SetX(((*slimeHP)->GetPos().GetX() % 2 == 0) ? (*slimeHP)->GetPos().GetX() + 1 : (*slimeHP)->GetPos().GetX());
-			itemPosition->SetY((*slimeHP)->GetPos().GetY());
-			delete (*slimeHP);		//할당받은거 반납
-			slime->erase(slimeHP);	//벡터에서 삭제
-			return;
-		}
-		else
-			slimeHP++;
-	}
 }
 
 //슬라임이 맞았을 때 실행할 함수

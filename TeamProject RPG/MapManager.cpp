@@ -2,17 +2,10 @@
 
 void MapManager::Init()
 {
-	monsterNumer = 0;	//몬스터들의 수가 들어갈 변수.. 던전탈출조건으로 사용
-	slimeNumber = 0;	//현재 슬라임, 오크, 탱크수
-	oakNumber = 0;
-	tankNumber = 0;
-	isSlimeItemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
-	isOakItemDrop = -1;
-	isTankItemDrop = -1;
+	monsterNumber = 0;		//몬스터들의 수가 들어갈 변수
+	isMonsterItemDrop = -1;	//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
 	getItemNumber = 0;		//획득한 아이템수
-	slime = nullptr;
-	oak = nullptr;
-	tank = nullptr;
+	monster = nullptr;
 	itemPosition.clear();
 }
 
@@ -64,27 +57,26 @@ void MapManager::LoadMap(const int& num)
 			else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
 			{
 				Slime::AddInstance();
-				slime = Slime::GetInstance();
-				(*slime)[slimeNumber++]->SetPos(x, y);
+				monster = Monster::GetInstance();
+				(*monster)[monsterNumber++]->SetPos(x, y);
 				mapPiece = ' ';
 			}
 			else if (mapPiece == 'o')		//오크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
 			{
 				Oak::AddInstance();
-				oak = Oak::GetInstance();
-				(*oak)[oakNumber++]->SetPos(x, y);
+				monster = Monster::GetInstance();
+				(*monster)[monsterNumber++]->SetPos(x, y);
 				mapPiece = ' ';
 			}
 			else if (mapPiece == 't')		//탱크가 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
 			{
 				Tank::AddInstance();
-				tank = Tank::GetInstance();
-				(*tank)[tankNumber++]->SetPos(x, y);
+				monster = Monster::GetInstance();
+				(*monster)[monsterNumber++]->SetPos(x, y);
 				mapPiece = ' ';
 			}
 			else if (mapPiece == 'e')
 			{
-				//좌표따기
 				exitPosition.SetX(x);
 				exitPosition.SetY(y);
 				mapPiece = '+';
@@ -113,83 +105,40 @@ void MapManager::PrintMap(bool isOpenInventory)
 	}
 
 	//슬라임의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isSlimeItemDrop == ITEM_DROP) {
+	if (isMonsterItemDrop == ITEM_DROP) {
 		Pos tempItemPos;
-		tempItemPos.SetX(Slime::itemPosition->GetX());
-		tempItemPos.SetY(Slime::itemPosition->GetY());
-
+		tempItemPos.SetX(Monster::itemPosition->GetX());
+		tempItemPos.SetY(Monster::itemPosition->GetY());
 		itemPosition.emplace_back(tempItemPos);
-		isSlimeItemDrop = -1;
+		isMonsterItemDrop = -1;
 	}
-	//오크의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isOakItemDrop == ITEM_DROP) {
-		Pos tempItemPos;
-		tempItemPos.SetX(Oak::itemPosition->GetX());
-		tempItemPos.SetY(Oak::itemPosition->GetY());
-
-		itemPosition.emplace_back(tempItemPos);
-		isOakItemDrop = -1;
-	}
-	//탱크의 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isTankItemDrop == ITEM_DROP) {
-		Pos tempItemPos;
-		tempItemPos.SetX(Tank::itemPosition->GetX());
-		tempItemPos.SetY(Tank::itemPosition->GetY());
-
-		itemPosition.emplace_back(tempItemPos);
-		isTankItemDrop = -1;
-	}
-
-	//아이템박스출력
 	PrintItemBox();
 
-	//슬라임출력부
-	if (slime != nullptr)
+	//몬스터출력
+	for (auto monsterIterator : *monster)
 	{
-		PrintSlime();
-		if (slimeNumber > slime->size())	//슬라임이 한마리 죽으면
-		{
-			srand((unsigned int)time(NULL));
-			if(isSlimeItemDrop != ITEM_DROP)
-				//isSlimeItemDrop = rand() % 3;	//드랍확률계산 33%확률로 아이템떨구기
-				isSlimeItemDrop = 0;			//드랍확률 100%
-			slimeNumber--;
-
-			player->SetExp(Slime::exp);		//경험치 증가
-			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
-		}
+		if (typeid(*monsterIterator) == typeid(Slime))
+			PrintMonster(dynamic_cast<Slime*>(monsterIterator));
+		else if (typeid(*monsterIterator) == typeid(Oak))
+			PrintMonster(dynamic_cast<Oak*>(monsterIterator));
+		else if (typeid(*monsterIterator) == typeid(Tank))
+			PrintMonster(dynamic_cast<Tank*>(monsterIterator));
 	}
-	//오크출력부
-	if (oak != nullptr)
-	{
-		PrintOak();
-		if (oakNumber > oak->size())	//오크 한마리 죽으면
-		{
-			srand((unsigned int)time(NULL));
-			if (isOakItemDrop != ITEM_DROP)
-				//isOakItemDrop = rand() % 5;		//드랍확률계산 20%확률로 아이템떨구기
-				isOakItemDrop = 0;
-			oakNumber--;
 
-			player->SetExp(Oak::exp);			//경험치 증가
-			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
-		}
-	}
-	//탱크출력부
-	if (tank != nullptr)
+	//아이템드랍
+	if (monsterNumber > monster->size())	//몬스터가 한마리 죽으면
 	{
-		PrintTank();
-		if (tankNumber > tank->size())		//탱크 한마리 죽으면
-		{
-			srand((unsigned int)time(NULL));
-			if (isTankItemDrop != ITEM_DROP)
-				//isTankItemDrop = rand() % 10;		//드랍확률계산 10%확률로 아이템떨구기
-				isTankItemDrop = 0;
-			tankNumber--;
+		srand((unsigned int)time(NULL));
+		if (isMonsterItemDrop != ITEM_DROP)
+			//isMonsterItemDrop = rand() % 3;	//드랍확률계산 33%확률로 아이템떨구기
+			isMonsterItemDrop = 0;			//드랍확률 100%
 
-			player->SetExp(Tank::exp);			//경험치 증가
-			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
-		}
+		//어떤 몬스터가 죽는지 알아낼 수 있으면 if문내용을 밑에같은형식으로 바꿔주면됨(Slime대신 죽은몬스터)
+		//isMonsterItemDrop = rand() % Slime::itemDropPercentage;
+
+		monsterNumber--;
+		player->SetExp(Slime::exp);		//경험치 증가
+		player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 	}
 
 	PrintCharacter(player);
@@ -200,7 +149,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 		player->OpenInventory();
 	}
 
-	//잠깐추가
+	//플레이어 피격시 이펙트표시를 위해 사용
 	int playerXPosition = player->GetPos().GetX();
 	int playerYPosition = player->GetPos().GetY();
 
@@ -340,88 +289,31 @@ void MapManager::PrintWeapon(string weapon)
 	}
 }
 
-void MapManager::PrintSlime()
+void MapManager::PrintMonster(Monster* monster)
 {
-	auto slimeShape = gameInfo->GetShape(SLIME);
-	int slimePosX;
-	int slimePosY;
+	std::map<string, string> monsterShape;
+	int monsterPosX = monster->GetPos().GetX();
+	int monsterPosY = monster->GetPos().GetY();
 
-	for (int i = 0; i < slime->size(); i++)
-	{
-		slimePosX = (*slime)[i]->GetPos().GetX();
-		slimePosY = (*slime)[i]->GetPos().GetY();
+	//각 자료형에 맞게 몬스터UI불러오기
+	if (typeid(*monster) == typeid(Slime))
+		monsterShape = gameInfo->GetShape(SLIME);
+	else if (typeid(*monster) == typeid(Oak))
+		monsterShape = gameInfo->GetShape(OAK);
+	else if (typeid(*monster) == typeid(Tank))
+		monsterShape = gameInfo->GetShape(TANK);
 
-		//머리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY - 2][slimePosX - 1 + index] = slimeShape["head"][index];
+	//머리 출력
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[monsterPosY - 2][monsterPosX - 1 + index] = monsterShape["head"][index];
 
-		//몸 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY - 1][slimePosX - 1 + index] = slimeShape["body"][index];
+	//몸 출력
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[monsterPosY - 1][monsterPosX - 1 + index] = monsterShape["body"][index];
 
-		//다리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[slimePosY][slimePosX - 1 + index] = slimeShape["legs"][index];
-	}
-}
-
-void MapManager::PrintOak()
-{
-	auto oakShape = gameInfo->GetShape(OAK);
-	int oakPosX;
-	int oakPosY;
-
-	for (int i = 0; i < oak->size(); i++)
-	{
-		oakPosX = (*oak)[i]->GetPos().GetX();
-		oakPosY = (*oak)[i]->GetPos().GetY();
-
-		//머리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[oakPosY - 2][oakPosX - 1 + index] = oakShape["head"][index];
-
-		//몸 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[oakPosY - 1][oakPosX - 1 + index] = oakShape["body"][index];
-
-		//다리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[oakPosY][oakPosX - 1 + index] = oakShape["legs"][index];
-	}
-}
-
-void MapManager::PrintTank()
-{
-	auto tankShape = gameInfo->GetShape(TANK);
-	int tankPosX;
-	int tankPosY;
-
-	for (int i = 0; i < tank->size(); i++)
-	{
-		tankPosX = (*tank)[i]->GetPos().GetX();
-		tankPosY = (*tank)[i]->GetPos().GetY();
-
-		//머리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[tankPosY - 2][tankPosX - 1 + index] = tankShape["head"][index];
-
-		//몸 출력
-		if (player->GetPos().GetX() - (*tank)[i]->GetPos().GetX() > 0)
-		{
-			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyL"][index];
-		}
-		else
-		{
-			for (int index = 0; index < SHAPE_COL; index++)
-				tempMap[tankPosY - 1][tankPosX - 1 + index] = tankShape["bodyR"][index];
-		}
-
-
-		//다리 출력
-		for (int index = 0; index < SHAPE_COL; index++)
-			tempMap[tankPosY][tankPosX - 1 + index] = tankShape["legs"][index];
-	}
+	//다리 출력
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[monsterPosY][monsterPosX - 1 + index] = monsterShape["legs"][index];
 }
 
 void MapManager::PrintItemBox()
@@ -503,6 +395,7 @@ void MapManager::SetDropItem()
 	}
 }
 
+//피격시 플레이어 상태 표현하려고 사용
 void MapManager::SetColor(int forground, int background)
 {
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);

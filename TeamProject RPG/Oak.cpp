@@ -1,47 +1,25 @@
-#include "Oak.h"
+ï»¿#include "Oak.h"
 
-vector<Oak*>* Oak::oak = nullptr;
-Pos* Oak::itemPosition = new Pos();
 int Oak::exp = 0;
+int Oak::itemDropPercentage = 0;
 
-//°´Ã¼Ãß°¡
+//ê°ì²´ì¶”ê°€
 void Oak::AddInstance()
 {
-	if (oak == nullptr)
-		oak = new vector<Oak*>();
-
-	oak->push_back(new Oak());		//oak°´Ã¼ Ãß°¡
+	Monster::AddInstance();
+	monster->push_back(new Oak());		//slimeê°ì²´ ì¶”ê°€
 }
 
-//°´Ã¼º¤ÅÍ¹İÈ¯
-vector<Oak*>* Oak::GetInstance()
-{
-	return oak;
-}
 
-//µ¿ÀûÇÒ´çÇØÁ¦ÇÏ±â
-void Oak::ReleaseInstance()
-{
-	if (oak == nullptr)
-		return;
-
-	for (int i = 0; i < oak->size(); i++)
-		delete (*oak)[i];
-
-	oak->clear();
-
-	delete oak;
-	oak = nullptr;
-}
-
-//°¢ ¿ÀÅ©¸¶´Ù Ã¼·Â°ú °ø°İ·Â°ú ½ºÇÇµå ¼³Á¤ÇÏ±â
-void Oak::SetStats(int hp, int power, int speed, int exp)
+//ê° ì˜¤í¬ë§ˆë‹¤ ì²´ë ¥ê³¼ ê³µê²©ë ¥ê³¼ ìŠ¤í”¼ë“œ ì„¤ì •í•˜ê¸°
+void Oak::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
 {
 	Monster::MonsterSetStats(hp, power, speed);
 	Oak::exp = exp;
+	Oak::itemDropPercentage = itemDropPercentage;
 }
 
-//¼Óµµ¿¡ µû¶ó ¿òÁ÷ÀÌ±â,,, ÇÃ·¹ÀÌ¾î À§Ä¡¹æÇâÀ¸·Î ¿òÁ÷ÀÓ
+//ì†ë„ì— ë”°ë¼ ì›€ì§ì´ê¸°,,, í”Œë ˆì´ì–´ ìœ„ì¹˜ë°©í–¥ìœ¼ë¡œ ì›€ì§ì„
 void Oak::Move(const int& playerXPosition, const int& playerYPosition)
 {
 	if (this->isMove)
@@ -54,41 +32,23 @@ void Oak::Move(const int& playerXPosition, const int& playerYPosition)
 	if (!moveDelaymanager.CheckEndDelay())
 		return;
 
-	//°£´ÜÈ÷ ¼³¸íÇÏÀÚ¸é Ä³¸¯ÅÍ°¡ÀÖ´Â À§Ä¡¿Í ¿ÀÅ©À§Ä¡¸¦ ±âÁØÀ¸·Î ¿ÀÅ©ÀÌµ¿¹æÇâÀ» °áÁ¤
+	//ê°„ë‹¨íˆ ì„¤ëª…í•˜ìë©´ ìºë¦­í„°ê°€ìˆëŠ” ìœ„ì¹˜ì™€ ì˜¤í¬ìœ„ì¹˜ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì˜¤í¬ì´ë™ë°©í–¥ì„ ê²°ì •
 	this->SetPos((this->GetPos().GetX() - playerXPosition > 0) ? this->GetPos().GetX() - 1 : this->GetPos().GetX() + 1, (this->GetPos().GetY() - playerYPosition > 0) ? this->GetPos().GetY() - 1 : this->GetPos().GetY() + 1);
 	this->isMove = true;
 }
 
-void Oak::Die()
+//ì˜¤í¬ê°€ ë§ì•˜ì„ ë•Œ ì‹¤í–‰í•  í•¨ìˆ˜
+void Oak::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
 {
-	//¿ÀÅ©Ã¼·Â¾øÀ¸¸é »èÁ¦
-	for (auto oakHP = oak->begin(); oakHP != oak->end();)
-	{
-		if ((*oakHP)->Hp <= 0)		
-		{
-			itemPosition->SetX(((*oakHP)->GetPos().GetX() % 2 == 0) ? (*oakHP)->GetPos().GetX() + 1 : (*oakHP)->GetPos().GetX());
-			itemPosition->SetY((*oakHP)->GetPos().GetY());
-			delete (*oakHP);		//ÇÒ´ç¹ŞÀº°Å ¹İ³³
-			oak->erase(oakHP);	//º¤ÅÍ¿¡¼­ »èÁ¦
-			return;
-		}
-		else
-			oakHP++;
-	}
-}
-
-//¿ÀÄíÀÌ ¸Â¾ÒÀ» ¶§ ½ÇÇàÇÒ ÇÔ¼ö
-void Oak::isHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
-{
-	//Å¸Á¡
+	//íƒ€ì 
 	int attackXPosition = 0;
 	int attackYPosition = 0;
 
-	//°¢ ¿ÀÅ©µéÀÇ À§Ä¡
+	//ê° ì˜¤í¬ë“¤ì˜ ìœ„ì¹˜
 	int oakXPosition = this->GetPos().GetX();
 	int oakYPosition = this->GetPos().GetY();
 
-	//ÇÃ·¹ÀÌ¾îº¸´Â¹æÇâ¿¡ µû¶ó¼­ °ø°İÀ§Ä¡¼³Á¤
+	//í”Œë ˆì´ì–´ë³´ëŠ”ë°©í–¥ì— ë”°ë¼ì„œ ê³µê²©ìœ„ì¹˜ì„¤ì •
 	if (playerDirection == RIGHT)
 	{
 		attackXPosition = playerXPosition + 3;

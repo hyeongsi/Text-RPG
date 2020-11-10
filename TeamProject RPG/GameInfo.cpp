@@ -171,149 +171,114 @@ void GameInfo::LoadInventoryItem(const string& path, const string& name)
 		tempInventory.PushItem(ReadFileInt(name.c_str(), to_string(i).c_str(), path.c_str()), true);
 }
 
-void GameInfo::LoadSlimeShape()
+void GameInfo::LoadMonsterShape(vector<Monster*>* monster)
 {
-	ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
-	slimeShape["head"] = loadData;
-
-	ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
-	slimeShape["body"] = loadData;
-
-	ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//다리
-	slimeShape["legs"] = loadData;
-}
-
-void GameInfo::LoadSlimeStats()
-{
-	slime = Slime::GetInstance();
-	int slimeHp = 0;
-	int slimePower = 0;
-	int slimeSpeed = 0;
-	int slimeExp = 0;
-
-	if (slime != nullptr)
+	for (auto monsterIterator : *monster)
 	{
-		slimeHp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
-		slimePower = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
-		slimeSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
-		slimeExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
+		if (typeid(*monsterIterator) == typeid(Slime))
+		{
+			ReadFileString("slime", "head", "GameInfo\\slime.ini");	//머리
+			slimeShape["head"] = loadData;
 
-		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 체력과 공격력과 속도넣기
-			(*slime)[i]->SetStats(slimeHp, slimePower, slimeSpeed - i * 200, slimeExp);
+			ReadFileString("slime", "body", "GameInfo\\slime.ini");	//몸
+			slimeShape["body"] = loadData;
+
+			ReadFileString("slime", "legs", "GameInfo\\slime.ini");	//다리
+			slimeShape["legs"] = loadData;
+		}
+		else if (typeid(*monsterIterator) == typeid(Oak))
+		{
+			ReadFileString("oak", "head", "GameInfo\\oak.ini");	//머리
+			oakShape["head"] = loadData;
+
+			ReadFileString("oak", "body", "GameInfo\\oak.ini");	//몸
+			oakShape["body"] = loadData;
+
+			ReadFileString("oak", "legs", "GameInfo\\oak.ini");	//다리
+			oakShape["legs"] = loadData;
+		}
+		else if (typeid(*monsterIterator) == typeid(Tank))
+		{
+			ReadFileString("tank", "head", "GameInfo\\tank.ini");	//머리
+			tankShape["head"] = loadData;
+
+			ReadFileString("tank", "bodyR", "GameInfo\\tank.ini");	//몸오른쪽
+			tankShape["body"] = loadData;
+
+			ReadFileString("tank", "bodyL", "GameInfo\\tank.ini");	//몸왼쪽
+			tankShape["bodyL"] = loadData;
+
+			ReadFileString("tank", "legs", "GameInfo\\tank.ini");	//다리
+			tankShape["legs"] = loadData;
+		}
 	}
 }
 
-void GameInfo::LoadSlimeDefaultSettingValue()
+void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 {
-	slime = Slime::GetInstance();
-	int slimeInvincibilityTime = 0;
+	int monsterHp = 0;
+	int monsterPower = 0;
+	int monsterSpeed = 0;
+	int monsterExp = 0;
+	int itemDropPercentage = 0;
+
+	for (auto monsterIterator : *monster)
+	{
+		if (typeid(*monsterIterator) == typeid(Slime))
+		{
+			monsterHp = ReadFileInt("slime", "hp", "gameinfo\\slime.ini");
+			monsterPower = ReadFileInt("slime", "power", "gameinfo\\slime.ini");
+			monsterSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
+			monsterExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
+			itemDropPercentage = ReadFileInt("slime", "itemDropPercentage", "gameinfo\\slime.ini");
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+		}
+		else if (typeid(*monsterIterator) == typeid(Oak))
+		{
+			monsterHp = ReadFileInt("oak", "hp", "gameinfo\\oak.ini");
+			monsterPower = ReadFileInt("oak", "power", "gameinfo\\oak.ini");
+			monsterSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
+			monsterExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
+			itemDropPercentage = ReadFileInt("oak", "itemDropPercentage", "gameinfo\\oak.ini");
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+		}
+		else if (typeid(*monsterIterator) == typeid(Tank))
+		{
+			monsterHp = ReadFileInt("tank", "hp", "gameinfo\\tank.ini");
+			monsterPower = ReadFileInt("tank", "power", "gameinfo\\tank.ini");
+			monsterSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
+			monsterExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
+			itemDropPercentage = ReadFileInt("tank", "itemDropPercentage", "gameinfo\\tank.ini");
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+		}
+	}
+}
+
+void GameInfo::LoadMonsterDefaultSettingValue(vector<Monster*>* monster)
+{
+	int monsterInvincibilityTime = 0;
 	int bounceSize = 0;
 
-	if (slime != nullptr)
+	for (auto monsterIterator : *monster)
 	{
-		slimeInvincibilityTime = ReadFileInt("slime", "invincibilityTime", "gameinfo\\slime.ini");
-		bounceSize = ReadFileInt("slime", "bounceSize", "gameinfo\\slime.ini");
-
-		for (int i = 0; i < slime->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
-			(*slime)[i]->Setting(slimeInvincibilityTime, bounceSize);
-	}
-}
-
-void GameInfo::LoadOakShape()
-{
-	ReadFileString("oak", "head", "GameInfo\\oak.ini");	//머리
-	oakShape["head"] = loadData;
-
-	ReadFileString("oak", "body", "GameInfo\\oak.ini");	//몸
-	oakShape["body"] = loadData;
-
-	ReadFileString("oak", "legs", "GameInfo\\oak.ini");	//다리
-	oakShape["legs"] = loadData;
-}
-
-void GameInfo::LoadOakStats()
-{
-	oak = Oak::GetInstance();
-	int oakHp = 0;
-	int oakPower = 0;
-	int oakSpeed = 0;
-	int oakExp = 0;
-
-	if (oak != nullptr)
-	{
-		oakHp = ReadFileInt("oak", "hp", "gameinfo\\oak.ini");
-		oakPower = ReadFileInt("oak", "power", "gameinfo\\oak.ini");
-		oakSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
-		oakExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
-
-		for (int i = 0; i < oak->size(); i++)		//오크객체에 체력과 공격력과 속도넣기
-			(*oak)[i]->SetStats(oakHp, oakPower, oakSpeed - i * 200, oakExp);
-	}
-}
-
-void GameInfo::LoadOakDefaultSettingValue()
-{
-	oak = Oak::GetInstance();
-	int oakInvincibilityTime = 0;
-	int bounceSize = 0;
-
-	if (oak != nullptr)
-	{
-		oakInvincibilityTime = ReadFileInt("oak", "invincibilityTime", "gameinfo\\oak.ini");
-		bounceSize = ReadFileInt("oak", "bounceSize", "gameinfo\\oak.ini");
-
-		for (int i = 0; i < oak->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
-			(*oak)[i]->Setting(oakInvincibilityTime, bounceSize);
-	}
-}
-
-void GameInfo::LoadTankShape()
-{
-	ReadFileString("tank", "head", "GameInfo\\tank.ini");	//머리
-	tankShape["head"] = loadData;
-
-	ReadFileString("tank", "bodyR", "GameInfo\\tank.ini");	//몸오른쪽
-	tankShape["bodyR"] = loadData;
-
-	ReadFileString("tank", "bodyL", "GameInfo\\tank.ini");	//몸왼쪽
-	tankShape["bodyL"] = loadData;
-
-	ReadFileString("tank", "legs", "GameInfo\\tank.ini");	//다리
-	tankShape["legs"] = loadData;
-}
-
-void GameInfo::LoadTankStats()
-{
-	tank = Tank::GetInstance();
-	int tankHp = 0;
-	int tankPower = 0;
-	int tankSpeed = 0;
-	int tankExp = 0;
-
-	if (tank != nullptr)
-	{
-		tankHp = ReadFileInt("tank", "hp", "gameinfo\\tank.ini");
-		tankPower = ReadFileInt("tank", "power", "gameinfo\\tank.ini");
-		tankSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
-		tankExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
-		for (int i = 0; i < tank->size(); i++)		//탱크객체에 체력과 공격력과 속도넣기
-			(*tank)[i]->SetStats(tankHp, tankPower, tankSpeed, tankExp);
-	}
-}
-
-void GameInfo::LoadTankDefaultSettingValue()
-{
-	tank = Tank::GetInstance();
-	int tankInvincibilityTime = 0;
-	int bounceSize = 0;
-
-	if (tank != nullptr)
-	{
-		tankInvincibilityTime = ReadFileInt("tank", "invincibilityTime", "gameinfo\\tank.ini");
-		bounceSize = ReadFileInt("tank", "bounceSize", "gameinfo\\tank.ini");
-
-		for (int i = 0; i < tank->size(); i++)		//슬라임객체에 무적시간, 넉백거리넣기
-			(*tank)[i]->Setting(tankInvincibilityTime, bounceSize);
+		if (typeid(*monsterIterator) == typeid(Slime))
+		{
+			monsterInvincibilityTime = ReadFileInt("slime", "invincibilityTime", "gameinfo\\slime.ini");
+			bounceSize = ReadFileInt("slime", "bounceSize", "gameinfo\\slime.ini");
+			monsterIterator->Setting(monsterInvincibilityTime, bounceSize);
+		}
+		else if (typeid(*monsterIterator) == typeid(Oak))
+		{
+			monsterInvincibilityTime = ReadFileInt("oak", "invincibilityTime", "gameinfo\\oak.ini");
+			bounceSize = ReadFileInt("oak", "bounceSize", "gameinfo\\oak.ini");
+			monsterIterator->Setting(monsterInvincibilityTime, bounceSize);
+		}
+		else if (typeid(*monsterIterator) == typeid(Tank))
+		{
+			monsterInvincibilityTime = ReadFileInt("tank", "invincibilityTime", "gameinfo\\tank.ini");
+			bounceSize = ReadFileInt("tank", "bounceSize", "gameinfo\\tank.ini");
+			monsterIterator->Setting(monsterInvincibilityTime, bounceSize);
+		}
 	}
 }
 

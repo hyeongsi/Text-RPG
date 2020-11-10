@@ -22,9 +22,6 @@ private:
 	map<string, string> weaponSwingShape;
 	map<string, string> itemBoxShape;
 	Player* player = Player::GetInstance();
-	vector<Slime*>* slime = nullptr;
-	vector<Oak*>* oak = nullptr;
-	vector<Tank*>* tank = nullptr;
 	static GameInfo* gameInfoInstance;
 
 	TCHAR loadData[256] = { '\0' };
@@ -48,17 +45,9 @@ public:
 	void LoadPlayerShape();
 	void LoadInventoryItem(const string& path, const string& name);
 
-	void LoadSlimeShape();
-	void LoadSlimeStats();
-	void LoadSlimeDefaultSettingValue();
-
-	void LoadOakShape();
-	void LoadOakStats();
-	void LoadOakDefaultSettingValue();
-
-	void LoadTankShape();
-	void LoadTankStats();
-	void LoadTankDefaultSettingValue();
+	void LoadMonsterShape(vector<Monster*>* monster);
+	void LoadMonsterStats(vector<Monster*>* monster);
+	void LoadMonsterDefaultSettingValue(vector<Monster*>* monster);
 
 	void WriteData(string tempSection, string tempKey, string tempValue, string tempPath);
 };

@@ -1,25 +1,15 @@
-#pragma once
+ï»¿#pragma once
 #include "Monster.h"
 
 class Oak : public Monster
 {
-private:
-	static vector<Oak*>* oak;
-	Oak() {};
-
 public:
 	static void AddInstance();
-	static vector<Oak*>* GetInstance();
-	static void ReleaseInstance();
-
-	//¾ÆÀÌÅÛ¹Ú½ºÀÇ ÁÂÇ¥(Á×Àº½½¶óÀÓÀÇ ÁÂÇ¥)
-	static Pos* itemPosition;
 	static int exp;
+	static int itemDropPercentage;
 
-	void SetStats(int hp, int power, int speed, int exp);
-
-	void Move(const int& playerXPosition, const int& playerYPosition);	//ÀÌµ¿ ÇÔ¼ö
-	void Die();		//Á×´Â ÇÔ¼ö
-	void isHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower);	//¸ÂÀ¸¸é½ÇÇà
+	virtual void SetStats(int hp, int power, int speed, int exp, int itemDropPercentage);
+	virtual void Move(const int& playerXPosition, const int& playerYPosition);	//ì´ë™ í•¨ìˆ˜
+	virtual void IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower);	//ë§ìœ¼ë©´ì‹¤í–‰
 };
 

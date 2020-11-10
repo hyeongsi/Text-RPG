@@ -20,19 +20,12 @@ private:
 	ifstream fcin;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player;
-	vector<Slime*>* slime;
-	vector<Oak*>* oak;
-	vector<Tank*>* tank;
+	vector<Monster*>* monster = nullptr;
 	Pos exitPosition;		//탈출구 좌표
 
 	//아이템드랍관련변수들
-	int monsterNumer = 0;	//몬스터들의 수가 들어갈 변수.. 던전탈출조건으로 사용
-	int slimeNumber = 0;	//현재 슬라임, 오크, 탱크수
-	int oakNumber = 0;
-	int tankNumber = 0;
-	int isSlimeItemDrop = -1;		//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
-	int isOakItemDrop = -1;
-	int isTankItemDrop = -1;
+	int monsterNumber= 0;		//몬스터들의 수가 들어갈 변수.. 아이템드랍조건에 사용
+	int isMonsterItemDrop = -1;	//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
 	int getItemNumber = 0;		//획득한 아이템수
 	list<Pos> itemPosition;
 
@@ -49,9 +42,7 @@ public:
 	void PrintMap(bool isOpenInventory);
 	void PrintCharacter(Character* character);
 	void PrintWeapon(string weapon);
-	void PrintSlime();
-	void PrintOak();
-	void PrintTank();
+	void PrintMonster(Monster* monster);
 	void PrintItemBox();
 
 	void LoadCanMovePos();

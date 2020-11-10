@@ -1,40 +1,19 @@
 ﻿#include "Tank.h"
 
-vector<Tank*>* Tank::tank = nullptr;
-Pos* Tank::itemPosition = new Pos();
 int Tank::exp = 0;
+int Tank::itemDropPercentage = 0;
 
 void Tank::AddInstance()
 {
-	if (tank == nullptr)
-		tank = new vector<Tank*>();
-
-	tank->push_back(new Tank());
+	Monster::AddInstance();
+	monster->push_back(new Tank());		//slime객체 추가
 }
 
-vector<Tank*>* Tank::GetInstance()
-{
-	return tank;
-}
-
-void Tank::ReleaseInstance()
-{
-	if (tank == nullptr)
-		return;
-
-	for (int i = 0; i < tank->size(); i++)
-		delete (*tank)[i];
-
-	tank->clear();
-
-	delete tank;
-	tank = nullptr;
-}
-
-void Tank::SetStats(int hp, int power, int speed, int exp)
+void Tank::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
 {
 	Monster::MonsterSetStats(hp, power, speed);
 	Tank::exp = exp;
+	Tank::itemDropPercentage = itemDropPercentage;
 }
 
 void Tank::Move(const int& playerXPosition, const int& playerYPosition)
@@ -53,24 +32,7 @@ void Tank::Move(const int& playerXPosition, const int& playerYPosition)
 	this->isMove = true;
 }
 
-void Tank::Die()
-{
-	for (auto tankHP = tank->begin(); tankHP != tank->end();)
-	{
-		if ((*tankHP)->Hp <= 0)
-		{
-			itemPosition->SetX(((*tankHP)->GetPos().GetX() % 2 == 0) ? (*tankHP)->GetPos().GetX() + 1 : (*tankHP)->GetPos().GetX());
-			itemPosition->SetY((*tankHP)->GetPos().GetY());
-			delete (*tankHP);		//할당받은거 반납
-			tank->erase(tankHP);	//벡터에서 삭제
-			return;
-		}
-		else
-			tankHP++;
-	}
-}
-
-void Tank::isHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
+void Tank::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
 {
 	int attackXPosition = 0;
 	int attackYPosition = 0;

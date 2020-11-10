@@ -141,21 +141,8 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			player->CheckDontMoveDir(dontMovePos[0], dontMovePos[1]);
 			tempPlayerState = player->InputBehavior();
 
-			if (slime != nullptr)
-			{
-				for (int i = 0; i < slime->size(); i++)
-					(*slime)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
-			}
-			if (oak != nullptr)
-			{
-				for (int i = 0; i < oak->size(); i++)
-					(*oak)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
-			}
-			if (tank != nullptr)
-			{
-				for (int i = 0; i < tank->size(); i++)
-					(*tank)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
-			}
+			for (int i = 0; i < monster->size(); i++)
+				(*monster)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
 			player->IsInvincibilityTimer();		//플레이어 무적시간측정
@@ -164,21 +151,9 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			switch (tempPlayerState)
 			{
 			case ATTACK:
-				if (slime != nullptr)
-				{
-					for (int i = 0; i < slime->size(); i++)
-						(*slime)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());	//피격여부
-				}
-				if (oak != nullptr)
-				{
-					for (int i = 0; i < oak->size(); i++)
-						(*oak)[i]->isHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());		//피격여부
-				}
-				if (tank != nullptr)
-				{
-					for (int i = 0; i < tank->size(); i++)
-						(*tank)[i]->isHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());	//피격여부
-				}
+				for (int i = 0; i < monster->size(); i++)
+					(*monster)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());
+
 				break;
 			case PICKUP:
 				mapManager.SetDropItem();
@@ -205,34 +180,19 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			mapManager.PrintMap(isOpenInventory);
 		}
 
-		//몬스터숫자세기
-		size_t monsterNumber = 0;
-		if (slime != nullptr)
-			monsterNumber += slime->size();
-		if (oak != nullptr)
-			monsterNumber += oak->size();
-		if (tank != nullptr)
-			monsterNumber += tank->size();
-
 		//조건에 해당하면 던전탈출
 		if (player->GetHp() <= 0 || escUIState == EXIT_ESC_MENU)
 		{
 			loop = false;
 			player->Init();
-
-			Slime::ReleaseInstance();
-			Oak::ReleaseInstance();
-			Tank::ReleaseInstance();
+			Monster::ReleaseInstance();
 		}
 		//지금은 몬스터 다잡고 포탈에 들어가기만하면 던전탈출 ... 일단 if문조건이 너무많아가지고 알아보기쉽게할라고 같은문장실행인데도 따로나눠서적음
-		if (monsterNumber <= 0 && (mapManager.GetExitPosition() == player->GetPos()))
+		if (monster->size() <= 0 && (mapManager.GetExitPosition() == player->GetPos()))
 		{
 			loop = false;
 			player->Init();
-
-			Slime::ReleaseInstance();
-			Oak::ReleaseInstance();
-			Tank::ReleaseInstance();
+			Monster::ReleaseInstance();
 		}
  	}
 
@@ -247,27 +207,12 @@ void GameManager::LoadDungeonData(const int& dungeonNumber)
 	dontMovePos = mapManager.GetDontMovePos();	//이동불가 영역 받아서 사용
 	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
 
-	slime = Slime::GetInstance();
-	if (slime != nullptr)		//슬라임객체가 존재하면 슬라임형태 불러오기 + 슬라임에 스텟설정하기
-	{
-		gameInfo->LoadSlimeShape();
-		gameInfo->LoadSlimeStats();
-		gameInfo->LoadSlimeDefaultSettingValue();
-	}
-	oak = Oak::GetInstance();
-	if (oak != nullptr)		//오크객체가 존재하면 오크형태 불러오기 + 오크에 스텟설정하기
-	{
-		gameInfo->LoadOakShape();
-		gameInfo->LoadOakStats();
-		gameInfo->LoadOakDefaultSettingValue();
-	}
-	tank = Tank::GetInstance();
-	if (tank != nullptr)		//탱크객체가 존재하면 탱크형태 불러오기 + 탱크에 스텟설정하기
-	{
-		gameInfo->LoadTankShape();
-		gameInfo->LoadTankStats();
-		gameInfo->LoadTankDefaultSettingValue();
-	}
+	monster = Monster::GetInstance();
+
+	gameInfo->LoadMonsterShape(monster);
+	gameInfo->LoadMonsterStats(monster);
+	gameInfo->LoadMonsterDefaultSettingValue(monster);
+
 }
 
 void GameManager::SavePlayerData()
@@ -303,195 +248,70 @@ void GameManager::CheckContact()
 	//피격 시
 	int playerXPosition = player->GetPos().GetX();
 	int playerYPosition = player->GetPos().GetY();
-	bool isCrashSilme = false;
-	bool isCrashOak = false;
-	bool isCrashTank = false;
+	bool isCrashMonster = false;
+
+	//몬스터위치
+	int monsterXPosition;
+	int monsterYPosition;
 
 	//충돌했을때 몬스터의 인덱스값을 저장할 변수
 	int crashIndex = -1;
+	int tempIndex = -1;
 
-	if (slime != nullptr)
+	for (auto monsterIterator = monster->begin(); monsterIterator != monster->end(); monsterIterator++)
 	{
-		int slimeXPosition;
-		int slimeYPosition;
-		for (int i = 0; i < slime->size(); i++)
+		tempIndex++;
+		monsterXPosition = (*monsterIterator)->GetPos().GetX();
+		monsterYPosition = (*monsterIterator)->GetPos().GetY();
+
+		for (int x = -1; x <= 1; x++)
 		{
-			slimeXPosition = (*slime)[i]->GetPos().GetX();
-			slimeYPosition = (*slime)[i]->GetPos().GetY();
-
-			for (int x = -1; x <= 1; x++)
+			for (int xx = -1; xx <= 1; xx++)
 			{
-				for (int xx = -1; xx <= 1; xx++)
+				//플레이어위쪽 몬스터위쪽 검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition) == (playerYPosition))
 				{
-					//플레이어위쪽 슬라임위쪽 검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition) == (playerYPosition))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+					isCrashMonster = true;
+					crashIndex = tempIndex;
+				}
 
-					//플레이어위쪽 슬라임아래쪽 검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition) == (playerYPosition - 2))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+				//플레이어위쪽 몬스터아래쪽 검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition) == (playerYPosition - 2))
+				{
+					isCrashMonster = true;
+					crashIndex = tempIndex;
+				}
 
-					//플레이어아래쪽 슬라임위쪽 검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition - 2) == (playerYPosition))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+				//플레이어아래쪽 몬스터위쪽 검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition - 2) == (playerYPosition))
+				{
+					isCrashMonster = true;
+					crashIndex = tempIndex;
+				}
 
-					//플레이어아래쪽 슬라임아래쪽 검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition - 2) == (playerYPosition - 2))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+				//플레이어아래쪽 몬스터아래쪽 검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition - 2) == (playerYPosition - 2))
+				{
+					isCrashMonster = true;
+					crashIndex = tempIndex;
+				}
 
-					//플레이어 위쪽 슬라임중간검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition - 1) == (playerYPosition - 2))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+				//플레이어 위쪽 몬스터중간검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition - 1) == (playerYPosition - 2))
+				{
+					isCrashMonster = true;
+					crashIndex = tempIndex;
+				}
 
-					//플레이어 아래쪽 슬라임중간검사
-					if ((slimeXPosition + xx) == (playerXPosition + x) && (slimeYPosition - 1) == (playerYPosition))
-					{
-						isCrashSilme = true;
-						crashIndex = i;
-					}
+				//플레이어 아래쪽 몬스터중간검사
+				if ((monsterXPosition + xx) == (playerXPosition + x) && (monsterYPosition - 1) == (playerYPosition))
+				{
+					isCrashMonster = true;
+					crashIndex = tempIndex;
 				}
 			}
 		}
+		if (isCrashMonster == true)
+			player->IsHit((*monster)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*monster)[crashIndex]->GetPower());
 	}
-
-	if (oak != nullptr && isCrashSilme == false)
-	{
-		int oakXPosition;
-		int oakYPosition;
-		for (int i = 0; i < oak->size(); i++)
-		{
-			oakXPosition = (*oak)[i]->GetPos().GetX();
-			oakYPosition = (*oak)[i]->GetPos().GetY();
-
-			for (int x = -1; x <= 1; x++)
-			{
-				for (int xx = -1; xx <= 1; xx++)
-				{
-					//플레이어위쪽 오크위쪽 검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition) == (playerYPosition))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-
-					//플레이어위쪽 오크아래쪽 검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition) == (playerYPosition - 2))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-
-					//플레이어아래쪽 오크위쪽 검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition - 2) == (playerYPosition))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-
-					//플레이어아래쪽 오크아래쪽 검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition - 2) == (playerYPosition - 2))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-
-					//플레이어 위쪽 오크중간검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition - 1) == (playerYPosition - 2))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-
-					//플레이어 아래쪽 오크중간검사
-					if ((oakXPosition + xx) == (playerXPosition + x) && (oakYPosition - 1) == (playerYPosition))
-					{
-						isCrashOak = true;
-						crashIndex = i;
-					}
-				}
-			}
-		}
-	}
-
-	if (tank != nullptr && isCrashOak == false)
-	{
-		int tankXPosition;
-		int tankYPosition;
-		
-		for (int i = 0; i < tank->size(); i++)
-		{
-			tankXPosition = (*tank)[i]->GetPos().GetX();
-			tankYPosition = (*tank)[i]->GetPos().GetY();
-
-			for (int x = -1; x <= 1; x++)
-			{
-				for (int xx = -1; xx <= 1; xx++)
-				{
-					//플레이어위쪽 탱크위쪽 검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition) == (playerYPosition))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-
-					//플레이어위쪽 탱크아래쪽 검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition) == (playerYPosition - 2))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-
-					//플레이어아래쪽 탱크위쪽 검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition - 2) == (playerYPosition))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-
-					//플레이어아래쪽 탱크아래쪽 검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition - 2) == (playerYPosition - 2))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-
-					//플레이어 위쪽 탱크중간검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition - 1) == (playerYPosition - 2))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-
-					//플레이어 아래쪽 탱크중간검사
-					if ((tankXPosition + xx) == (playerXPosition + x) && (tankYPosition - 1) == (playerYPosition))
-					{
-						isCrashTank = true;
-						crashIndex = i;
-					}
-				}
-			}
-		}
-	}
-
-	if (isCrashSilme == true)
-		player->IsHit((*slime)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*slime)[crashIndex]->GetPower());
-	else if (isCrashOak == true)
-		player->IsHit((*oak)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*oak)[crashIndex]->GetPower());
-	else if (isCrashTank == true)
-		player->IsHit((*tank)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*tank)[crashIndex]->GetPower());
 }
