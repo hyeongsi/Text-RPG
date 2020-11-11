@@ -1,4 +1,8 @@
 ﻿#include "Player.h"
+#include "Skill.h"
+#include "ThrowStonesSkill.h"
+#include "PowerUpBuff.h"
+#include "EarthquakeSkill.h"
 
 Player* Player::playerInstance = nullptr;
 
@@ -114,6 +118,18 @@ const int Player::InputBehavior()
 	if (GetAsyncKeyState(VK_CONTROL) && 0x8000)	//ctrl 줍기
 	{
 		return SetPickUpState();
+	}
+	if (GetAsyncKeyState('F') && 0x8000)	//f
+	{
+		return SKILL1;
+	}
+	if (GetAsyncKeyState('G') && 0x8000)	//g	
+	{
+		return SKILL2;
+	}
+	if (GetAsyncKeyState('H') && 0x8000)	//h
+	{
+		return SKILL3;
 	}
 
 	isWalking = false;
@@ -255,6 +271,13 @@ const int Player::GetInventoryItem(int itemIndex)
 	return inventory.GetItem(itemIndex);
 }
 
+void Player::UseSkill(Skill* skill)
+{
+	skill->UseSkill(this);
+
+	delete skill;
+}
+
 void Player::Die()
 {
 	isSurvival = false;
@@ -333,8 +356,8 @@ void Player::IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& 
 {
 	if (isInvincibility == false)
 	{
-		attackedDelaymanager.SetStartTime();
-		attackedDelaymanager.SetDelayTime(INVINCIBILITY_TIME);
+		hitDelaymanager.SetStartTime();
+		hitDelaymanager.SetDelayTime(INVINCIBILITY_TIME);
 		isInvincibility = true;
 
 		if ((this->GetPos().GetX() - monsterPosition.GetX() >= 0) && ((this->GetPos().GetX() + NUCKBACK_SIZE) < rightLimit.GetX()))
@@ -357,9 +380,9 @@ void Player::IsInvincibilityTimer()
 		return;
 
 	//무적시간카운트
-	if (isInvincibility == true)
+	if (isInvincibility)
 	{
-		if (attackedDelaymanager.CheckEndDelay() == false)
+		if (hitDelaymanager.CheckEndDelay() == false)
 			return;
 
 		isInvincibility = false;
@@ -370,4 +393,31 @@ void Player::IsInvincibilityTimer()
 bool Player::GetIsInvincibility()
 {
 	return isInvincibility;
+}
+
+void Player::IsActiveBuffTimer()
+{
+	if (isActivePowerBuff == false)
+		return;
+
+	//무적시간카운트
+	if (isActivePowerBuff)
+	{
+		if (buffDelaymanager.CheckEndDelay() == false)
+			return;
+
+		isActivePowerBuff = false;
+	}
+}
+
+void Player::SetBuffTime(const int time)
+{
+	buffDelaymanager.SetStartTime();
+	buffDelaymanager.SetDelayTime(time);
+	isActivePowerBuff = true;
+}
+
+const bool& Player::IsActivePowerBuff()
+{
+	return isActivePowerBuff;
 }

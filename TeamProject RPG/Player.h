@@ -5,6 +5,7 @@
 #include <time.h>
 #include <Windows.h>
 
+class Skill;
 class Player : public Character
 {
 private:
@@ -20,6 +21,7 @@ private:
 	bool isAttack = false;
 	bool isPickup = false;
 	bool isSurvival = true;
+	bool isActivePowerBuff = false;	//버프 적용 유무
 
 	int exp = 0;	//경험치   /  100되면 level +1
 	int level = 1;	//레벨
@@ -28,11 +30,13 @@ private:
 	bool dontMoveDir[4] = { false };	//0: 상, 1:하, 2:좌, 3:우
 
 	//피격당했을때 잠깐무적을 위해 추가
-	DelayManager attackedDelaymanager;
+	DelayManager hitDelaymanager;
 	bool isInvincibility = false;	//무적상태여부
 	const int INVINCIBILITY_TIME = 2500;	//무적시간
 	const int NUCKBACK_SIZE = 10;		//맞았을때 밀려날 크기
 
+	//버프 지속시간 및 이펙트
+	DelayManager buffDelaymanager;
 public:
 	static Player* GetInstance();
 	static void ReleaseInstance();
@@ -54,6 +58,8 @@ public:
 	void CloseInventory();		//인벤토리 닫기
 	const int GetInventoryItem(int itemIndex);
 
+	void UseSkill(Skill * skill);
+
 	void Die();		//죽는 함수
 
 	const string GetHoldWeapon();	//가지고 있는 무기 이름 리턴
@@ -72,6 +78,10 @@ public:
 	void IsHit(const Pos& monsterPosition, const Pos& leftLimit, const Pos& rightLimit, int monsterPower);
 	void IsInvincibilityTimer();
 	bool GetIsInvincibility();
+
+	void IsActiveBuffTimer();
+	void SetBuffTime(const int time);
+	const bool& IsActivePowerBuff();
 };
 
 enum Behavior
@@ -80,6 +90,12 @@ enum Behavior
 	MOVE,
 	ATTACK,
 	PICKUP,
+	SKILL1,
+	SKILL2,
+	SKILL3
 };
+
+
+
 
 

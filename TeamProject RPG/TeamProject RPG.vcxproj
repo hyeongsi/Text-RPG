@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="DelayManager.cpp" />
+    <ClCompile Include="EarthquakeSkill.cpp" />
     <ClCompile Include="EscMenuUI.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -154,15 +155,19 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerStatsUI.cpp" />
     <ClCompile Include="Pos.cpp" />
+    <ClCompile Include="PowerUpBuff.cpp" />
     <ClCompile Include="SelectDungeonUI.cpp" />
+    <ClCompile Include="Skill.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="ThrowStonesSkill.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
     <ClInclude Include="DelayManager.h" />
+    <ClInclude Include="EarthquakeSkill.h" />
     <ClInclude Include="EscMenuUI.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameManager.h" />
@@ -175,10 +180,13 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerStatsUI.h" />
     <ClInclude Include="Pos.h" />
+    <ClInclude Include="PowerUpBuff.h" />
     <ClInclude Include="SelectDungeonUI.h" />
+    <ClInclude Include="Skill.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Tank.h" />
+    <ClInclude Include="ThrowStonesSkill.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,7 +10,6 @@ void Oak::AddInstance()
 	monster->push_back(new Oak());		//slime객체 추가
 }
 
-
 //각 오크마다 체력과 공격력과 스피드 설정하기
 void Oak::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
 {
@@ -38,8 +37,10 @@ void Oak::Move(const int& playerXPosition, const int& playerYPosition)
 }
 
 //오크가 맞았을 때 실행할 함수
-void Oak::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
+void Oak::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower, const bool isAttack)
 {
+	if (isAttack == true)
+		isAttacked = true;
 	//타점
 	int attackXPosition = 0;
 	int attackYPosition = 0;

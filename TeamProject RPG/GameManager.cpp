@@ -1,6 +1,9 @@
 ﻿#include "GameManager.h"
 #include "GameStartUI.h"
 #include "SelectDungeonUI.h"
+#include "ThrowStonesSkill.h"
+#include "PowerUpBuff.h"
+#include "EarthquakeSkill.h"
 
 GameManager::GameManager()
 {
@@ -146,19 +149,24 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
 			player->IsInvincibilityTimer();		//플레이어 무적시간측정
-
 			//플레이어 상태를 기준으로 행동 실행
 			switch (tempPlayerState)
 			{
 			case ATTACK:
 				for (int i = 0; i < monster->size(); i++)
 					(*monster)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());
-
 				break;
 			case PICKUP:
 				mapManager.SetDropItem();
 				break;
+			case SKILL1:
+				player->UseSkill(new ThrowStonesSkill("ThrowStones", 1, 3));	break;	
+			case SKILL2:
+				player->UseSkill(new PowerUpBuff("PowerUpBuff", 1, 1));			break;
+			case SKILL3:
+				player->UseSkill(new EarthquakeSkill("Earthquake", 3, 3));		break;
 			}
+			player->IsActiveBuffTimer();
 
 			if (GetAsyncKeyState(VK_TAB) && 0x8000)	//tab 인벤토리 열기
 			{

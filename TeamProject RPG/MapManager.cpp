@@ -159,10 +159,15 @@ void MapManager::PrintMap(bool isOpenInventory)
 	{
 		for (int x = 0; x < MAP_COL; x++)
 		{
-			if (player->GetIsInvincibility() == true)		//현재 무적시간이면 플레이어 색깔 빨간색으로출력
+			if (player->GetIsInvincibility())		//현재 무적시간이면 플레이어 색깔 빨간색으로출력
 			{
 				if ((playerXPosition >= x - 1 && playerXPosition <= x + 1) && (playerYPosition >= y && playerYPosition <= y + 2))
 					SetColor(4, 0);
+			}
+			else if(player->IsActivePowerBuff())		//버프 지속 시간일 때
+			{
+				if ((playerXPosition >= x - 1 && playerXPosition <= x + 1) && (playerYPosition >= y && playerYPosition <= y + 2))
+					SetColor(6, 0);
 			}
 
 			cout << tempMap[y][x];

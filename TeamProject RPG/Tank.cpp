@@ -32,8 +32,11 @@ void Tank::Move(const int& playerXPosition, const int& playerYPosition)
 	this->isMove = true;
 }
 
-void Tank::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
+void Tank::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower, const bool isAttack)
 {
+	if (isAttack == true)
+		isAttacked = true;
+
 	int attackXPosition = 0;
 	int attackYPosition = 0;
 

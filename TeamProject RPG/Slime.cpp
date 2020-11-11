@@ -37,8 +37,11 @@ void Slime::Move(const int& playerXPosition, const int& playerYPosition)
 }
 
 //슬라임이 맞았을 때 실행할 함수
-void Slime::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower)
+void Slime::IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower, const bool isAttack)
 {
+	if(isAttack == true)
+		isAttacked = true;
+
 	//타점
 	int attackXPosition = 0;
 	int attackYPosition = 0;
