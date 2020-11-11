@@ -1,4 +1,4 @@
-#include "EarthquakeSkill.h"
+ï»¿#include "EarthquakeSkill.h"
 #include "Player.h"
 #include "Monster.h"
 
@@ -11,7 +11,7 @@ EarthquakeSkill::EarthquakeSkill(string skill_name, int use_mp, int power)
 
 void EarthquakeSkill::UseSkill(Player* player)
 {
-	//player mp ±¸Çö ÇÊ¿ä
+	//player mp êµ¬í˜„ í•„ìš”
 	/*if (!(player->Getmp() >= use_mp))
 		return;*/
 

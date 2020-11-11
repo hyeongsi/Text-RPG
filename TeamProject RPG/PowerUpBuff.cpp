@@ -1,4 +1,4 @@
-#include "PowerUpBuff.h"
+ï»¿#include "PowerUpBuff.h"
 #include "Player.h"
 
 PowerUpBuff::PowerUpBuff(string skill_name, int use_mp, int power)
@@ -10,11 +10,11 @@ PowerUpBuff::PowerUpBuff(string skill_name, int use_mp, int power)
 
 void PowerUpBuff::UseSkill(Player* player)
 {
-	//player mp ±¸Çö ÇÊ¿ä
+	//player mp êµ¬í˜„ í•„ìš”
 	/*if (!(player->Getmp() >= use_mp))
 		return;*/
 	
-	//¹öÇÁ Áö¼Ó½Ã°£ ¼³Á¤??
+	//ë²„í”„ ì§€ì†ì‹œê°„ ì„¤ì •??
 	player->SetPower(player->GetPower() + 1);
 	player->SetBuffTime(10000);
 	//player->Setmp(player->Getmp()-use_mp);
