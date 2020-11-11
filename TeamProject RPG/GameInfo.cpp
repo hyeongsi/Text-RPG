@@ -33,7 +33,8 @@ const map<string, string>& GameInfo::GetShape(const int& character)
 		return tankShape;
 	case ITEMBOX:
 		return itemBoxShape;
-
+	case NPC:
+		return NPCShape;
 
 	default:
 		return playerShape;		//여기 잘못된값 넘겨주는거 처리만들고 받는부분에서 체크하는것도 만들기
@@ -179,6 +180,21 @@ void GameInfo::LoadInventoryItem(const string& path, const string& name)
 		tempInventory.PushItem(ReadFileInt(name.c_str(), to_string(i).c_str(), path.c_str()), true);
 }
 
+void GameInfo::LoadNPCShape()
+{
+	ReadFileString("npc", "head", "GameInfo\\npc.ini");	//머리
+	NPCShape["head"] = loadData;
+
+	ReadFileString("npc", "body", "GameInfo\\npc.ini");	//몸통
+	NPCShape["body"] = loadData;
+
+	ReadFileString("npc", "legs", "GameInfo\\npc.ini");	//다리
+	NPCShape["legs"] = loadData;
+
+	ReadFileString("npc", "info", "GameInfo\\npc.ini");	//이름
+	NPCShape["info"] = loadData;
+}
+
 void GameInfo::LoadMonsterShape(vector<Monster*>* monster)
 {
 	for (auto monsterIterator : *monster)
@@ -239,7 +255,10 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
 			monsterExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
 			itemDropPercentage = ReadFileInt("slime", "itemDropPercentage", "gameinfo\\slime.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+
+			monsterInfomation["slimeExp"] = monsterExp;
+			monsterInfomation["slimeItemDropPercentage"] = itemDropPercentage;
 		}
 		else if (typeid(*monsterIterator) == typeid(Oak))
 		{
@@ -248,7 +267,10 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
 			monsterExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
 			itemDropPercentage = ReadFileInt("oak", "itemDropPercentage", "gameinfo\\oak.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+
+			monsterInfomation["oakExp"] = monsterExp;
+			monsterInfomation["oakItemDropPercentage"] = itemDropPercentage;
 		}
 		else if (typeid(*monsterIterator) == typeid(Tank))
 		{
@@ -257,7 +279,10 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
 			monsterExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
 			itemDropPercentage = ReadFileInt("tank", "itemDropPercentage", "gameinfo\\tank.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed, monsterExp, itemDropPercentage);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+
+			monsterInfomation["tankExp"] = monsterExp;
+			monsterInfomation["tankItemDropPercentage"] = itemDropPercentage;
 		}
 	}
 }

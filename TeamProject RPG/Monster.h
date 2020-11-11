@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "Character.h"
+#include <iostream>
 #include <vector>
+#include <array>
 
 class Monster : public Character
 {	
@@ -14,6 +16,7 @@ protected:
 	int invincibilityTime = 0;	//무적시간
 	int bounceSize = 0;		//맞았을때 튕겨나갈크기
 	int speed = 0;		//기본값지정 값은 파일에서 읽어서 저장함
+	static array<int, 1>* deathMonster;		//죽은몬스터저장
 
 public:
 	static void AddInstance();
@@ -25,8 +28,19 @@ public:
 	void Setting(const int& invincibilityTime, const int& bounceSize);
 	void Die();		//죽는 함수
 
-	virtual void SetStats(int hp, int power, int speed, int exp, int itemDropPercentage) = 0;
+	virtual void SetStats(int hp, int power, int speed) = 0;
 	virtual void Move(const int& playerXPosition, const int& playerYPosition) = 0;
 	virtual void IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower) = 0;
+
+	static int GetDeathMonster();
 };
 
+namespace MonsterSpace
+{
+	enum monster
+	{
+		SLIME = 1,
+		OAK,
+		TANK
+	};
+}

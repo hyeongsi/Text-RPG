@@ -1,8 +1,5 @@
 ﻿#include "Oak.h"
 
-int Oak::exp = 0;
-int Oak::itemDropPercentage = 0;
-
 //객체추가
 void Oak::AddInstance()
 {
@@ -12,11 +9,9 @@ void Oak::AddInstance()
 
 
 //각 오크마다 체력과 공격력과 스피드 설정하기
-void Oak::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
+void Oak::SetStats(int hp, int power, int speed)
 {
 	Monster::MonsterSetStats(hp, power, speed);
-	Oak::exp = exp;
-	Oak::itemDropPercentage = itemDropPercentage;
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임

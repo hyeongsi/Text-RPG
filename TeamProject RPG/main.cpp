@@ -3,7 +3,9 @@
 
 void SetConsole()
 {
-	system(" mode  con lines=40   cols=120 ");
+	system("title DUNGEON-RPG게임");
+	system("mode con cols=120 lines=200");		//찾아도 이유를 모르겠음 안됨
+
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -29,6 +31,10 @@ int main()
 			returnValue = gameManager.StartDungeon(returnValue);
 		
 		if (returnValue == EXIT)
+		{
+			Npc::ReleaseInstance();
 			return 0;
+		}
+
 	}
 }

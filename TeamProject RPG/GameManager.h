@@ -2,6 +2,9 @@
 #include "MapManager.h"
 #include "EscMenuUI.h"
 
+//
+#include "Npc.h"
+
 class GameStartUI;
 class SelectDungeonUI;
 class GameManager
@@ -15,7 +18,7 @@ private:
 	EscMenuUI escMenuUI;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player = Player::GetInstance();
-
+	Npc* npc = Npc::GetInstance();
 	vector<Monster*>* monster = nullptr;
 
 	Pos playerPos;		//플레이어 좌표
@@ -23,6 +26,8 @@ private:
 	bool isOpenInventory = false;
 	string playerName;
 	string path = "playerList\\";
+
+	
 
 public:
 	GameManager();

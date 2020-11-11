@@ -72,12 +72,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -150,11 +152,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapManager.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Oak.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerStatsUI.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="SelectDungeonUI.cpp" />
+    <ClCompile Include="ShopUI.cpp" />
     <ClCompile Include="Slime.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Tank.cpp" />
@@ -171,11 +175,13 @@
     <ClInclude Include="InventoryUI.h" />
     <ClInclude Include="MapManager.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Npc.h" />
     <ClInclude Include="Oak.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerStatsUI.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="SelectDungeonUI.h" />
+    <ClInclude Include="ShopUI.h" />
     <ClInclude Include="Slime.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Tank.h" />

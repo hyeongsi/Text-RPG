@@ -1,19 +1,14 @@
 ﻿#include "Tank.h"
 
-int Tank::exp = 0;
-int Tank::itemDropPercentage = 0;
-
 void Tank::AddInstance()
 {
 	Monster::AddInstance();
 	monster->push_back(new Tank());		//slime객체 추가
 }
 
-void Tank::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
+void Tank::SetStats(int hp, int power, int speed)
 {
 	Monster::MonsterSetStats(hp, power, speed);
-	Tank::exp = exp;
-	Tank::itemDropPercentage = itemDropPercentage;
 }
 
 void Tank::Move(const int& playerXPosition, const int& playerYPosition)

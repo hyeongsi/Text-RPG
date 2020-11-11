@@ -54,6 +54,11 @@ void MapManager::LoadMap(const int& num)
 				player->SetPos(x, y);
 				mapPiece = ' ';
 			}
+			else if (mapPiece == 'n')		//NPC좌표넣기
+			{
+				npc->SetPos(x, y);
+				mapPiece = ' ';
+			}
 			else if (mapPiece == 's')		//슬라임이 있을 때 마다 슬라임객체생성후 벡터에넣고 위치저장
 			{
 				Slime::AddInstance();
@@ -116,29 +121,42 @@ void MapManager::PrintMap(bool isOpenInventory)
 
 	//몬스터출력
 	for (auto monsterIterator : *monster)
-	{
-		if (typeid(*monsterIterator) == typeid(Slime))
-			PrintMonster(dynamic_cast<Slime*>(monsterIterator));
-		else if (typeid(*monsterIterator) == typeid(Oak))
-			PrintMonster(dynamic_cast<Oak*>(monsterIterator));
-		else if (typeid(*monsterIterator) == typeid(Tank))
-			PrintMonster(dynamic_cast<Tank*>(monsterIterator));
-	}
+			PrintMonster(monsterIterator);
 
-	//아이템드랍
+	//NPC출력
+	PrintNPC();
+
+	//아이템드랍 + 경험치 증가
 	if (monsterNumber > monster->size())	//몬스터가 한마리 죽으면
 	{
 		srand((unsigned int)time(NULL));
 		if (isMonsterItemDrop != ITEM_DROP)
-			//isMonsterItemDrop = rand() % 3;	//드랍확률계산 33%확률로 아이템떨구기
-			isMonsterItemDrop = 0;			//드랍확률 100%
+		{
+			switch (Monster::GetDeathMonster())
+			{
+			case MonsterSpace::SLIME:
+				player->SetExp(gameInfo->monsterInfomation["slimeExp"]);
+				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["slimeItemDropPercentage"];
+				break;
 
-		//어떤 몬스터가 죽는지 알아낼 수 있으면 if문내용을 밑에같은형식으로 바꿔주면됨(Slime대신 죽은몬스터)
-		//isMonsterItemDrop = rand() % Slime::itemDropPercentage;
+			case MonsterSpace::OAK:
+				player->SetExp(gameInfo->monsterInfomation["oakExp"]);
+				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["oakItemDropPercentage"];
+				break;
 
-		monsterNumber--;
-		player->SetExp(Slime::exp);		//경험치 증가
+			case MonsterSpace::TANK:
+				player->SetExp(gameInfo->monsterInfomation["tankExp"]);
+				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["tankItemDropPercentage"];
+				break;
+
+			default:
+				break;
+			}
+		}
+		isMonsterItemDrop = 0;		//드랍확률 100%
+
 		player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
+		monsterNumber--;
 	}
 
 	PrintCharacter(player);
@@ -337,6 +355,26 @@ void MapManager::PrintItemBox()
 			tempMap[itemPositionY][itemPositionX - 1 + index] = itemBoxShape["legs"][index];
 	}
 
+}
+
+void MapManager::PrintNPC()
+{
+	auto NPCShape = gameInfo->GetShape(NPC);
+	int npcXPosition = npc->GetPos().GetX();
+	int npcYPosition = npc->GetPos().GetY();
+
+	//NPC글자출력
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[npcYPosition - 2][npcXPosition - 1 + index] = NPCShape["info"][index];
+	//머리
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[npcYPosition - 0][npcXPosition - 1 + index] = NPCShape["head"][index];
+	//몸통
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[npcYPosition + 1][npcXPosition - 1 + index] = NPCShape["body"][index];
+	//다리
+	for (int index = 0; index < SHAPE_COL; index++)
+		tempMap[npcYPosition + 2][npcXPosition - 1 + index] = NPCShape["legs"][index];
 }
 
 void MapManager::LoadCanMovePos()

@@ -1,7 +1,11 @@
 ﻿#include "Monster.h"
+#include "Slime.h"
+#include "Oak.h"
+#include "Tank.h"
 
 vector<Monster*>* Monster::monster = nullptr;
 Pos* Monster::itemPosition = new Pos();
+array<int, 1>* Monster::deathMonster = new array<int, 1>();
 
 //각 자식몬스터에서 호출
 void Monster::AddInstance()
@@ -38,6 +42,13 @@ void Monster::Die()
 	{
 		if ((*monsterHP)->GetHp() <= 0)
 		{
+			if (typeid(**monsterHP) == typeid(Slime))
+				(*deathMonster)[0] = MonsterSpace::SLIME;
+			if (typeid(**monsterHP) == typeid(Oak))
+				(*deathMonster)[0] = MonsterSpace::OAK;
+			if (typeid(**monsterHP) == typeid(Tank))
+				(*deathMonster)[0] = MonsterSpace::TANK;
+
 			itemPosition->SetX(((*monsterHP)->GetPos().GetX() % 2 == 0) ? (*monsterHP)->GetPos().GetX() + 1 : (*monsterHP)->GetPos().GetX());
 			itemPosition->SetY((*monsterHP)->GetPos().GetY());
 			delete (*monsterHP);		//할당받은거 반납
@@ -62,4 +73,13 @@ void Monster::Setting(const int& invincibilityTime, const int& bounceSize)
 {
 	this->invincibilityTime = invincibilityTime;
 	this->bounceSize = bounceSize;
+}
+
+//죽은몬스터번호 리턴
+int Monster::GetDeathMonster()
+{
+	int tempMonsterNumber = (*deathMonster)[0];
+	(*deathMonster)[0] = -1;
+
+	return tempMonsterNumber;
 }
