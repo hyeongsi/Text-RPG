@@ -128,6 +128,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 	bool loop = true;
 	int tempPlayerState;
 	int escUIState = NOTHING;
+	int buyItem = Shop::NOTHING;		//구매한 아이템
 
 	player->Init();
 	mapManager.Init();
@@ -153,8 +154,11 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			switch (tempPlayerState)
 			{
 			case ATTACK:
+				//몬스터 피격판정검사
 				for (int i = 0; i < monster->size(); i++)
 					(*monster)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());
+				//NPC피격검사 (상점열기)
+				buyItem = npc->OpenShop(playerPos.GetX(), playerPos.GetY(), player->GetDir());
 				break;
 			case PICKUP:
 				mapManager.SetDropItem();
@@ -188,6 +192,18 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			mapManager.PrintMap(isOpenInventory);
 		}
 
+		
+
+		//아이템구매.. (-1은 아무것도 안산거)
+		if (Shop::NOTHING != buyItem)
+		{
+			//인벤토리에 추가 구현해야함
+			Inventory& tempInventory = player->GetInventory();
+			tempInventory.PushItem(buyItem);
+
+			buyItem = -1;
+		}
+
 		//조건에 해당하면 던전탈출
 		if (player->GetHp() <= 0 || escUIState == EXIT_ESC_MENU)
 		{
@@ -195,7 +211,6 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			player->Init();
 			Monster::ReleaseInstance();
 		}
-		//지금은 몬스터 다잡고 포탈에 들어가기만하면 던전탈출 ... 일단 if문조건이 너무많아가지고 알아보기쉽게할라고 같은문장실행인데도 따로나눠서적음
 		if (monster->size() <= 0 && (mapManager.GetExitPosition() == player->GetPos()))
 		{
 			loop = false;
@@ -220,7 +235,7 @@ void GameManager::LoadDungeonData(const int& dungeonNumber)
 	gameInfo->LoadMonsterShape(monster);
 	gameInfo->LoadMonsterStats(monster);
 	gameInfo->LoadMonsterDefaultSettingValue(monster);
-
+	gameInfo->LoadNPCShape();
 }
 
 void GameManager::SavePlayerData()

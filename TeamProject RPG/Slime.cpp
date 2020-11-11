@@ -1,8 +1,5 @@
 ﻿#include "Slime.h"
 
-int Slime::exp = 0;
-int Slime::itemDropPercentage = 0;
-
 //객체추가
 void Slime::AddInstance()
 {
@@ -11,11 +8,9 @@ void Slime::AddInstance()
 }   
 
 //각 슬라임마다 체력과 공격력과 스피드 설정하기
-void Slime::SetStats(int hp, int power, int speed, int exp, int itemDropPercentage)
+void Slime::SetStats(int hp, int power, int speed)
 {
 	Monster::MonsterSetStats(hp, power, speed);
-	Slime::exp = exp;
-	Slime::itemDropPercentage = itemDropPercentage;
 }
 
 //속도에 따라 움직이기,,, 플레이어 위치방향으로 움직임

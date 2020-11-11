@@ -20,6 +20,7 @@ private:
 	ifstream fcin;
 	GameInfo* gameInfo = GameInfo::GetInstance();
 	Player* player;
+	Npc* npc = Npc::GetInstance();
 	vector<Monster*>* monster = nullptr;
 	Pos exitPosition;		//탈출구 좌표
 
@@ -44,6 +45,7 @@ public:
 	void PrintWeapon(string weapon);
 	void PrintMonster(Monster* monster);
 	void PrintItemBox();
+	void PrintNPC();
 
 	void LoadCanMovePos();
 	Pos* GetDontMovePos();

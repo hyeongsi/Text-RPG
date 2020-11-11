@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <map>
 #include "Player.h"
+#include "Npc.h"
 #include "Slime.h"
 #include "Tank.h"
 #include "Oak.h"
@@ -13,6 +14,8 @@ class GameInfo
 {
 private:
 	map<string, string> playerShape;
+
+	map<string, string> NPCShape;
 
 	map<string, string> slimeShape;
 	map<string, string> oakShape;
@@ -29,6 +32,7 @@ private:
 public:
 	static GameInfo* GetInstance();
 	static void ReleaseInstance();
+	map<string, int> monsterInfomation;
 
 	const map<string, string>& GetShape(const int& character);
 
@@ -45,6 +49,8 @@ public:
 	void LoadPlayerStats(const string& path, const string& name);
 	void LoadPlayerShape();
 	void LoadInventoryItem(const string& path, const string& name);
+
+	void LoadNPCShape();
 
 	void LoadMonsterShape(vector<Monster*>* monster);
 	void LoadMonsterStats(vector<Monster*>* monster);
@@ -63,7 +69,8 @@ const enum characters{
 	SLIME,
 	OAK,
 	TANK,
-	ITEMBOX		//..나중에 옮기기
+	ITEMBOX,
+	NPC
 	//그외에 적들 추가후 GetShape()에 넣기
 };
 
