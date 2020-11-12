@@ -82,6 +82,8 @@ void SelectDungeonUI::Show()
 	//현재 플레이어 스텟 받아와서 출력
 	GoToXY(15, 2);
 	cout << "HP :\t" << player->GetHp();
+	GoToXY(15, 3);
+	cout << "MP :\t" << player->GetMp();
 	GoToXY(15, 4);
 	cout << "POWER :\t" << player->GetPower();
 	GoToXY(15, 6);

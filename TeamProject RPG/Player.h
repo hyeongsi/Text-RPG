@@ -16,6 +16,8 @@ private:
 	
 	string holdWeapon = "sword";
 
+	int maxMp = 10;
+	int mp = 10;
 	int walkCount = 0;
 	bool isWalking = false;
 	bool isAttack = false;
@@ -42,7 +44,7 @@ public:
 	static void ReleaseInstance();
 
 	void Init();
-	void SetStats(const int& hpNum, const int& powerNum, const int& exp = 0, const int& level = 0, const string& weapon = "sword");
+	void SetStats(const int& hpNum, const int& powerNum, const int& mp, const int& exp = 0, const int& level = 0, const string& weapon = "sword");
 	void SyncStatsUI();
 
 	void CheckDontMoveDir(Pos leftUp, Pos rightDown);
@@ -71,6 +73,8 @@ public:
 	const int GetDir();			//보고있는 방향 리턴
 	const int GetLevel();
 	const int GetExp();
+	const int GetMp();
+	void SetMp(const int mp);
 	const string& GetCurrentWeapon();
 	Inventory& GetInventory();
 	void SetExp(const int exp);	//경험치 증가

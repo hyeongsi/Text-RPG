@@ -11,13 +11,13 @@ EarthquakeSkill::EarthquakeSkill(string skill_name, int use_mp, int power)
 
 void EarthquakeSkill::UseSkill(Player* player)
 {
-	//player mp 구현 필요
-	/*if (!(player->Getmp() >= use_mp))
-		return;*/
+	if (!(player->GetMp() >= use_mp))
+		return;
 
 	vector<Monster*>* monster = Monster::GetInstance();
 
-	//player->Setmp(player->Getmp()-use_mp);
+	player->SetMp(player->GetMp()-use_mp);
+
 
 	for (int i = 0; i < monster->size(); i++)
 		(*monster)[i]->IsHit(player->GetPos().GetX(), player->GetPos().GetY(), player->GetDir(), power, true);

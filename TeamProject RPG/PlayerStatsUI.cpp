@@ -8,6 +8,14 @@ void PlayerStatsUI::PrintHp(const int& hp) const
 	cout << "HP : " << hp << endl;
 }
 
+void PlayerStatsUI::PrintMp(const int& mp) const
+{
+	GoToXY(50, 32);
+	cout << "                        ";
+	GoToXY(50, 32);
+	cout << "MP : " << mp << endl;
+}
+
 void PlayerStatsUI::PrintExp(const int& exp) const
 {
 	GoToXY(50, 33);

@@ -114,27 +114,31 @@ void GameInfo::LoadNewData()
 {
 	int hp = 0;
 	int power = 0;
+	int mp = 0;
 
 	hp = ReadFileInt("player", "hp", "GameInfo\\player.ini");//섹션수정
+	mp = ReadFileInt("player", "mp", "GameInfo\\player.ini");
 	power = ReadFileInt("player", "power", "GameInfo\\player.ini");//섹션수정
-	player->SetStats(hp, power);
+	player->SetStats(hp, power,mp);
 }
 
 void GameInfo::LoadPlayerStats(const string& path, const string& name)
 {
 	int hp = 0;
 	int power = 0;
+	int mp = 0;
 	int exp = 0;
 	int level = 0;
 	string weapon;
 
 	hp = ReadFileInt(name.c_str(), "hp", path.c_str());//섹션수정
+	mp = ReadFileInt("player", "mp", "GameInfo\\player.ini");
 	power = ReadFileInt(name.c_str(), "power", path.c_str());//섹션수정
 	exp = ReadFileInt(name.c_str(), "exp", path.c_str());
 	level = ReadFileInt(name.c_str(), "level", path.c_str());
 	weapon = GetReadFileString(name.c_str(), "currentWeapon", path.c_str());
 	
-	player->SetStats(hp, power, exp, level, weapon);
+	player->SetStats(hp, power, mp,exp, level, weapon);
 }
 
 void GameInfo::LoadPlayerShape()

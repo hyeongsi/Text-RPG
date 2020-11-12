@@ -29,6 +29,7 @@ void Player::ReleaseInstance()
 void Player::Init()
 {
 	Hp = MaxHp;
+	mp = maxMp;
 
 	walkCount = 0;
 	isWalking = false;
@@ -38,6 +39,7 @@ void Player::Init()
 	dir = RIGHT;
 
 	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintMp(mp);
 	playerStatsUI.PrintExp(exp);
 	playerStatsUI.PrintLevel(level);
 
@@ -45,11 +47,13 @@ void Player::Init()
 		setInitDontMoveDir = false;
 }
 
-void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, const int& level, const string& weapon)
+void Player::SetStats(const int& hpNum, const int& powerNum, const int& mp, const int& exp, const int& level, const string& weapon)
 {
 	Hp = hpNum;
 	MaxHp = Hp;
 	power = powerNum;
+	this->mp = mp;
+	maxMp = this->mp;
 	this->exp = exp;
 	this->level = level;
 	int walkCount = 0;
@@ -59,6 +63,7 @@ void Player::SetStats(const int& hpNum, const int& powerNum, const int& exp, con
 void Player::SyncStatsUI()
 {
 	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintMp(mp);
 	playerStatsUI.PrintExp(exp);
 	playerStatsUI.PrintLevel(level);
 }
@@ -252,6 +257,7 @@ void Player::UseItem(int itemNumber)
 
 	//아이템 사용후 UI최신화
 	playerStatsUI.PrintHp(Hp);
+	playerStatsUI.PrintMp(mp);
 	playerStatsUI.PrintExp(exp);
 	playerStatsUI.PrintLevel(level);
 }
@@ -274,6 +280,7 @@ const int Player::GetInventoryItem(int itemIndex)
 void Player::UseSkill(Skill* skill)
 {
 	skill->UseSkill(this);
+	playerStatsUI.PrintMp(mp);
 
 	delete skill;
 }
@@ -328,6 +335,16 @@ const int Player::GetExp()
 	return exp;
 }
 
+const int Player::GetMp()
+{
+	return mp;
+}
+
+void Player::SetMp(const int mp)
+{
+	this->mp = mp;
+}
+
 const string& Player::GetCurrentWeapon()
 {
 	return holdWeapon;
@@ -346,6 +363,9 @@ void Player::SetExp(const int exp)
 		this->exp -= 100;
 		level += 1;
 		MaxHp += 1;
+		Hp = MaxHp;
+		maxMp += 1;
+		mp = maxMp;
 		power += 1;
 		Hp = MaxHp;
 	}
@@ -407,6 +427,7 @@ void Player::IsActiveBuffTimer()
 			return;
 
 		isActivePowerBuff = false;
+		power -= 1;
 	}
 }
 

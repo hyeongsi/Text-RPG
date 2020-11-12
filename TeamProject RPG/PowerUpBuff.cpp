@@ -10,12 +10,10 @@ PowerUpBuff::PowerUpBuff(string skill_name, int use_mp, int power)
 
 void PowerUpBuff::UseSkill(Player* player)
 {
-	//player mp 구현 필요
-	/*if (!(player->Getmp() >= use_mp))
-		return;*/
-	
-	//버프 지속시간 설정??
+	if (!(player->GetMp() >= use_mp))
+		return;
+
 	player->SetPower(player->GetPower() + 1);
 	player->SetBuffTime(10000);
-	//player->Setmp(player->Getmp()-use_mp);
+	player->SetMp(player->GetMp()-use_mp);
 }

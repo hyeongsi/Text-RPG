@@ -1,4 +1,5 @@
 ﻿#include "ThrowStonesSkill.h"
+#include "player.h"
 
 ThrowStonesSkill::ThrowStonesSkill(string skill_name, int use_mp, int power)
 {
@@ -9,10 +10,9 @@ ThrowStonesSkill::ThrowStonesSkill(string skill_name, int use_mp, int power)
 
 void ThrowStonesSkill::UseSkill(Player* player)
 {
-	//player mp 구현 필요
-	/*if (!(player->Getmp() >= use_mp))
-		return;*/
+	if (!(player->GetMp() >= use_mp))
+		return;
 
 
-	//player->Setmp(player->Getmp()-use_mp);
+	player->SetMp(player->GetMp()-use_mp);
 }

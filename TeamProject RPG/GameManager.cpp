@@ -252,6 +252,7 @@ void GameManager::SavePlayerData()
 	//여기서 플레이어 정보 기록하기 던전에서 탈출했을때
 	//게임시작할 때 이름 입력받아서 playerName에 넣기
 	string playerHp = to_string(player->GetHp());			//체력
+	string playerMp = to_string(player->GetMp());			//마나
 	string playerPower = to_string(player->GetPower());		//공격력
 	string playerLevel = to_string(player->GetLevel());		//레벨
 	string playerExp = to_string(player->GetExp());			//경험치
@@ -261,6 +262,7 @@ void GameManager::SavePlayerData()
 	string playerInventorySize = to_string(tempInventroy.GetInventorySize());	//인벤토리 사이즈
 
 	gameInfo->WriteData(playerName, "hp", playerHp, path);
+	gameInfo->WriteData(playerName, "mp", playerMp, path);
 	gameInfo->WriteData(playerName, "power", playerPower, path);
 	gameInfo->WriteData(playerName, "level", playerLevel, path);
 	gameInfo->WriteData(playerName, "exp", playerExp, path);
