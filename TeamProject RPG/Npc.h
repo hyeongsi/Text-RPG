@@ -28,5 +28,5 @@ public:
 	
 	const Pos& GetPos();
 	void SetPos(const int& x, const int& y);
-	int OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection);
+	array<int, 2>& OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection);
 };

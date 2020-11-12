@@ -37,7 +37,7 @@ const map<string, string>& GameInfo::GetShape(const int& character)
 		return NPCShape;
 
 	default:
-		return playerShape;		//여기 잘못된값 넘겨주는거 처리만들고 받는부분에서 체크하는것도 만들기
+		return playerShape;
 	}
 }
 
@@ -182,6 +182,9 @@ void GameInfo::LoadInventoryItem(const string& path, const string& name)
 
 void GameInfo::LoadNPCShape()
 {
+	ReadFileString("npc", "info", "GameInfo\\npc.ini");	//이름
+	NPCShape["info"] = loadData;
+
 	ReadFileString("npc", "head", "GameInfo\\npc.ini");	//머리
 	NPCShape["head"] = loadData;
 
@@ -190,9 +193,6 @@ void GameInfo::LoadNPCShape()
 
 	ReadFileString("npc", "legs", "GameInfo\\npc.ini");	//다리
 	NPCShape["legs"] = loadData;
-
-	ReadFileString("npc", "info", "GameInfo\\npc.ini");	//이름
-	NPCShape["info"] = loadData;
 }
 
 void GameInfo::LoadMonsterShape(vector<Monster*>* monster)

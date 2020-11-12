@@ -126,7 +126,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 	//NPC출력
 	PrintNPC();
 
-	//아이템드랍 + 경험치 증가
+	//확률적아이템드랍 + 경험치증가
 	if (monsterNumber > monster->size())	//몬스터가 한마리 죽으면
 	{
 		srand((unsigned int)time(NULL));
@@ -153,7 +153,7 @@ void MapManager::PrintMap(bool isOpenInventory)
 				break;
 			}
 		}
-		isMonsterItemDrop = 0;		//드랍확률 100%
+		isMonsterItemDrop = 0;		//아이템드랍확률 100%
 
 		player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
 		monsterNumber--;

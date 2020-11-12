@@ -27,10 +27,11 @@ void Npc::SetPos(const int& x, const int& y)
 	pos.SetY(y);
 }
 
-int Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection)
+array<int, 2>& Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection)
 {
 	//구매한 아이템
-	int buyItem = Shop::NOTHING;
+	array<int, 2> item;
+	item[0] = Shop::EXIT;
 
 	//피격여부
 	bool isAttacked = false;
@@ -39,7 +40,7 @@ int Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const 
 	int attackXPosition = 0;
 	int attackYPosition = 0;
 
-	//각 슬라임들의 위치
+	//NPC위치
 	int NPCXPosition = this->GetPos().GetX();
 	int NPCYPosition = this->GetPos().GetY() + 2;
 
@@ -67,11 +68,7 @@ int Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const 
 	}
 
 	if (isAttacked == true)
-		buyItem = shopUI.SelectUI();
+		item = shopUI.SelectUI();
 
-	if (buyItem == Shop::EXIT || buyItem == Shop::NOTHING)
-		return Shop::NOTHING;		//아무것도 구매하지않음
-	else
-		return buyItem;		//구매한물건번호리턴
-
+	return item;		//구매한물건번호리턴
 }

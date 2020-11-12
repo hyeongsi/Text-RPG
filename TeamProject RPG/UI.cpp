@@ -14,6 +14,7 @@ void UI::ReadFileString(const char* section, string tempKey, map<string, string>
 	test[tempKey] = loadData;
 }
 
+
 void UI::ReadFileString(const char* section, const char* key, string& test, const char* path) const
 {
 	TCHAR loadData[1024];

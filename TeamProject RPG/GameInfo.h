@@ -14,13 +14,10 @@ class GameInfo
 {
 private:
 	map<string, string> playerShape;
-
 	map<string, string> NPCShape;
-
 	map<string, string> slimeShape;
 	map<string, string> oakShape;
 	map<string, string> tankShape;
-
 	map<string, string> weaponShape;
 	map<string, string> weaponSwingShape;
 	map<string, string> itemBoxShape;

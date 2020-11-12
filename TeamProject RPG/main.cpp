@@ -4,7 +4,7 @@
 void SetConsole()
 {
 	system("title DUNGEON-RPG게임");
-	system("mode con cols=120 lines=200");		//찾아도 이유를 모르겠음 안됨
+	system("mode con cols=120 lines=200");
 
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;

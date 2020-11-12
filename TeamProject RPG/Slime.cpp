@@ -75,6 +75,7 @@ void Slime::IsHit(const int& playerXPosition, const int& playerYPosition, const 
 
 		else if (playerDirection == LEFT)
 			this->SetPos(slimeXPosition - bounceSize, slimeYPosition);
+
 		attackDelaymanager.SetStartTime();
 		attackDelaymanager.SetDelayTime(invincibilityTime);
 		isInvincibility = true;

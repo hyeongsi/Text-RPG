@@ -1,26 +1,39 @@
 ﻿#pragma once
 #include "UI.h"
+#include <array>
 
 class ShopUI : public UI
 {
 private:
+	map<string, string> shopList;
+	map<string, string> buyList;
 	map<string, string> salesList;
 	int currentChoice = 2;
+	array<int, 2> itemChoice;
 
 public:
 	ShopUI();
-	void Show();
-	int SelectUI();
+	void ShopShow();
+	void BuyShow();
+	void SaleShow();
+	array<int, 2>& SelectUI();
 };
+
+namespace ShopBuy
+{
+	enum ShopBuy {
+		HP,
+		MP,
+		SWORD,
+		AXE
+	};
+}
 
 namespace Shop
 {
 	enum Shop {
-		NOTHING = -1,
-		HP = 0,
-		MP = 1,
-		SWORD = 2,
-		AXE = 3,
-		EXIT = 4
+		BUY,
+		SALE,
+		EXIT
 	};
 }

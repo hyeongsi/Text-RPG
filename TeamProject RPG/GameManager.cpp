@@ -128,7 +128,8 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 	bool loop = true;
 	int tempPlayerState;
 	int escUIState = NOTHING;
-	int buyItem = Shop::NOTHING;		//구매한 아이템
+	array<int, 2> item;
+	item[0] = Shop::EXIT;
 
 	player->Init();
 	mapManager.Init();
@@ -158,7 +159,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 				for (int i = 0; i < monster->size(); i++)
 					(*monster)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());
 				//NPC피격검사 (상점열기)
-				buyItem = npc->OpenShop(playerPos.GetX(), playerPos.GetY(), player->GetDir());
+				item = npc->OpenShop(playerPos.GetX(), playerPos.GetY(), player->GetDir());
 				break;
 			case PICKUP:
 				mapManager.SetDropItem();
@@ -192,16 +193,24 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			mapManager.PrintMap(isOpenInventory);
 		}
 
-		
 
-		//아이템구매.. (-1은 아무것도 안산거)
-		if (Shop::NOTHING != buyItem)
+		Inventory& tempInventory = player->GetInventory();
+
+		//아이템판매/구매체크
+		switch (item[0])
 		{
-			//인벤토리에 추가 구현해야함
-			Inventory& tempInventory = player->GetInventory();
-			tempInventory.PushItem(buyItem);
+		case Shop::BUY:		//구매시 실행
+			tempInventory.PushItem(item[1]);
+			item[0] = Shop::EXIT;
+			break;
 
-			buyItem = -1;
+		case Shop::SALE:	//판매시 실행
+			tempInventory.DeleteItem(item[1]);
+			item[0] = Shop::EXIT;
+			break;
+
+		default:
+			break;
 		}
 
 		//조건에 해당하면 던전탈출
