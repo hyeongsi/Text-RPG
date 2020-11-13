@@ -109,8 +109,9 @@ void MapManager::PrintMap(bool isOpenInventory)
 			tempMap[col][row] = map[col][row];
 	}
 
-	//슬라임의 아이템드랍하면 좌표 아이템리스트에넣기
+	//몬스터가 아이템드랍하면 좌표 아이템리스트에넣기
 	if (isMonsterItemDrop == ITEM_DROP) {
+		//여기 itemPosition수만큼 반복하게 만들고
 		Pos tempItemPos;
 		tempItemPos.SetX(Monster::itemPosition->GetX());
 		tempItemPos.SetY(Monster::itemPosition->GetY());
@@ -121,11 +122,12 @@ void MapManager::PrintMap(bool isOpenInventory)
 
 	//몬스터출력
 	for (auto monsterIterator : *monster)
-			PrintMonster(monsterIterator);
+		PrintMonster(monsterIterator);
 
 	//NPC출력
 	PrintNPC();
 
+	//동시에 죽는경우의수가 없음 포함해야함.... 근데 애초에 mapmanager에서 실행할애가아님
 	//확률적아이템드랍 + 경험치증가
 	if (monsterNumber > monster->size())	//몬스터가 한마리 죽으면
 	{
@@ -326,17 +328,41 @@ void MapManager::PrintMonster(Monster* monster)
 	else if (typeid(*monster) == typeid(Tank))
 		monsterShape = gameInfo->GetShape(TANK);
 
-	//머리 출력
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[monsterPosY - 2][monsterPosX - 1 + index] = monsterShape["head"][index];
+	if (typeid(*monster) == typeid(Tank))
+	{
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[monsterPosY - 2][monsterPosX - 1 + index] = monsterShape["head"][index];
 
-	//몸 출력
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[monsterPosY - 1][monsterPosX - 1 + index] = monsterShape["body"][index];
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[monsterPosY][monsterPosX - 1 + index] = monsterShape["legs"][index];
 
-	//다리 출력
-	for (int index = 0; index < SHAPE_COL; index++)
-		tempMap[monsterPosY][monsterPosX - 1 + index] = monsterShape["legs"][index];
+		//플레이어위치에따라 달라지는 탱크의 형태
+		if (player->GetPos().GetX() - (*monster).GetPos().GetX() < 0)
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[monsterPosY - 1][monsterPosX - 1 + index] = monsterShape["bodyR"][index];
+		}
+		else if(player->GetPos().GetX() - (*monster).GetPos().GetX() >= 0)
+		{
+			for (int index = 0; index < SHAPE_COL; index++)
+				tempMap[monsterPosY - 1][monsterPosX - 1 + index] = monsterShape["bodyL"][index];
+		}
+	}
+	else
+	{
+		//머리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[monsterPosY - 2][monsterPosX - 1 + index] = monsterShape["head"][index];
+
+		//몸 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[monsterPosY - 1][monsterPosX - 1 + index] = monsterShape["body"][index];
+
+		//다리 출력
+		for (int index = 0; index < SHAPE_COL; index++)
+			tempMap[monsterPosY][monsterPosX - 1 + index] = monsterShape["legs"][index];
+	}
+
 }
 
 void MapManager::PrintItemBox()

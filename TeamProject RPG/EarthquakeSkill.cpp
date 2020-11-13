@@ -19,8 +19,19 @@ void EarthquakeSkill::UseSkill(Player* player)
 	player->SetMp(player->GetMp()-use_mp);
 
 
+	/*for (int i = 0; i < monster->size(); i++)
+		(*monster)[i]->IsHit(player->GetPos().GetX(), player->GetPos().GetY(), player->GetDir(), power, true);*/
+
 	for (int i = 0; i < monster->size(); i++)
-		(*monster)[i]->IsHit(player->GetPos().GetX(), player->GetPos().GetY(), player->GetDir(), power, true);
+		(*monster)[i]->EarthquakeSkillHit(player->GetPos(), power);
+		
+	//몬스터들 체력볼라고 적은거 삭제해도됨
+	int i = 0;
+
+	for (auto item : *monster)
+	{
+		cout << i++ << " : " << item->GetHp() << endl;
+	}
 
 	monster = nullptr;
 }

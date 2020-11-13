@@ -147,7 +147,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			tempPlayerState = player->InputBehavior();
 
 			for (int i = 0; i < monster->size(); i++)
-				(*monster)[i]->Move(playerPos.GetX(), playerPos.GetY());		//움직임	
+				(*monster)[i]->Move(player->GetPos());		//움직임	
 
 			CheckContact();		//플레이어와 몬스터 피격 유무 확인
 			player->IsInvincibilityTimer();		//플레이어 무적시간측정
@@ -157,7 +157,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			case ATTACK:
 				//몬스터 피격판정검사
 				for (int i = 0; i < monster->size(); i++)
-					(*monster)[i]->IsHit(playerPos.GetX(), playerPos.GetY(), player->GetDir(), player->GetPower());
+					(*monster)[i]->IsHit(player->GetPos(), player->GetDir(), player->GetPower());
 				//NPC피격검사 (상점열기)
 				item = npc->OpenShop(playerPos.GetX(), playerPos.GetY(), player->GetDir());
 				break;

@@ -24,15 +24,17 @@ public:
 	static vector<Monster*>* GetInstance();
 	static Pos* itemPosition;	//아이템박스의 좌표(죽은몬스터의 좌표)
 
-	void MonsterSetStats(const int& hp, const int& power, const int& speed);
+	void SetStats(int hp, int power, int speed);
 	void Setting(const int& invincibilityTime, const int& bounceSize);
 	void Die();		//죽는 함수
+	void Move(const Pos& position);
+	void IsHit(const Pos& position, const int& playerDirection, const int& playerPower, const bool isAttack = false);
+	void EarthquakeSkillHit(const Pos& position, const int& playerPower);
 
-	virtual void SetStats(int hp, int power, int speed) = 0;
-	virtual void Move(const int& playerXPosition, const int& playerYPosition) = 0;
-
-	virtual void IsHit(const int& playerXPosition, const int& playerYPosition, const int& playerDirection, const int& playerPower, const bool isAttack = false) = 0;
 	static int GetDeathMonster();
+
+	//몬스터로 인스턴스로 못만들게하기위해서 선언
+	inline virtual void NoMakeMonster() = 0;
 };
 
 namespace MonsterSpace

@@ -231,7 +231,7 @@ void GameInfo::LoadMonsterShape(vector<Monster*>* monster)
 			tankShape["head"] = loadData;
 
 			ReadFileString("tank", "bodyR", "GameInfo\\tank.ini");	//몸오른쪽
-			tankShape["body"] = loadData;
+			tankShape["bodyR"] = loadData;
 
 			ReadFileString("tank", "bodyL", "GameInfo\\tank.ini");	//몸왼쪽
 			tankShape["bodyL"] = loadData;
@@ -250,6 +250,11 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 	int monsterExp = 0;
 	int itemDropPercentage = 0;
 
+	//같은 몬스터라도 속도를 조금씩 다르게해서 완전히 겹치지 않게 하기위해 사용할 변수
+	int slimeIdx = 0;
+	int oakIdx = 0;
+	int tankIdx = 0;
+
 	for (auto monsterIterator : *monster)
 	{
 		if (typeid(*monsterIterator) == typeid(Slime))
@@ -259,7 +264,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
 			monsterExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
 			itemDropPercentage = ReadFileInt("slime", "itemDropPercentage", "gameinfo\\slime.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++slimeIdx * 100));
 
 			monsterInfomation["slimeExp"] = monsterExp;
 			monsterInfomation["slimeItemDropPercentage"] = itemDropPercentage;
@@ -271,7 +276,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
 			monsterExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
 			itemDropPercentage = ReadFileInt("oak", "itemDropPercentage", "gameinfo\\oak.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++oakIdx * 100));
 
 			monsterInfomation["oakExp"] = monsterExp;
 			monsterInfomation["oakItemDropPercentage"] = itemDropPercentage;
@@ -283,7 +288,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
 			monsterExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
 			itemDropPercentage = ReadFileInt("tank", "itemDropPercentage", "gameinfo\\tank.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed);
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++tankIdx * 100));
 
 			monsterInfomation["tankExp"] = monsterExp;
 			monsterInfomation["tankItemDropPercentage"] = itemDropPercentage;
