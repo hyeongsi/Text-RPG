@@ -2,6 +2,7 @@
 #include "Character.h"
 #include <iostream>
 #include <vector>
+#include <list>
 #include <array>
 
 class Monster : public Character
@@ -16,15 +17,16 @@ protected:
 	int invincibilityTime = 0;	//무적시간
 	int bounceSize = 0;		//맞았을때 튕겨나갈크기
 	int speed = 0;		//기본값지정 값은 파일에서 읽어서 저장함
-	static array<int, 1>* deathMonster;		//죽은몬스터저장
+	int itemDropPercentage = 0;
+	static list<int>* deathMonster;		//죽은몬스터저장
 
 public:
 	static void AddInstance();
 	static void ReleaseInstance();
 	static vector<Monster*>* GetInstance();
-	static Pos* itemPosition;	//아이템박스의 좌표(죽은몬스터의 좌표)
+	static list<Pos>* itemPosition;	//아이템박스의 좌표(죽은몬스터의 좌표)
 
-	void SetStats(int hp, int power, int speed);
+	void SetStats(int hp, int power, int speed, int itemDropPercentage);
 	void Setting(const int& invincibilityTime, const int& bounceSize);
 	void Die();		//죽는 함수
 	void Move(const Pos& position);
@@ -39,7 +41,7 @@ public:
 
 namespace MonsterSpace
 {
-	enum monster
+	enum monsterNumber
 	{
 		SLIME = 1,
 		OAK,

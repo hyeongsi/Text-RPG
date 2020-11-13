@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include "MapManager.h"
 #include "EscMenuUI.h"
-
-//
 #include "Npc.h"
 
 class GameStartUI;

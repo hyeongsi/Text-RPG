@@ -25,13 +25,13 @@ void EarthquakeSkill::UseSkill(Player* player)
 	for (int i = 0; i < monster->size(); i++)
 		(*monster)[i]->EarthquakeSkillHit(player->GetPos(), power);
 		
-	//몬스터들 체력볼라고 적은거 삭제해도됨
-	int i = 0;
+	////몬스터들 체력볼라고 적은거 삭제해도됨
+	//int i = 0;
 
-	for (auto item : *monster)
-	{
-		cout << i++ << " : " << item->GetHp() << endl;
-	}
+	//for (auto item : *monster)
+	//{
+	//	cout << i++ << " : " << item->GetHp() << endl;
+	//}
 
 	monster = nullptr;
 }

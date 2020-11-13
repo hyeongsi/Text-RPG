@@ -264,7 +264,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("slime", "speed", "gameinfo\\slime.ini");
 			monsterExp = ReadFileInt("slime", "exp", "gameinfo\\slime.ini");
 			itemDropPercentage = ReadFileInt("slime", "itemDropPercentage", "gameinfo\\slime.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++slimeIdx * 100));
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++slimeIdx * 100), itemDropPercentage);
 
 			monsterInfomation["slimeExp"] = monsterExp;
 			monsterInfomation["slimeItemDropPercentage"] = itemDropPercentage;
@@ -276,7 +276,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("oak", "speed", "gameinfo\\oak.ini");
 			monsterExp = ReadFileInt("oak", "exp", "gameinfo\\oak.ini");
 			itemDropPercentage = ReadFileInt("oak", "itemDropPercentage", "gameinfo\\oak.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++oakIdx * 100));
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++oakIdx * 100), itemDropPercentage);
 
 			monsterInfomation["oakExp"] = monsterExp;
 			monsterInfomation["oakItemDropPercentage"] = itemDropPercentage;
@@ -288,7 +288,7 @@ void GameInfo::LoadMonsterStats(vector<Monster*>* monster)
 			monsterSpeed = ReadFileInt("tank", "speed", "gameinfo\\tank.ini");
 			monsterExp = ReadFileInt("tank", "exp", "gameinfo\\tank.ini");
 			itemDropPercentage = ReadFileInt("tank", "itemDropPercentage", "gameinfo\\tank.ini");
-			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++tankIdx * 100));
+			monsterIterator->SetStats(monsterHp, monsterPower, monsterSpeed - (++tankIdx * 100), itemDropPercentage);
 
 			monsterInfomation["tankExp"] = monsterExp;
 			monsterInfomation["tankItemDropPercentage"] = itemDropPercentage;

@@ -4,8 +4,8 @@
 #include "Tank.h"
 
 vector<Monster*>* Monster::monster = nullptr;
-Pos* Monster::itemPosition = new Pos();
-array<int, 1>* Monster::deathMonster = new array<int, 1>();
+list<Pos>* Monster::itemPosition = new list<Pos>();
+list<int>* Monster::deathMonster = new list<int>();
 
 //각 자식몬스터에서 호출
 void Monster::AddInstance()
@@ -40,15 +40,16 @@ void Monster::Die()
 {
 	//죽은몬스터 기록하고 (나중에 exp랑 아이템드랍확률에 사용하고 지워버림)
 	if (typeid(*this) == typeid(Slime))
-		(*deathMonster)[0] = MonsterSpace::SLIME;
+		deathMonster->emplace_back(MonsterSpace::SLIME);
 	if (typeid(*this) == typeid(Oak))
-		(*deathMonster)[0] = MonsterSpace::OAK;
+		deathMonster->emplace_back(MonsterSpace::OAK);
 	if (typeid(*this) == typeid(Tank))
-		(*deathMonster)[0] = MonsterSpace::TANK;
+		deathMonster->emplace_back(MonsterSpace::TANK);
 
-	//죽은놈의 좌표 저장
-	itemPosition->SetX((this->GetPos().GetX() % 2 == 0) ? this->GetPos().GetX() + 1 : this->GetPos().GetX());
-	itemPosition->SetY(this->GetPos().GetY());
+	//아이템확률에 따라 죽은놈의 좌표 저장(죽은놈좌표 = 아이템박스좌표),, 좌표저장을 안하면 아이템박스안생김 지금은 100%로 고정
+	//srand((unsigned int)rand());
+	//if (rand() % this->itemDropPercentage == 0)
+		itemPosition->emplace_back(Pos((this->GetPos().GetX() % 2 == 0) ? this->GetPos().GetX() + 1 : this->GetPos().GetX(), this->GetPos().GetY()));
 
 	int tempIndex = -1;
 	int deathMonsterIndex = 0;
@@ -70,29 +71,15 @@ void Monster::Die()
 
 	delete (this);
 	monster->erase(monster->begin() + deathMonsterIndex);
-
-	//원래꺼
-	//for (auto monsterHP = monster->begin(); monsterHP != monster->end();)
-	//{
-	//	if ((*monsterHP)->GetHp() <= 0)
-	//	{
-	//		itemPosition->SetX(((*monsterHP)->GetPos().GetX() % 2 == 0) ? (*monsterHP)->GetPos().GetX() + 1 : (*monsterHP)->GetPos().GetX());
-	//		itemPosition->SetY((*monsterHP)->GetPos().GetY());
-	//		delete (*monsterHP);		//할당받은거 반납
-	//		monster->erase(monsterHP);	//벡터에서 삭제
-	//		return;
-	//	}
-	//	else
-	//		monsterHP++;
-	//}
 }
 
 //몬스터 스텟설정
-void Monster::SetStats(int hp, int power, int speed)
+void Monster::SetStats(int hp, int power, int speed, int itemDropPercentage)
 {
 	this->Hp = hp;
 	this->power = power;
 	this->speed = speed;
+	this->itemDropPercentage = itemDropPercentage;
 }
 
 //몬스터 스텟외 정보들 설정
@@ -216,8 +203,8 @@ void Monster::EarthquakeSkillHit(const Pos& position, const int& playerPower)
 //죽은몬스터번호 리턴
 int Monster::GetDeathMonster()
 {
-	int tempMonsterNumber = (*deathMonster)[0];
-	(*deathMonster)[0] = -1;
+	int tempMonsterNumber = deathMonster->front();
+	deathMonster->pop_front();
 
 	return tempMonsterNumber;
 }

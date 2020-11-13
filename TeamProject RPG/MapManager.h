@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <list>
-#include <ctime>
 #include "GameInfo.h"
 
 constexpr auto MAP_ROW = 30;
@@ -24,11 +23,7 @@ private:
 	vector<Monster*>* monster = nullptr;
 	Pos exitPosition;		//탈출구 좌표
 
-	//아이템드랍관련변수들
-	int monsterNumber= 0;		//몬스터들의 수가 들어갈 변수.. 아이템드랍조건에 사용
-	int isMonsterItemDrop = -1;	//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
-	int getItemNumber = 0;		//획득한 아이템수
-	list<Pos> itemPosition;
+	int monsterNumber= 0;
 
 	//플레이어가 움직일 수 있는 범위의 좌표 저장
 	Pos dontMovePos[2];  //0:leftUpPos,   1:RightDownPos

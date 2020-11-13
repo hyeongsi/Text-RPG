@@ -3,10 +3,7 @@
 void MapManager::Init()
 {
 	monsterNumber = 0;		//몬스터들의 수가 들어갈 변수
-	isMonsterItemDrop = -1;	//아이템드랍여부를판단할변수 itemDrop == ITEM_DROP이면 아이템박스떨구기
-	getItemNumber = 0;		//획득한 아이템수
 	monster = nullptr;
-	itemPosition.clear();
 }
 
 void MapManager::GoToXY(SHORT x, SHORT y)
@@ -19,7 +16,6 @@ void MapManager::LoadMap(const int& num)
 {
 	string currentDungeon;
 	char mapPiece;
-	itemPosition.clear();
 
 	switch (num)
 	{
@@ -109,58 +105,12 @@ void MapManager::PrintMap(bool isOpenInventory)
 			tempMap[col][row] = map[col][row];
 	}
 
-	//몬스터가 아이템드랍하면 좌표 아이템리스트에넣기
-	if (isMonsterItemDrop == ITEM_DROP) {
-		//여기 itemPosition수만큼 반복하게 만들고
-		Pos tempItemPos;
-		tempItemPos.SetX(Monster::itemPosition->GetX());
-		tempItemPos.SetY(Monster::itemPosition->GetY());
-		itemPosition.emplace_back(tempItemPos);
-		isMonsterItemDrop = -1;
-	}
 	PrintItemBox();
 
-	//몬스터출력
 	for (auto monsterIterator : *monster)
 		PrintMonster(monsterIterator);
 
-	//NPC출력
 	PrintNPC();
-
-	//동시에 죽는경우의수가 없음 포함해야함.... 근데 애초에 mapmanager에서 실행할애가아님
-	//확률적아이템드랍 + 경험치증가
-	if (monsterNumber > monster->size())	//몬스터가 한마리 죽으면
-	{
-		srand((unsigned int)time(NULL));
-		if (isMonsterItemDrop != ITEM_DROP)
-		{
-			switch (Monster::GetDeathMonster())
-			{
-			case MonsterSpace::SLIME:
-				player->SetExp(gameInfo->monsterInfomation["slimeExp"]);
-				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["slimeItemDropPercentage"];
-				break;
-
-			case MonsterSpace::OAK:
-				player->SetExp(gameInfo->monsterInfomation["oakExp"]);
-				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["oakItemDropPercentage"];
-				break;
-
-			case MonsterSpace::TANK:
-				player->SetExp(gameInfo->monsterInfomation["tankExp"]);
-				isMonsterItemDrop = rand() % gameInfo->monsterInfomation["tankItemDropPercentage"];
-				break;
-
-			default:
-				break;
-			}
-		}
-		isMonsterItemDrop = 0;		//아이템드랍확률 100%
-
-		player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
-		monsterNumber--;
-	}
-
 	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());
 
@@ -371,7 +321,7 @@ void MapManager::PrintItemBox()
 	int itemPositionX = 0;
 	int itemPositionY = 0;
 
-	for (auto itemPositions : itemPosition)
+	for (auto itemPositions : (*Monster::itemPosition))
 	{
 		itemPositionX = itemPositions.GetX();
 		itemPositionY = itemPositions.GetY();
@@ -447,20 +397,20 @@ Pos* MapManager::GetDontMovePos()
 
 void MapManager::SetDropItem()
 {
-	if (itemPosition.size() <= 0)		//아이템이 있을때만 실행
+	if (Monster::itemPosition->size() <= 0)		//아이템이 있을때만 실행
 		return;
 
-	for (auto itemPositionIterator = itemPosition.begin(); itemPositionIterator != itemPosition.end();)
+	//범위 for문안되가지고 일단 이렇게만듦 나중에 천천히 해보기
+	for (auto itemPositionIterator = Monster::itemPosition->begin(); itemPositionIterator != Monster::itemPosition->end(); itemPositionIterator++)
 	{
 		if ((*itemPositionIterator) == player->GetPos())
 		{
 			if (player->PickUp())
-				itemPosition.erase(itemPositionIterator);
-
-			return;
+			{
+				Monster::itemPosition->erase(itemPositionIterator);
+				return;
+			}
 		}
-		else
-			itemPositionIterator++;
 	}
 }
 

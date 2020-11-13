@@ -136,6 +136,10 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 
 	LoadDungeonData(dungeonNumber);
 	mapManager.PrintMap(isOpenInventory);
+
+	//추가
+	int monsterNumber = monster->size();
+
 	while (loop)
 	{
 		playerPos = player->GetPos();
@@ -211,6 +215,31 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 
 		default:
 			break;
+		}
+
+		//경험치증가
+		while (monsterNumber > monster->size())	//몬스터죽은만큼 실행
+		{
+			switch (Monster::GetDeathMonster())
+			{
+			case MonsterSpace::SLIME:
+				player->SetExp(gameInfo->monsterInfomation["slimeExp"]);
+				break;
+
+			case MonsterSpace::OAK:
+				player->SetExp(gameInfo->monsterInfomation["oakExp"]);
+				break;
+
+			case MonsterSpace::TANK:
+				player->SetExp(gameInfo->monsterInfomation["tankExp"]);
+				break;
+
+			default:
+				break;
+			}
+
+			player->SyncStatsUI();		//ui와 플레이어 데이터 동기화
+			monsterNumber--;
 		}
 
 		//조건에 해당하면 던전탈출
