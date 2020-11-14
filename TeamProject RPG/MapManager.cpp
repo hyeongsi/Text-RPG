@@ -393,10 +393,11 @@ void MapManager::PrintMonster(Monster* monster)
 void MapManager::PrintItemBox()
 {
 	auto itemBoxShape = gameInfo->GetShape(ITEMBOX);
+	auto itemPosition = Monster::GetItemPosition();
 	int itemPositionX = 0;
 	int itemPositionY = 0;
 
-	for (auto itemPositions : (*Monster::itemPosition))
+	for (auto itemPositions : *itemPosition)
 	{
 		itemPositionX = itemPositions.GetX();
 		itemPositionY = itemPositions.GetY();
@@ -485,17 +486,18 @@ Pos* MapManager::GetDontMovePos()
 
 void MapManager::SetDropItem()
 {
-	if (Monster::itemPosition->size() <= 0)		//아이템이 있을때만 실행
+	list<Pos>* itemPosition = Monster::GetItemPosition();
+
+	if (itemPosition->size() <= 0)		//아이템이 있을때만 실행
 		return;
 
-	//범위 for문안되가지고 일단 이렇게만듦 나중에 천천히 해보기
-	for (auto itemPositionIterator = Monster::itemPosition->begin(); itemPositionIterator != Monster::itemPosition->end(); itemPositionIterator++)
+	for (auto itemPositionIterator : *itemPosition)
 	{
-		if ((*itemPositionIterator) == player->GetPos())
+		if (itemPositionIterator == player->GetPos())
 		{
 			if (player->PickUp())
 			{
-				Monster::itemPosition->erase(itemPositionIterator);
+				itemPosition->remove(itemPositionIterator);
 				return;
 			}
 		}

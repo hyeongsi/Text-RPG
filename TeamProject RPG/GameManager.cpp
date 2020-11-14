@@ -132,13 +132,15 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 	item[0] = Shop::EXIT;
 
 	player->Init();
-	mapManager->Init();
+
+	mapManager.Init();
+	Monster::Init();
 
 	LoadDungeonData(dungeonNumber);
 	mapManager->PrintMap(isOpenInventory);
 
 	//추가
-	int monsterNumber = monster->size();
+	size_t monsterNumber = monster->size();
 
 	while (loop)
 	{

@@ -7,6 +7,12 @@ vector<Monster*>* Monster::monster = nullptr;
 list<Pos>* Monster::itemPosition = new list<Pos>();
 list<int>* Monster::deathMonster = new list<int>();
 
+void Monster::Init()
+{
+	Monster::itemPosition = new list<Pos>();
+	Monster::deathMonster = new list<int>();
+}
+
 //각 자식몬스터에서 호출
 void Monster::AddInstance()
 {
@@ -14,7 +20,7 @@ void Monster::AddInstance()
 		monster = new vector<Monster*>();
 }
 
-//모든몬스터 삭제
+//모든몬스터 삭제 + 할당받은 포인터들 반환
 void Monster::ReleaseInstance()
 {
 	if (monster == nullptr)
@@ -27,6 +33,9 @@ void Monster::ReleaseInstance()
 
 	delete monster;
 	monster = nullptr;
+
+	delete itemPosition;
+	delete deathMonster;
 }
 
 //몬스터반환
@@ -206,6 +215,11 @@ void Monster::EarthquakeSkillHit(const Pos& position, const int& playerPower)
 
 	//스킬쓰면 무조건 맞아야하니까 그냥 Hit호출
 	this->Hit(playerPower);
+}
+
+list<Pos>* Monster::GetItemPosition()
+{
+	return itemPosition;
 }
 
 //죽은몬스터번호 리턴
