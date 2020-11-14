@@ -11,7 +11,7 @@ private:
 	GameStartUI* gameStartUI;
 	SelectDungeonUI* selectDungeonUI;
 
-	MapManager mapManager;
+	MapManager* mapManager = MapManager::GetInstance();
 	DelayManager delayManager;
 	EscMenuUI escMenuUI;
 	GameInfo* gameInfo = GameInfo::GetInstance();

@@ -37,7 +37,7 @@ const int GameManager::TitleMenuPrint()
 void GameManager::NewPlayerMenu()
 {
 	system("cls");
-	mapManager.GoToXY(30, 10);
+	mapManager->GoToXY(30, 10);
 	cout << "신규생성 닉네임을 입력하세요 : ";
 
 	cin >> playerName;
@@ -72,7 +72,7 @@ void GameManager::LoadPlayerSelectMenu()
 {
 	system("cls");
 
-	mapManager.GoToXY(30, 10);
+	mapManager->GoToXY(30, 10);
 	cout << "닉네임을 입력하세요 : ";
 	cin >> playerName;
 	path += playerName + ".ini";
@@ -132,10 +132,10 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 	item[0] = Shop::EXIT;
 
 	player->Init();
-	mapManager.Init();
+	mapManager->Init();
 
 	LoadDungeonData(dungeonNumber);
-	mapManager.PrintMap(isOpenInventory);
+	mapManager->PrintMap(isOpenInventory);
 
 	//추가
 	int monsterNumber = monster->size();
@@ -166,7 +166,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 				item = npc->OpenShop(playerPos.GetX(), playerPos.GetY(), player->GetDir());
 				break;
 			case PICKUP:
-				mapManager.SetDropItem();
+				mapManager->SetDropItem();
 				break;
 			case SKILL1:
 				player->UseSkill(new ThrowStonesSkill("ThrowStones", 1, 3));	break;	
@@ -194,7 +194,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			if (escUIState != NOTHING)
 				player->UseItem(escUIState);
 
-			mapManager.PrintMap(isOpenInventory);
+			mapManager->PrintMap(isOpenInventory);
 		}
 
 
@@ -249,7 +249,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			player->Init();
 			Monster::ReleaseInstance();
 		}
-		if (monster->size() <= 0 && (mapManager.GetExitPosition() == player->GetPos()))
+		if (monster->size() <= 0 && (mapManager->GetExitPosition() == player->GetPos()))
 		{
 			loop = false;
 			player->Init();
@@ -264,8 +264,8 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 
 void GameManager::LoadDungeonData(const int& dungeonNumber)
 {
-	mapManager.LoadMap(dungeonNumber);
-	dontMovePos = mapManager.GetDontMovePos();	//이동불가 영역 받아서 사용
+	mapManager->LoadMap(dungeonNumber);
+	dontMovePos = mapManager->GetDontMovePos();	//이동불가 영역 받아서 사용
 	gameInfo->LoadItemBoxShape();		//던전들어가면 아이템박스형태 읽기
 
 	monster = Monster::GetInstance();
@@ -378,6 +378,6 @@ void GameManager::CheckContact()
 			}
 		}
 		if (isCrashMonster == true)
-			player->IsHit((*monster)[crashIndex]->GetPos(), mapManager.GetDontMovePos()[0], mapManager.GetDontMovePos()[1], (*monster)[crashIndex]->GetPower());
+			player->IsHit((*monster)[crashIndex]->GetPos(), mapManager->GetDontMovePos()[0], mapManager->GetDontMovePos()[1], (*monster)[crashIndex]->GetPower());
 	}
 }

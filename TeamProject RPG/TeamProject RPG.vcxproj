@@ -157,6 +157,7 @@
     <ClCompile Include="PlayerStatsUI.cpp" />
     <ClCompile Include="Pos.cpp" />
     <ClCompile Include="PowerUpBuff.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SelectDungeonUI.cpp" />
     <ClCompile Include="ShopUI.cpp" />
     <ClCompile Include="Skill.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="PlayerStatsUI.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="PowerUpBuff.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="SelectDungeonUI.h" />
     <ClInclude Include="ShopUI.h" />
     <ClInclude Include="Skill.h" />

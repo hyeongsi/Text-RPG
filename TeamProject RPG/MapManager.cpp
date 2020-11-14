@@ -1,4 +1,24 @@
 ﻿#include "MapManager.h"
+#include "Projectile.h"
+
+MapManager* MapManager::mapManagerInstance = nullptr;
+
+MapManager* MapManager::GetInstance()
+{
+	if (mapManagerInstance == nullptr)
+		mapManagerInstance = new MapManager();
+
+	return mapManagerInstance;
+}
+
+void MapManager::ReleaseInstance()
+{
+	if (mapManagerInstance)
+	{
+		delete mapManagerInstance;
+		mapManagerInstance = nullptr;
+	}
+}
 
 void MapManager::Init()
 {
@@ -96,6 +116,58 @@ const Pos& MapManager::GetExitPosition()
 	return exitPosition;
 }
 
+void MapManager::SetProjectileVector(Projectile* projectile)
+{
+	projectileVector.emplace_back(projectile);
+}
+
+void MapManager::ProjectileMove()
+{
+	//1칸씩 이동
+	Pos tempPos;
+	for (auto i = 0; i < projectileVector.size(); i++)
+	{
+		tempPos = projectileVector.at(i)->GetPos();
+		if (projectileVector.at(i)->GetDir() == RIGHT)
+		{
+			tempPos.SetX(tempPos.GetX() + 1);
+			projectileVector.at(i)->SetPos(tempPos);
+		}
+		else 
+		{
+			tempPos.SetX(tempPos.GetX() - 1);
+			projectileVector.at(i)->SetPos(tempPos);
+		}
+	}
+
+	//충돌 여부 검사 후 삭제
+	for (auto iter = projectileVector.begin(); iter != projectileVector.end(); iter++)
+	{
+		for (int i = 0; i < monster->size(); i++)
+		{
+			(*monster)[i]->IsHit((*iter)->GetPos(), (*iter)->GetDir(), (*iter)->GetPower(),false, true);
+
+		}
+	}
+
+	//맵 이탈 여부 검사 후 삭제
+	for (auto i = 0; i < projectileVector.size(); )
+	{
+		if (dontMovePos[0].GetX() >= projectileVector.at(i)->GetPos().GetX())
+		{
+			delete projectileVector.at(i);
+			projectileVector.erase(projectileVector.begin() + i);
+		}
+		else if (dontMovePos[1].GetX() <= projectileVector.at(i)->GetPos().GetX())
+		{
+			delete projectileVector.at(i);
+			projectileVector.erase(projectileVector.begin() + i);
+		}
+		else
+			i++;
+	}
+}
+
 void MapManager::PrintMap(bool isOpenInventory)
 {
 	//원본맵을 출력할 맵에 복사 후
@@ -110,7 +182,10 @@ void MapManager::PrintMap(bool isOpenInventory)
 	for (auto monsterIterator : *monster)
 		PrintMonster(monsterIterator);
 
+	ProjectileMove();
+
 	PrintNPC();
+	PrintProjectile();
 	PrintCharacter(player);
 	PrintWeapon(player->GetHoldWeapon());
 
@@ -356,6 +431,19 @@ void MapManager::PrintNPC()
 	//다리
 	for (int index = 0; index < SHAPE_COL; index++)
 		tempMap[npcYPosition + 2][npcXPosition - 1 + index] = NPCShape["legs"][index];
+}
+
+void MapManager::PrintProjectile()
+{
+	if (projectileVector.size() <= 0)
+		return;
+	Pos tempPos;
+	
+	for (auto i = 0; i < projectileVector.size(); i++)
+	{
+		tempPos = projectileVector.at(i)->GetPos();
+		tempMap[tempPos.GetY()][tempPos.GetX()] = 'O';
+	}
 }
 
 void MapManager::LoadCanMovePos()

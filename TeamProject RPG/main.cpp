@@ -32,7 +32,9 @@ int main()
 		
 		if (returnValue == EXIT)
 		{
+			Player::ReleaseInstance();
 			Npc::ReleaseInstance();
+			MapManager::ReleaseInstance();
 			return 0;
 		}
 

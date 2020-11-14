@@ -112,7 +112,7 @@ void Monster::Move(const Pos& position)
 }
 
 //몬스터 기본공격 피격처리
-void Monster::IsHit(const Pos& position, const int& playerDirection, const int& playerPower, const bool isAttack)
+void Monster::IsHit(const Pos& position, const int& playerDirection, const int& playerPower, const bool isAttack, const bool isNotPlayer)
 {
 	if(isAttack == true)
 		isAttacked = true;
@@ -129,16 +129,24 @@ void Monster::IsHit(const Pos& position, const int& playerDirection, const int& 
 	int slimeXPosition = this->GetPos().GetX();
 	int slimeYPosition = this->GetPos().GetY();
 
-	//플레이어보는방향에 따라서 공격위치설정
-	if (playerDirection == RIGHT)
+	if (isNotPlayer == false)
 	{
-		attackXPosition = playerXPosition + 3;
-		attackYPosition = playerYPosition - 1;
+		//플레이어보는방향에 따라서 공격위치설정
+		if (playerDirection == RIGHT)
+		{
+			attackXPosition = playerXPosition + 3;
+			attackYPosition = playerYPosition - 1;
+		}
+		else if (playerDirection == LEFT)
+		{
+			attackXPosition = playerXPosition - 5;
+			attackYPosition = playerYPosition - 1;
+		}
 	}
-	else if (playerDirection == LEFT)
+	else
 	{
-		attackXPosition = playerXPosition - 5;
-		attackYPosition = playerYPosition - 1;
+		attackXPosition = playerXPosition;
+		attackYPosition = playerYPosition;
 	}
 
 	for (int x = 0; x < 3; x++)

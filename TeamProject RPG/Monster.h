@@ -30,7 +30,7 @@ public:
 	void Setting(const int& invincibilityTime, const int& bounceSize);
 	void Die();		//죽는 함수
 	void Move(const Pos& position);
-	void IsHit(const Pos& position, const int& playerDirection, const int& playerPower, const bool isAttack = false);
+	void IsHit(const Pos& position, const int& playerDirection, const int& playerPower, const bool isAttack = false, const bool isNotPlayer = false);
 	void EarthquakeSkillHit(const Pos& position, const int& playerPower);
 
 	static int GetDeathMonster();
