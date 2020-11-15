@@ -151,21 +151,26 @@ void Monster::IsHit(const Pos& position, const int& playerDirection, const int& 
 			attackXPosition = playerXPosition - 5;
 			attackYPosition = playerYPosition - 1;
 		}
+
+		for (int x = 0; x < 3; x++)
+		{
+			for (int y = 0; y >= -2; y--)
+			{
+				if ((attackXPosition == slimeXPosition + y) && (attackYPosition == slimeYPosition - 2 + x))
+				{
+					isAttacked = true;
+				}
+			}
+		}
 	}
 	else
 	{
 		attackXPosition = playerXPosition;
 		attackYPosition = playerYPosition;
-	}
 
-	for (int x = 0; x < 3; x++)
-	{
-		for (int y = 0; y >= -2; y--)
+		if ((attackXPosition == slimeXPosition) && (attackYPosition == slimeYPosition - 1))
 		{
-			if ((attackXPosition == slimeXPosition + y) && (attackYPosition == slimeYPosition - 2 + x))
-			{
-				isAttacked = true;
-			}
+			isAttacked = true;
 		}
 	}
 

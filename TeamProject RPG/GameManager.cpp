@@ -133,7 +133,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 
 	player->Init();
 
-	mapManager.Init();
+	mapManager->Init();
 	Monster::Init();
 
 	LoadDungeonData(dungeonNumber);
