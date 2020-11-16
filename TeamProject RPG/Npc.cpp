@@ -16,7 +16,7 @@ void Npc::ReleaseInstance()
 	npc = nullptr;
 }
 
-const Pos& Npc::GetPos()
+const Pos& Npc::GetPos() const
 {
 	return pos;
 }
@@ -27,11 +27,10 @@ void Npc::SetPos(const int& x, const int& y)
 	pos.SetY(y);
 }
 
-array<int, 2>& Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection)
+array<int, 2> Npc::OpenShop(const int& playerXPosition, const int& playerYPosition, const int& playerDirection)
 {
 	//구매한 아이템
-	array<int, 2> item;
-	item[0] = Shop::EXIT;
+	array<int, 2> item{ Shop::EXIT , -1 };
 
 	//피격여부
 	bool isAttacked = false;

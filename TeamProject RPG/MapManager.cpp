@@ -5,7 +5,7 @@ MapManager* MapManager::mapManagerInstance = nullptr;
 
 MapManager* MapManager::GetInstance()
 {
-	if (mapManagerInstance == nullptr)
+	if (nullptr == mapManagerInstance)
 		mapManagerInstance = new MapManager();
 
 	return mapManagerInstance;

@@ -17,7 +17,7 @@ class SelectDungeonUI : public UI
 	const int DUNGEON1 = 3;
 	const int DUNGEON2 = 5;
 	const int DUNGEON3 = 7;
-	const int gameExit = 9;
+	const int GAME_EXIT = 9;
 
 public:
 	void Init();

@@ -19,16 +19,16 @@ const int GameManager::TitleMenuPrint()
 
 	menuSelect = gameStartUI->Select();
 
-	if (menuSelect == EXIT)	//게임종료
+	if (EXIT == menuSelect)	//게임종료
 	{
 		delete gameStartUI;
 		delete selectDungeonUI;
 		return EXIT;
 	}
 
-	if (menuSelect == NEWGAME)
+	if (NEWGAME == menuSelect)
 		NewPlayerMenu();
-	else if (menuSelect == CHARACTERSELECET)
+	else if (CHARACTERSELECET == menuSelect)
 		LoadPlayerSelectMenu();
 
 	return STARTGAME;
@@ -110,7 +110,7 @@ const int GameManager::SelectDungeonMenuPrint()
 	selectDungeonUI->Show();
 	returnValue = selectDungeonUI->Select();
 
-	if (returnValue == 0)
+	if (0 == returnValue)
 	{
 		SavePlayerData();
 		delete selectDungeonUI;
@@ -128,8 +128,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 	bool loop = true;
 	int tempPlayerState;
 	int escUIState = NOTHING;
-	array<int, 2> item;
-	item[0] = Shop::EXIT;
+	array<int, 2> item{ Shop::EXIT , -1 };		// 구매/판매할 아이템을 담을 변수
 
 	player->Init();
 
@@ -203,7 +202,7 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 		Inventory& tempInventory = player->GetInventory();
 
 		//아이템판매/구매체크
-		switch (item[0])
+		switch (item[0])		//첫번째값이 구매/판매/나가기 .. 두번째값이 구매/판매할 물건의 번호
 		{
 		case Shop::BUY:		//구매시 실행
 			tempInventory.PushItem(item[1]);

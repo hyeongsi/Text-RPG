@@ -80,11 +80,11 @@ const int GameStartUI::Select()
 		}
 	}
 	
-	if (currentChoice == NEWGAME)		//새게임시작
+	if (NEWGAME == currentChoice)		//새게임시작
 		return 0;
-	else if (currentChoice == CHARACTERSELECET)		//게임정보 불러오기
+	else if (CHARACTERSELECET == currentChoice)		//게임정보 불러오기
 		return 1;
-	else if (currentChoice == EXIT)		//게임나가기
+	else if (EXIT == currentChoice)		//게임나가기
 		return -1;
 
 	return -2;		//잘못된값

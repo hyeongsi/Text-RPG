@@ -4,7 +4,7 @@
 void SetConsole()
 {
 	system("title DUNGEON-RPG게임");
-	system("mode con cols=120 lines=200");
+	system("mode con:cols=120 lines=120");
 
 	HANDLE hConsole;
 	CONSOLE_CURSOR_INFO ConsoleCursor;
@@ -20,17 +20,17 @@ int main()
 	SetConsole();
 
 	GameManager gameManager;
-	if (gameManager.TitleMenuPrint() == EXIT)
+	if (EXIT == gameManager.TitleMenuPrint())
 		return 0;
 
 	int returnValue = 0;
 	while (true)
 	{
 		returnValue = gameManager.SelectDungeonMenuPrint();
-		if (returnValue != EXIT)
+		if (EXIT != returnValue)
 			returnValue = gameManager.StartDungeon(returnValue);
 		
-		if (returnValue == EXIT)
+		if (EXIT == returnValue)
 		{
 			Player::ReleaseInstance();
 			Npc::ReleaseInstance();

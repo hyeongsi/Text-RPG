@@ -188,8 +188,5 @@ array<int, 2>& ShopUI::SelectUI()
 		break;
 	}
 
-	//if (GetAsyncKeyState(VK_RETURN) && 0x0001);
-	//if (GetAsyncKeyState(VK_RETURN) & 0x8000);
-
 	return itemChoice;
 }

@@ -56,8 +56,8 @@ void Monster::Die()
 		deathMonster->emplace_back(MonsterSpace::TANK);
 
 	//아이템확률에 따라 죽은놈의 좌표 저장(죽은놈좌표 = 아이템박스좌표),, 좌표저장을 안하면 아이템박스안생김 지금은 100%로 고정
-	//srand((unsigned int)rand());
-	//if (rand() % this->itemDropPercentage == 0)
+	srand((unsigned int)rand());
+	if (rand() % this->itemDropPercentage == 0)
 		itemPosition->emplace_back(Pos((this->GetPos().GetX() % 2 == 0) ? this->GetPos().GetX() + 1 : this->GetPos().GetX(), this->GetPos().GetY()));
 
 	int tempIndex = -1;
@@ -213,10 +213,13 @@ void Monster::EarthquakeSkillHit(const Pos& position, const int& playerPower)
 	int slimeYPosition = this->GetPos().GetY();
 
 	//플레이어위치에 따라 슬라임이 스킬맞고 튕겨나가는 방향을 결정
-	if (playerXPosition - slimeXPosition < 0)
-		this->SetPos(slimeXPosition + bounceSize, slimeYPosition);
-	else if (playerXPosition - slimeXPosition >= 0)
-		this->SetPos(slimeXPosition - bounceSize, slimeYPosition);
+	if (this->GetHp() - playerPower > 0)		//죽을때 죽은자리에서 아이템생성되게하기위함
+	{
+		if (playerXPosition - slimeXPosition < 0)
+			this->SetPos(slimeXPosition + bounceSize, slimeYPosition);
+		else if (playerXPosition - slimeXPosition >= 0)
+			this->SetPos(slimeXPosition - bounceSize, slimeYPosition);
+	}
 
 	//스킬쓰면 무조건 맞아야하니까 그냥 Hit호출
 	this->Hit(playerPower);

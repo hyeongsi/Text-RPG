@@ -70,7 +70,7 @@ void SelectDungeonUI::Show()
 	tempInventory.OpenInventory(true);
 
 	//현재 플레이어 형태 들고와서 출력
-	auto tempPlayerShape = gameInfo->GetShape(MYPLAYER);
+	map<string, string> tempPlayerShape = gameInfo->GetShape(MYPLAYER);
 
 	GoToXY(7, 4);
 		cout << tempPlayerShape["head"];
@@ -128,18 +128,18 @@ int SelectDungeonUI::Select()
 					break;
 				}
 			}
-			if (GetAsyncKeyState(VK_SPACE) & 0x8000)	//스페이스바를 누르면 반복문 탈출인데...
-				break;									//이전에 뭐가문제였는지 찾기
+			if (GetAsyncKeyState(VK_SPACE) & 0x8000)	//스페이스바를 누르면 반복문 탈출
+				break;
 		}
 	}
 
-	if (currentChoice == DUNGEON1)		//1번던전
+	if (DUNGEON1 == currentChoice)		//1번던전
 		return 1;
-	else if (currentChoice == DUNGEON2)	//2번던전
+	else if (DUNGEON2 == currentChoice)	//2번던전
 		return 2;
-	else if (currentChoice == DUNGEON3)	//3번던전
+	else if (DUNGEON3 == currentChoice)	//3번던전
 		return 3;
-	else if (currentChoice == gameExit)	//게임종료
+	else if (GAME_EXIT == currentChoice)	//게임종료
 		return 0;
 
 	return 0;		//잘못된값

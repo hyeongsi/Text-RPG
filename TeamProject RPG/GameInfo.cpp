@@ -4,7 +4,7 @@ GameInfo* GameInfo::gameInfoInstance = nullptr;
 
 GameInfo* GameInfo::GetInstance()
 {
-	if (gameInfoInstance == nullptr)
+	if (nullptr == gameInfoInstance)
 		gameInfoInstance = new GameInfo();
 	
 	return gameInfoInstance;
