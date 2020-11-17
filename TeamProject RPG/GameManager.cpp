@@ -249,12 +249,14 @@ const int GameManager::StartDungeon(const int& dungeonNumber)
 			loop = false;
 			player->Init();
 			Monster::ReleaseInstance();
+			mapManager->GetProjectileVector().clear();
 		}
 		if (monster->size() <= 0 && (mapManager->GetExitPosition() == player->GetPos()))
 		{
 			loop = false;
 			player->Init();
 			Monster::ReleaseInstance();
+			mapManager->GetProjectileVector().clear();
 		}
  	}
 

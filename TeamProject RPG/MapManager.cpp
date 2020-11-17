@@ -329,13 +329,29 @@ void MapManager::PrintWeapon(string weapon)
 	}
 	else if (!player->GetIsAttacking() && RIGHT == player->GetDir())	//스탠드모션 출력
 	{
-		for (int index = 0; index < tempWeaponShape.size(); index++)
-			tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
+		if (weapon == "axe")
+		{
+			for (int index = 0; index < tempWeaponShape.size() - 1; index++)
+				tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
+		}
+		else
+		{
+			for (int index = 0; index < tempWeaponShape.size(); index++)
+				tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
+		}
 	}
 	else if (!player->GetIsAttacking() && LEFT == player->GetDir())
 	{
-		for (int index = 0; index < tempWeaponShape.size(); index++)
-			tempMap[playerPosY - 2 + index][playerPosX - 2] = tempWeaponShape[index];
+		if (weapon == "axe")
+		{
+			for (int index = 1; index < tempWeaponShape.size(); index++)
+				tempMap[playerPosY - 2 + index - 1][playerPosX - 2] = tempWeaponShape[(index==1?2:1)];
+		}
+		else
+		{
+			for (int index = 0; index < tempWeaponShape.size(); index++)
+				tempMap[playerPosY - 2 + index][playerPosX + 2] = tempWeaponShape[index];
+		}
 	}
 }
 
@@ -510,4 +526,9 @@ void MapManager::SetColor(int forground, int background)
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	int code = forground + background * 16;
 	SetConsoleTextAttribute(consoleHandle, code);
+}
+
+vector<Projectile*>& MapManager::GetProjectileVector()
+{
+	return projectileVector;
 }

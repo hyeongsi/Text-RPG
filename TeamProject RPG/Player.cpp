@@ -240,6 +240,7 @@ void Player::UseItem(int itemNumber)
 			Hp += 1;
 			break;
 		case 1:	//MP포션
+			mp += 1;
 			break;
 		case 2:	//도끼
 			holdWeapon = "axe";

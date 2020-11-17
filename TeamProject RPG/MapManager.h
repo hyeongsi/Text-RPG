@@ -57,5 +57,6 @@ public:
 	void SetDropItem();
 
 	void SetColor(int forground, int background);
+	vector<Projectile*>& GetProjectileVector();
 };
 
