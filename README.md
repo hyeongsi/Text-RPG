@@ -1,4 +1,4 @@
-# CLI - RPG
+# Text RPG
 <br>
 
 ## 프로젝트 소개
