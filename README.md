@@ -52,27 +52,31 @@ C++을 이용한 CLI 환경에서의 게임 제작
 </details>
 <br>
 
-## 기타
-<details>
-  <summary>조작법</summary>
-  <table>
-    <tr>
-      <td><b>방향키</b></td>
-      <td><b>space</b></td>
-      <td><b>ctrl</b></td>
-      <td><b>f</b></td>
-      <td><b>g</b></td>
-      <td><b>h</b></td>
-    </tr>
-    <tr>
-      <td>이동</td>
-      <td>공격, 상점이용</td>
-      <td>아이템 줍기</td>
-      <td>공격 구체 발사</td>
-      <td>공격력 버프</td>
-      <td>맵 전체 광역 데미지</td>
-    </tr>
-  </table>
+## 기타 / 조작법
+<ui>
+  <li>
+    <table>
+      <tr>
+        <td><b>방향키</b></td>
+        <td><b>space</b></td>
+        <td><b>ctrl</b></td>
+        <td><b>f</b></td>
+        <td><b>g</b></td>
+        <td><b>h</b></td>
+      </tr>
+      <tr>
+        <td>이동</td>
+        <td>공격, 상점이용</td>
+        <td>아이템 줍기</td>
+        <td>공격 구체 발사</td>
+        <td>공격력 버프</td>
+        <td>맵 전체 광역 데미지</td>
+      </tr>
+    </table>
+  </li>
+  <li></li>
+</ui>
+  
 </details>
 
 ```
